@@ -1,6 +1,6 @@
 # PSE ESKAVI - Frontend
 
-This is the frontend vue app for the PSE ESKAVI Web-App
+This is the Vue.js frontend of the ESKAVI Web-App.
 
 ## Project setup
 
@@ -18,6 +18,12 @@ yarn serve
 
 ```
 yarn build
+```
+
+### Run your unit tests
+
+```
+yarn test:unit
 ```
 
 ### Lints and fixes files
