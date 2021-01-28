@@ -1,57 +1,38 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
+    <v-app-bar app color="primary" dark>
+      <v-app-bar-title>ESKAVI WEB</v-app-bar-title>
+      <v-spacer></v-spacer>
+      <v-btn text :to="{ path: '/configurator' }">
+        <v-icon left>mdi-wrench</v-icon>
+        <span class="mr-2">Configurator</span>
+      </v-btn>
+      <v-btn text :to="{ path: '/modules' }">
+        <v-icon left>mdi-view-module</v-icon>
+        <span class="mr-2">Modules</span>
+      </v-btn>
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on" :to="{ path: '/account' }">
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <span>Account</span>
+      </v-tooltip>
     </v-app-bar>
-
     <v-main>
-      <HelloWorld/>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
   name: 'App',
 
-  components: {
-    HelloWorld,
-  },
+  components: {},
 
   data: () => ({
     //
