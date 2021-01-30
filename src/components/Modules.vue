@@ -20,15 +20,24 @@
                 <div class="overline">{{ module.type }}</div>
                 <v-list-item-title class="headline mb-1">{{ entry.name }}</v-list-item-title>
               </v-list-item-content>
+
+              <!-- ICON -->
               <v-list-item-avatar>
                 <v-tooltip bottom nudge-bottom="-10">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-icon v-bind="attrs" v-on="on">
+                    <v-icon v-bind="attrs" v-on="on" v-if="entry.scope == 'public'">
                       mdi-earth
                     </v-icon>
+                    <v-icon v-bind="attrs" v-on="on" v-else-if="entry.scope == 'shared'">
+                      mdi-account-supervisor-circle
+                    </v-icon>
+                    <v-icon v-bind="attrs" v-on="on" v-else>
+                      mdi-earth-off
+                    </v-icon>
                   </template>
-
-                  <span>Public</span>
+                  <span v-if="entry.scope == 'public'">Public</span>
+                  <span v-else-if="entry.scope == 'shared'">Shared</span>
+                  <span v-else>Private</span>
                 </v-tooltip>
               </v-list-item-avatar>
             </v-list-item>
@@ -51,16 +60,28 @@ export default {
       {
         type: 'Persistence Manager',
         entries: [
-          { name: 'PostGRES' },
-          { name: 'MySQL' },
-          { name: 'PostGRES' },
-          { name: 'MySQL' },
-          { name: 'PostGRES' },
-          { name: 'MySQL' },
+          { name: 'PostGRES', scope: 'public' },
+          { name: 'MySQL', scope: 'shared' },
+          { name: 'PostGRES', scope: 'public' },
+          { name: 'MySQL', scope: 'shared' },
+          { name: 'PostGRES', scope: 'shared' },
+          { name: 'MySQL', scope: 'public' },
         ],
       },
-      { type: 'Handler', entries: [{ name: 'ICP' }, { name: 'RC2' }] },
-      { type: 'Endpoints', entries: [{ name: 'Rest API' }, { name: 'Whatever' }] },
+      {
+        type: 'Handler',
+        entries: [
+          { name: 'ICP', scope: 'private' },
+          { name: 'RC2', scope: 'private' },
+        ],
+      },
+      {
+        type: 'Endpoints',
+        entries: [
+          { name: 'Rest API', scope: 'public' },
+          { name: 'Whatever', scope: 'public' },
+        ],
+      },
     ],
   }),
 };
