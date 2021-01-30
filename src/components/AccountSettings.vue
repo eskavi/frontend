@@ -13,7 +13,7 @@
           <v-chip>Administrator</v-chip>
         </div>
         <div class="mx-auto text-center ma-10">
-          <v-btn>Change Password</v-btn><br />
+          <ChangePassword /><br />
           <v-btn class="ma-3">Logout</v-btn><br />
           <v-btn class="error">Delete Account</v-btn>
         </div>
@@ -21,3 +21,15 @@
     </v-row>
   </v-container>
 </template>
+
+<script>
+import ChangePassword from './ChangePassword.vue';
+
+export default {
+  name: 'AccountSettings',
+  components: {
+    ChangePassword,
+  },
+  data() {},
+};
+</script>
