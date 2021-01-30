@@ -1,7 +1,7 @@
 <template>
-  <div class="account">
-    <AccountSettings />
-  </div>
+    <div class="account">
+      <AccountSettings />
+    </div>
 </template>
 
 <script>

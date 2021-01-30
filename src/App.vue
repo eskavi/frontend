@@ -1,7 +1,12 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <v-app-bar-title>ESKAVI WEB</v-app-bar-title>
+      <v-btn depressed
+        color="primary"
+        :to="{ path: '/' }"
+        :ripple="false">
+          <h2>ESKAVI Web</h2>
+        </v-btn>
       <v-spacer></v-spacer>
       <v-btn text :to="{ path: '/configurator' }">
         <v-icon left>mdi-wrench</v-icon>
