@@ -8,7 +8,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
-  "dependencies": {
+  "dependencies": {   
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
@@ -42,6 +42,7 @@
     "endOfLine": "lf",
     "tabWidth": 2,
     "trailingComma": "es5",
-    "arrowParens": "always"
+    "arrowParens": "always",
+    "TabWidth": 2
   }
 }

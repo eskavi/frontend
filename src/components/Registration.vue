@@ -4,7 +4,7 @@
       <v-card-title> Register </v-card-title>
       <v-card-text> Create a new user account.</v-card-text>
       <v-form>
-        <v-text-field label="E-mail adress" name="Email" placeholder="Email adress"> </v-text-field>
+        <v-text-field label="E-mail adress" name="Email"> </v-text-field>
         <v-text-field
           v-model="password"
           :append-icon="showPWLogin ? 'mdi-eye' : 'mdi-eye-off'"
