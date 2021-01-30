@@ -14,8 +14,8 @@
         </div>
         <div class="mx-auto text-center ma-10">
           <ChangePassword /><br />
-          <v-btn class="ma-3">Logout</v-btn><br />
-          <v-btn class="error">Delete Account</v-btn>
+          <Logout /><br />
+          <DeleteAccount class="ma-2" />
         </div>
       </v-card>
     </v-row>
@@ -24,12 +24,15 @@
 
 <script>
 import ChangePassword from './ChangePassword.vue';
+import Logout from './Logout.vue';
+import DeleteAccount from './DeleteAccount.vue';
 
 export default {
   name: 'AccountSettings',
   components: {
     ChangePassword,
+    Logout,
+    DeleteAccount,
   },
-  data() {},
 };
 </script>
