@@ -4,20 +4,15 @@
       <v-card-title> Login </v-card-title>
       <v-card-text> Please enter your mailing address and your password </v-card-text>
       <v-form>
+        <v-text-field label="E-mail adress" name="Email" placeholder="Email adress"> </v-text-field>
         <v-text-field
-              label="E-mail adress"
-              name="Email"
-              placeholder="Email adress"
-            >
-        </v-text-field>
-        <v-text-field
-              v-model="password"
-              :append-icon="showPWLogin ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPWLogin ? 'text' : 'password'"
-              name="input-10-1"
-              label="Password"
-              @click:append="showPWLogin = !showPWLogin"
-              >
+          v-model="password"
+          :append-icon="showPWLogin ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showPWLogin ? 'text' : 'password'"
+          name="input-10-1"
+          label="Password"
+          @click:append="showPWLogin = !showPWLogin"
+        >
         </v-text-field>
         <v-row>
           <v-btn class="mx-2 my-4"> Login </v-btn>
