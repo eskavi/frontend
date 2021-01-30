@@ -8,11 +8,9 @@
               label="E-mail adress"
               name="Email"
               placeholder="Email adress"
-              solo
             >
         </v-text-field>
         <v-text-field
-              solo
               v-model="password"
               :append-icon="showPWLogin ? 'mdi-eye' : 'mdi-eye-off'"
               :type="showPWLogin ? 'text' : 'password'"
@@ -21,9 +19,9 @@
               @click:append="showPWLogin = !showPWLogin"
               >
         </v-text-field>
-        <v-row class="py-5">
-          <v-btn class="mx-4"> Login </v-btn>
-          <v-btn class="mx-4" color="deep-orange lighten 2"> Reset password</v-btn>
+        <v-row>
+          <v-btn class="mx-2 my-4"> Login </v-btn>
+          <v-btn class="mx-4 my-4" color="deep-orange lighten 2"> Reset password</v-btn>
         </v-row>
       </v-form>
     </v-card>
