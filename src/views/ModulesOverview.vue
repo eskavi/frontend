@@ -1,6 +1,6 @@
 <template>
   <div class="modules">
-    <v-btn fixed large rounded bottom right color="primary">
+    <v-btn fixed large rounded bottom right color="primary" :to="{ path: '/impcreator' }">
       <v-icon left>mdi-plus</v-icon> CREATE
     </v-btn>
     <Modules />
