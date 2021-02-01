@@ -41,6 +41,9 @@ export default {
       // delete account of authenticated user
       this.$router.push({ path: '/' });
     },
+    setSnackbarMessage() {
+      this.$store.commit('setSnackbarMsg', 'bye bye world');
+    },
   },
 };
 </script>

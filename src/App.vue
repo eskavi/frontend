@@ -20,7 +20,6 @@
           <v-btn icon v-bind="attrs" v-on="on" :to="{ path: '/account' }">
             <v-icon>mdi-account-circle</v-icon>
           </v-btn>
-          <v-btn @click="testPrint">HELLO</v-btn>
         </template>
         <span>Account</span>
       </v-tooltip>
@@ -42,11 +41,7 @@ export default {
       test: 'ssss',
     };
   },
-  methods: {
-    testPrint() {
-      console.log(this.snackbarMsg);
-    },
-  },
+  methods: {},
   computed: {
     snackbarMsg() {
       return this.$store.state.snackbarMsg;
