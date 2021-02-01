@@ -9,7 +9,7 @@ export default new Vuex.Store({
   },
   mutations: {
     // synchronous modifications
-    setSnackbarMessage(state, payload) {
+    setSnackbarMsg(state, payload) {
       state.snackbarMsg = payload;
     },
   },
