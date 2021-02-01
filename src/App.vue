@@ -20,7 +20,6 @@
           <v-btn icon v-bind="attrs" v-on="on" :to="{ path: '/account' }">
             <v-icon>mdi-account-circle</v-icon>
           </v-btn>
-          <v-btn @click="testPrint">HELLO</v-btn>
         </template>
         <span>Account</span>
       </v-tooltip>
@@ -28,6 +27,15 @@
     <v-main>
       <router-view></router-view>
     </v-main>
+    <v-snackbar v-model="snackbar">
+      {{ snackbarMsg }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="this.snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -39,17 +47,22 @@ export default {
 
   data() {
     return {
-      test: 'ssss',
+      snackbar: false,
     };
   },
-  methods: {
-    testPrint() {
-      console.log(this.snackbarMsg);
-    },
-  },
+  methods: {},
   computed: {
     snackbarMsg() {
       return this.$store.state.snackbarMsg;
+    },
+  },
+  watch: {
+    '$store.state.snackbarMsg': {
+      handler(newMsg) {
+        if (newMsg) {
+          this.snackbar = true;
+        }
+      },
     },
   },
 };

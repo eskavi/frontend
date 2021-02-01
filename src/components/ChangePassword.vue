@@ -8,8 +8,8 @@
         <v-card-title>
           <span class="headline">Change Password</span>
         </v-card-title>
-        <v-card-text>
-          <v-form v-model="valid" ref="changePasswordForm">
+        <v-form v-model="valid" ref="form" @submit.prevent="submit">
+          <v-card-text>
             <v-container>
               <v-row>
                 <v-col cols="12">
@@ -44,18 +44,18 @@
                 </v-col>
               </v-row>
             </v-container>
-          </v-form>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Save
-          </v-btn>
-        </v-card-actions>
+            <small>*indicates required field</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close">
+              Close
+            </v-btn>
+            <v-btn color="blue darken-1" text type="submit">
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
   </v-row>
@@ -85,6 +85,19 @@ export default {
       return [(v) => !!v || 'New Password required'];
     },
   },
-  methods: {},
+  methods: {
+    close() {
+      this.dialog = false;
+      this.$refs.form.reset();
+    },
+    submit() {
+      if (this.$refs.form.validate()) {
+        this.$refs.form.reset();
+        this.dialog = false;
+        // change user password
+        this.$store.state.snackbarMsg = 'Your password has been changed.';
+      }
+    },
+  },
 };
 </script>
