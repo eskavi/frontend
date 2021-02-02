@@ -17,7 +17,7 @@ export default new Vuex.Store({
   actions: {
     // asynchrounous modifications
     sendActionResponse(context, payload) {
-      context.setSnackbarMsg(payload);
+      context.commit('setSnackbarMsg', payload);
     },
   },
   modules: {},
