@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Axios from 'axios';
+import axios from 'axios';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -7,11 +7,16 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 // axios setup
-Vue.prototype.$http = Axios;
-const token = localStorage.getItem('token');
+Vue.prototype.$http = axios;
+/* TODO, find out where to set the token properly
+const token = this.$store.getters.getUserToken;
 if (token) {
   Vue.prototype.$http.defaults.headers.common.Authorization = token;
-}
+} */
+// setting axios base URL
+// TO-DO insert our HTML/ link to config
+axios.defaults.baseURL = 'OurHTML';
+
 // create vue instance
 new Vue({
   router,
