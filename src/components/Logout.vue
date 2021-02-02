@@ -10,7 +10,7 @@ export default {
   methods: {
     logout() {
       // logout user
-      this.$store.state.snackbarMsg = 'You have been logged out.';
+      this.$store.dispatch('sendActionResponse', 'You have been logged out.');
       this.$router.push({ path: '/' });
     },
   },

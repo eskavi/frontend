@@ -39,10 +39,8 @@ export default {
     deleteAccount() {
       this.dialog = false;
       // delete account of authenticated user
+      this.$store.dispatch('sendActionResponse', 'Your account has been deleted.');
       this.$router.push({ path: '/' });
-    },
-    setSnackbarMessage() {
-      this.$store.commit('setSnackbarMsg', 'bye bye world');
     },
   },
 };

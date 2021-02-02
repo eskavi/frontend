@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  strict: true,
   state: {
     snackbarMsg: 'Hello world',
   },
@@ -15,6 +16,9 @@ export default new Vuex.Store({
   },
   actions: {
     // asynchrounous modifications
+    sendActionResponse(context, payload) {
+      context.setSnackbarMsg(payload);
+    },
   },
   modules: {},
   getters: {

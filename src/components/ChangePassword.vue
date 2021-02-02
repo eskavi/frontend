@@ -95,7 +95,7 @@ export default {
         this.$refs.form.reset();
         this.dialog = false;
         // change user password
-        this.$store.state.snackbarMsg = 'Your password has been changed.';
+        this.$store.dispatch('sendActionResponse', 'Your password has been changed.');
       }
     },
   },

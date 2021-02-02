@@ -53,7 +53,7 @@ export default {
   methods: {},
   computed: {
     snackbarMsg() {
-      return this.$store.state.snackbarMsg;
+      return this.$store.getters.getSnackbarMsg;
     },
   },
   watch: {
