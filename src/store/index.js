@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { reject } from 'core-js/fn/promise';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
