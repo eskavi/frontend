@@ -27,19 +27,30 @@ export default new Vuex.Store({
   },
   // asynchrounous modifications
   actions: {
-    //
     sendActionResponse(context, payload) {
       context.commit('setSnackbarMsg', payload);
     },
+    async registerNewUser(commit, newUser) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('user/register', newUser)
+          .then((res) => {
+            this.commit('setToken', res.data.jwt);
+            resolve('Registered and logged in!');
+          })
+          .catch((err) => reject(err));
+      });
+    },
     loginUser({ commit }, user) {
-      return new Promise((resolve, rej) => {
+      return new Promise((resolve, reject) => {
         axios
           .post('user/login', user)
           .then((res) => {
+            console.log(res.data.jwt);
             commit('setToken', res.data.jwt);
-            resolve('Login successful');
+            resolve(res);
           })
-          .catch((err) => rej(err));
+          .catch((err) => reject(err));
       });
     },
     // should check whether the provided token is valid as well and sets email
@@ -57,10 +68,6 @@ export default new Vuex.Store({
         commit('setToken', null);
         commit('setEmailAddress', null);
       }
-    },
-    async registerNewUser(context, newUser) {
-      const response = await axios.post('user/register', newUser);
-      console.log(response);
     },
   },
   modules: {},

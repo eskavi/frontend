@@ -3,9 +3,7 @@
     <v-card class="px-8">
       <v-card-title> Login </v-card-title>
       <v-card-text> Please enter your mailing address and your password </v-card-text>
-      <v-card-text class="error" v-if="errorLogin">
-        Login unsuccessful. Please try again!</v-card-text
-      >
+      <v-alert type="error" v-if="errorLogin"> Login unsuccessful. Please try again!</v-alert>
       <v-form @submit.prevent="login">
         <v-text-field v-model="user.email" label="E-mail address" required name="Email">
         </v-text-field>
@@ -48,10 +46,10 @@ export default {
     login() {
       this.$store
         .dispatch('loginUser', this.user)
-        .then((message) => {
-          console.log(`Hello ${message}`);
+        .then(() => {
+          console.log('check2');
+          this.$store.dispatch('sendActionResponse', 'You are now logged in!');
           this.$router.push('/configurator');
-          this.errorLogin = false;
         })
         .catch(() => {
           this.errorLogin = true;
