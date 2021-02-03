@@ -67,6 +67,13 @@ export default {
         }
       },
     },
+    snackbar: {
+      handler(state) {
+        if (!state) {
+          this.$store.dispatch('sendActionResponse', '');
+        }
+      },
+    },
   },
 };
 </script>
