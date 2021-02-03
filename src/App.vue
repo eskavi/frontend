@@ -31,7 +31,7 @@
       {{ snackbarMsg }}
 
       <template v-slot:action="{ attrs }">
-        <v-btn text v-bind="attrs" @click="this.snackbar = false">
+        <v-btn text v-bind="attrs" @click="snackbar = false">
           Close
         </v-btn>
       </template>
