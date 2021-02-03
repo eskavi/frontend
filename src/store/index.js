@@ -20,6 +20,11 @@ export default new Vuex.Store({
     },
     setToken(state, token) {
       state.user.token = token;
+      if (token) {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      } else {
+        axios.defaults.headers.common.Authorization = null;
+      }
     },
     setEmailAddress(state, email) {
       state.user.email = email;
@@ -52,22 +57,6 @@ export default new Vuex.Store({
           })
           .catch((err) => reject(err));
       });
-    },
-    // should check whether the provided token is valid as well and sets email
-    // TODO Functionality that ensures that handed token is valid, use with actual API
-    async attemptAuthentication({ commit }, token) {
-      try {
-        const response = await axios.get('user', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        commit('setEmailAddress', response.data.user.email);
-      } catch (e) {
-        console.log('Failed.');
-        commit('setToken', null);
-        commit('setEmailAddress', null);
-      }
     },
   },
   modules: {},
