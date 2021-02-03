@@ -14,6 +14,7 @@
           >By deleting your user account all your personal data will be gone forever, including any
           module implementations you have created and/or shared in the past.</v-card-text
         >
+        <v-alert type="error" class="mx-2 my-2" v-if="error">{{ error }}</v-alert>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="dialog = false">
@@ -29,18 +30,37 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'DeleteAccount',
 
   data: () => ({
     dialog: false,
+    error: '',
   }),
   methods: {
     deleteAccount() {
-      this.dialog = false;
       // delete account of authenticated user
-      this.$store.dispatch('sendActionResponse', 'Your account has been deleted.');
-      this.$router.push({ path: '/' });
+      axios
+        .delete('user')
+        .then(() => {
+          this.dialog = false;
+          this.$store.dispatch('sendActionResponse', 'Your account has been deleted.');
+          this.$router.push({ path: '/' });
+        })
+        .catch((error) => {
+          this.error = error.response.data.error || error;
+        });
+    },
+  },
+  watch: {
+    dialog: {
+      handler(status) {
+        if (!status) {
+          this.error = '';
+        }
+      },
     },
   },
 };
