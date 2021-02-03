@@ -3,7 +3,7 @@
     <v-card class="px-8">
       <v-card-title> Register </v-card-title>
       <v-card-text> Create a new user account.</v-card-text>
-      <v-alert type="error" v-if="errorLogin"> Error. You could not be registered.</v-alert>
+      <v-alert type="error" v-if="showError"> Error. You could not be registered.</v-alert>
       <v-form @submit.prevent="registerUser">
         <v-text-field label="E-mail adress" name="Email" v-model="newUser.email"> </v-text-field>
         <v-text-field
