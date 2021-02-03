@@ -3,6 +3,9 @@
     <v-card class="px-8">
       <v-card-title> Login </v-card-title>
       <v-card-text> Please enter your mailing address and your password </v-card-text>
+      <v-card-text class="error" v-if="errorLogin">
+        Login unsuccessful. Please try again!</v-card-text
+      >
       <v-form @submit.prevent="login">
         <v-text-field v-model="user.email" label="E-mail address" required name="Email">
         </v-text-field>
@@ -32,6 +35,8 @@ export default {
   data() {
     return {
       showPWLogin: false,
+      errorLogin: false,
+      errorCode: '',
       user: {
         email: '',
         password: '',
@@ -39,13 +44,18 @@ export default {
     };
   },
   methods: {
+    // TODO fix the way the promise is delivered from store
     login() {
-      console.log('Hello there, General Kenobi');
-      console.log(`${this.user.password} and ${this.user.email}`);
       this.$store
         .dispatch('loginUser', this.user)
-        .then(() => this.router.push('/configurator'))
-        .catch((err) => console.log(err));
+        .then((message) => {
+          console.log(`Hello ${message}`);
+          this.$router.push('/configurator');
+          this.errorLogin = false;
+        })
+        .catch(() => {
+          this.errorLogin = true;
+        });
     },
     initializePWDisplay() {
       this.showPWLogin = false;

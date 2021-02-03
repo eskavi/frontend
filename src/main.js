@@ -15,7 +15,7 @@ if (token) {
 } */
 // setting axios base URL
 // TO-DO insert our HTML/ link to config
-axios.defaults.baseURL = 'OurHTML';
+axios.defaults.baseURL = 'http://localhost:5000/api';
 
 // create vue instance
 new Vue({

@@ -55,6 +55,9 @@ export default {
     snackbarMsg() {
       return this.$store.getters.getSnackbarMsg;
     },
+    token() {
+      return this.$store.getters.getUserToken;
+    },
   },
   watch: {
     '$store.state.snackbarMsg': {

@@ -31,14 +31,18 @@ export default new Vuex.Store({
     sendActionResponse(context, payload) {
       context.commit('setSnackbarMsg', payload);
     },
-    async loginUser({ dispatch }, user) {
-      const response = await axios.post('user/login', user);
-
-      dispatch('attemptAuthentication', response.data.jwt);
+    loginUser({ commit }, user) {
+      return new Promise((resolve) => {
+        console.log(user);
+        const response = axios.post('user/login', user);
+        console.log(response);
+        commit('setToken', response.data.jwt);
+        resolve('Login successful');
+      });
     },
     // should check whether the provided token is valid as well and sets email
+    // TODO Functionality that ensures that handed token is valid, use with actual API
     async attemptAuthentication({ commit }, token) {
-      commit('setToken', token);
       try {
         const response = await axios.get('user', {
           headers: {
