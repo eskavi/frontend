@@ -3,27 +3,31 @@
     <v-card class="px-8">
       <v-card-title> Register </v-card-title>
       <v-card-text> Create a new user account.</v-card-text>
-      <v-form>
-        <v-text-field label="E-mail adress" name="Email"> </v-text-field>
+      <v-form @submit.prevent="registerUser">
+        <v-text-field label="E-mail adress" name="Email" v-model="newUser.email"> </v-text-field>
         <v-text-field
-          v-model="password"
-          :append-icon="showPWLogin ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showPWLogin ? 'text' : 'password'"
+          v-model="newUser.password"
+          required
+          :rules="passwordRule"
+          :append-icon="showPW ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showPW ? 'text' : 'password'"
           name="input-10-1"
           label="Password"
-          @click:append="showPWLogin = !showPWLogin"
+          @click:append="showPW = !showPW"
         >
         </v-text-field>
         <v-text-field
-          v-model="password"
-          :append-icon="showPWLogin ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showPWLogin ? 'text' : 'password'"
+          v-model="passwordRepeat"
+          required
+          :rules="passwordRepeatRule"
+          :append-icon="showPWRepeat ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showPWRepeat ? 'text' : 'password'"
           name="input-10-1"
           label="Repeat password"
-          @click:append="showPWLogin = !showPWLogin"
+          @click:append="showPWRepeat = !showPWRepeat"
         >
         </v-text-field>
-        <v-btn class="mb-4"> Register </v-btn>
+        <v-btn class="mb-4" type="submit"> Register </v-btn>
       </v-form>
     </v-card>
   </div>
@@ -33,6 +37,29 @@
 export default {
   name: 'Authentication',
 
-  data: () => ({}),
+  data() {
+    return {
+      showPW: false,
+      showPWRepeat: false,
+      passwordRepeat: '',
+      newUser: {
+        email: '',
+        password: '',
+      },
+    };
+  },
+  methods: {
+    registerUser() {
+      this.$store.dispatch();
+    },
+  },
+  computed: {
+    passwordRule() {
+      return [(v) => !!v || 'Enter a password please'];
+    },
+    passwordRepeatRule() {
+      return [(v) => (!!v && v) === this.newUser.password || 'Passwords do not match'];
+    },
+  },
 };
 </script>

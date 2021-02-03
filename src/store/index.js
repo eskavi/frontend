@@ -48,7 +48,13 @@ export default new Vuex.Store({
         commit('setEmailAddress', response.data.user.email);
       } catch (e) {
         console.log('Failed.');
+        commit('setToken', null);
+        commit('setEmailAddress', null);
       }
+    },
+    async registerNewUser(context, newUser) {
+      const response = await axios.post('user/register', newUser);
+      console.log(response);
     },
   },
   modules: {},
@@ -58,6 +64,9 @@ export default new Vuex.Store({
     },
     getUserToken(state) {
       return state.user.token;
+    },
+    isAuthenticated(state) {
+      return state.user.token && state.user.email;
     },
   },
 });

@@ -42,9 +42,10 @@ export default {
     login() {
       console.log('Hello there, General Kenobi');
       console.log(`${this.user.password} and ${this.user.email}`);
-      this.$store.dispatch('loginUser', this.user);
-      /* .then(() => this.router.push('/configurator'))
-        .catch((err) => console.log(err)); */
+      this.$store
+        .dispatch('loginUser', this.user)
+        .then(() => this.router.push('/configurator'))
+        .catch((err) => console.log(err));
     },
     initializePWDisplay() {
       this.showPWLogin = false;
