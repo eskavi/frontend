@@ -41,6 +41,7 @@ export default new Vuex.Store({
           .post('user/register', newUser)
           .then((res) => {
             this.commit('setToken', res.data.jwt);
+            commit('setEmailAddress', newUser.email);
             resolve('Registered and logged in!');
           })
           .catch((err) => reject(err));
@@ -53,6 +54,7 @@ export default new Vuex.Store({
           .then((res) => {
             console.log(res.data.jwt);
             commit('setToken', res.data.jwt);
+            commit('setEmailAddress', user.email);
             resolve(res);
           })
           .catch((err) => reject(err));
