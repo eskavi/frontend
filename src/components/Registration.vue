@@ -41,7 +41,9 @@ export default {
     return {
       showPW: false,
       showPWRepeat: false,
+      showError: false,
       passwordRepeat: '',
+      errMessage: '',
       newUser: {
         email: '',
         password: '',
@@ -50,7 +52,15 @@ export default {
   },
   methods: {
     registerUser() {
-      this.$store.dispatch();
+      this.$store
+        .dispatch('registerNewUser', this.newUser)
+        .then(() => {
+          this.$store.dispatch('sendActionResponse', 'You are now registered and logged.');
+          this.$router.push('/configurator');
+        })
+        .catch(() => {
+          this.showError = true;
+        });
     },
   },
   computed: {

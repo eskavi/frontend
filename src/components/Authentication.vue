@@ -47,7 +47,6 @@ export default {
       this.$store
         .dispatch('loginUser', this.user)
         .then(() => {
-          console.log('check2');
           this.$store.dispatch('sendActionResponse', 'You are now logged in!');
           this.$router.push('/configurator');
         })
