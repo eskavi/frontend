@@ -46,6 +46,7 @@ export default {
         .delete('user')
         .then(() => {
           this.dialog = false;
+          this.$store.dispatch('logoutUser');
           this.$store.dispatch('sendActionResponse', 'Your account has been deleted.');
           this.$router.push({ path: '/' });
         })
