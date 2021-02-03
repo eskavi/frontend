@@ -18,8 +18,12 @@
         >
         </v-text-field>
         <v-row>
-          <v-btn type="submit" class="mx-2 my-4"> Login </v-btn>
-          <v-btn class="mx-4 my-4 error"> Reset password</v-btn>
+          <v-col>
+            <v-btn type="submit" class="mx-2 my-8"> Login </v-btn>
+          </v-col>
+          <v-col>
+            <ResetPassword class="my-8" />
+          </v-col>
         </v-row>
       </v-form>
     </v-card>
@@ -27,9 +31,13 @@
 </template>
 
 <script>
+import ResetPassword from './ResetPassword.vue';
+
 export default {
   name: 'Authentication',
-
+  components: {
+    ResetPassword,
+  },
   data() {
     return {
       showPWLogin: false,
@@ -42,7 +50,6 @@ export default {
     };
   },
   methods: {
-    // TODO fix the way the promise is delivered from store
     login() {
       this.$store
         .dispatch('loginUser', this.user)
