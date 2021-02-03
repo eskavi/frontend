@@ -58,6 +58,13 @@ export default new Vuex.Store({
           .catch((err) => reject(err));
       });
     },
+    logoutUser({ commit }) {
+      return new Promise((resolve) => {
+        commit('setToken', '');
+        commit('setEmailAddress', '');
+        resolve();
+      });
+    },
   },
   modules: {},
   getters: {
