@@ -10,6 +10,7 @@
         </v-card-title>
         <v-form v-model="valid" ref="form" @submit.prevent="submit">
           <v-card-text>
+            <v-alert type="error" v-if="error">{{ error }}</v-alert>
             <v-container>
               <v-row>
                 <v-col cols="12">
@@ -48,7 +49,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">
+            <v-btn color="blue darken-1" text @click="dialog = false">
               Close
             </v-btn>
             <v-btn color="blue darken-1" text type="submit">
@@ -62,11 +63,14 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ChangePassword',
 
   data() {
     return {
+      error: '',
       dialog: false,
       valid: false,
       oldPassword: '',
@@ -86,17 +90,34 @@ export default {
     },
   },
   methods: {
-    close() {
-      this.dialog = false;
-      this.$refs.form.reset();
-    },
     submit() {
       if (this.$refs.form.validate()) {
-        this.$refs.form.reset();
-        this.dialog = false;
-        // change user password
-        this.$store.dispatch('sendActionResponse', 'Your password has been changed.');
+        // axios call to api
+        axios
+          .post('/user/change_password', {
+            oldPassword: this.oldPassword,
+            newPassword: this.newPassword,
+          })
+          .then(() => {
+            this.$refs.form.reset();
+            this.dialog = false;
+            // dispatch snackbar
+            this.$store.dispatch('sendActionResponse', 'Your password has been changed.');
+          })
+          .catch((error) => {
+            this.error = error.response.data.error || error;
+          });
       }
+    },
+  },
+  watch: {
+    dialog: {
+      handler(status) {
+        if (!status) {
+          this.$refs.form.reset();
+          this.error = '';
+        }
+      },
     },
   },
 };
