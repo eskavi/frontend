@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { reject } from 'core-js/fn/promise';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -32,12 +33,14 @@ export default new Vuex.Store({
       context.commit('setSnackbarMsg', payload);
     },
     loginUser({ commit }, user) {
-      return new Promise((resolve) => {
-        console.log(user);
-        const response = axios.post('user/login', user);
-        console.log(response);
-        commit('setToken', response.data.jwt);
-        resolve('Login successful');
+      return new Promise((resolve, rej) => {
+        axios
+          .post('user/login', user)
+          .then((res) => {
+            commit('setToken', res.data.jwt);
+            resolve('Login successful');
+          })
+          .catch((err) => rej(err));
       });
     },
     // should check whether the provided token is valid as well and sets email
