@@ -41,7 +41,7 @@
     "semi": true,
     "endOfLine": "lf",
     "tabWidth": 2,
-    "trailingComma": "es5",
+    "trailingComma": "all",
     "arrowParens": "always",
     "TabWidth": 2
   }
