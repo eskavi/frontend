@@ -6,9 +6,11 @@
 
         <div class="mx-auto text-center">
           <v-avatar color="brown" size="70">
-            <span class="white--text headline">MM</span>
+            <span class="white--text headline">{{
+              $store.state.user.email.substring(0, 2).toUpperCase()
+            }}</span>
           </v-avatar>
-          <h3 class="ma-2">Manuel Müllerschön</h3>
+          <h3 class="ma-2">{{ $store.state.user.email }}</h3>
           <v-chip>Opa</v-chip>
           <v-chip>Administrator</v-chip>
         </div>
