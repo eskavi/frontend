@@ -32,7 +32,6 @@
               v-model="newPassword"
               type="password"
               required
-              :rules="newPasswordRules"
               hint="Type your new password."
             ></v-text-field>
             <v-btn @click="resetPassword">Confirm reset</v-btn>
