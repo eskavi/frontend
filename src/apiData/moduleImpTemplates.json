@@ -1,0 +1,26 @@
+{
+  "templates": [
+    {
+      "impType": "Serializer",
+      "implementationId": "",
+      "author": "",
+      "name": "",
+      "impScope": {
+        "scope": ""
+      },
+      "protocolType": "",
+      "messageType": "",
+      "rootConfig": {
+        "type": "ConfigurationAggregate",
+        "name": "",
+        "allowMultiple": false,
+        "keyExpression": {
+          "expressionStart": "",
+          "expressionEnd": ""
+        },
+        "enforceCompatibility": false,
+        "childConfigs": []
+      }
+    }
+  ]
+}
