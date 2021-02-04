@@ -2,7 +2,7 @@
   "templates": [
     {
       "impType": "Serializer",
-      "implementationId": "",
+      "implementationId": "12",
       "author": "",
       "name": "",
       "impScope": {
@@ -12,7 +12,34 @@
       "messageType": "",
       "rootConfig": {
         "type": "ConfigurationAggregate",
-        "name": "",
+        "name": "rootConfig",
+        "allowMultiple": false,
+        "keyExpression": {
+          "expressionStart": "",
+          "expressionEnd": ""
+        },
+        "enforceCompatibility": false,
+        "childConfigs": [
+          {
+            "type": "TextField",
+            "name": "Port",
+            "value": ""
+          }
+        ]
+      }
+    },
+    {
+      "impType": "Endpoint",
+      "implementationId": "17",
+      "author": "Johanna Doette",
+      "name": "Endpoint to end all points",
+      "impScope": {
+        "scope": ""
+      },
+      "protocolType": "",
+      "rootConfig": {
+        "type": "ConfigurationAggregate",
+        "name": "rootConfig",
         "allowMultiple": false,
         "keyExpression": {
           "expressionStart": "",
