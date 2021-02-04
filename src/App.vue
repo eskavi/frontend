@@ -15,7 +15,7 @@
       </v-btn>
       <v-spacer></v-spacer>
 
-      <v-tooltip bottom>
+      <v-tooltip bottom v-if="$store.getters.isAuthenticated">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on" :to="{ path: '/account' }">
             <v-icon>mdi-account-circle</v-icon>
