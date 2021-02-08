@@ -93,8 +93,10 @@
                         clearable
                         hint="Choose a template"
                         :items="templates"
-                        :disabled="!impType"
                         v-model="template"
+                        :item-text="name"
+                        return-object
+                        :disabled="!impType"
                       >
                       </v-autocomplete>
                     </v-col>
@@ -180,6 +182,7 @@ export default {
       impTypes: [],
       template: '',
       templates: [],
+      templateDescription: [],
       error: '',
       stepper: 1,
       name: '',
@@ -202,9 +205,11 @@ export default {
         });
     },
     getTemplates() {
-      axios.get('imp').then((imp) => {
-        this.templates = imp.data.implementations.map((item) => item.name);
+      axios.get(`imp?type=${this.impType}`).then((imp) => {
+        this.templates = imp.data.implementations;
+        console.log(this.templates);
         // TODO save array of templates
+        this.templateDescription = this.templates.map((template) => template.name);
       });
     },
     submitBasicDetails() {
@@ -212,6 +217,7 @@ export default {
         this.stepper = 2;
       }
     },
+    fetchImplementationTemplate() {},
   },
   watch: {
     impType: {
