@@ -116,7 +116,7 @@
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
 
               <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
+              <v-btn @click="buildUpAttributes">Test</v-btn>
               <v-btn color="primary" @click="stepper = 3">
                 Continue
               </v-btn>
@@ -172,6 +172,7 @@
 
 <script>
 import axios from 'axios';
+import traverse from 'traverse';
 
 export default {
   name: 'ModuleImpStepper',
@@ -180,9 +181,10 @@ export default {
       validBasicDetails: false,
       impType: '',
       impTypes: [],
-      template: '',
+      template: {},
       templates: [],
       templateDescription: [],
+      attributes: {},
       error: '',
       stepper: 1,
       name: '',
@@ -214,9 +216,16 @@ export default {
     submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
         this.stepper = 2;
+        console.log(this.template);
       }
     },
-    fetchImplementationTemplate() {},
+    buildUpAttributes() {
+      traverse(this.template).forEach(() => {
+        if (this.key === 'impType' || this.key === 'implementationId') {
+          console.log(this);
+        }
+      });
+    },
   },
   watch: {
     impType: {
