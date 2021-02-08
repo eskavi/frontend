@@ -92,9 +92,9 @@
                         label="Template"
                         clearable
                         hint="Choose a template"
+                        :item-text="(item) => item.name"
                         :items="templates"
                         v-model="template"
-                        :item-text="name"
                         return-object
                         :disabled="!impType"
                       >
@@ -207,7 +207,6 @@ export default {
     getTemplates() {
       axios.get(`imp?type=${this.impType}`).then((imp) => {
         this.templates = imp.data.implementations;
-        console.log(this.templates);
         // TODO save array of templates
         this.templateDescription = this.templates.map((template) => template.name);
       });
