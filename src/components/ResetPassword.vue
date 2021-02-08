@@ -6,37 +6,46 @@
       </template>
       <v-card class="8-px">
         <v-card-title>Reset Password</v-card-title>
-        <v-form v-model="valid" ref="form" @submit.prevent="submit">
-          <v-card-text>
-            <v-alert type="error" v-if="error">{{ error }}</v-alert>
-            <v-text-field label="Email address" name="Email" required v-model="email">
+        <v-card-text>
+          <v-alert type="error" v-if="error">{{ error }}</v-alert>
+          <v-form
+            v-model="validEmail"
+            ref="parseQuestionForm"
+            @submit.prevent="fetchSecurityQuestion"
+          >
+            <v-text-field
+              label="Email address"
+              name="Email"
+              required
+              v-model="email"
+              :rules="emailRules"
+            >
             </v-text-field>
             <v-btn @click="fetchSecurityQuestion">Get security Question</v-btn>
-            <v-text-field
-              label="Security question"
-              name="secQuestion"
-              v-model="securityQuestion"
-              :disabled="true"
-            >
-            </v-text-field>
-            <v-text-field
-              label="Security answer"
-              name="secQuestion"
-              required
-              v-model="securityAnswer"
-              :disabled="answerEnable"
-            >
-            </v-text-field>
-            <v-text-field
-              label="New Password"
-              v-model="newPassword"
-              type="password"
-              required
-              hint="Type your new password."
-            ></v-text-field>
-            <v-btn @click="resetPassword">Confirm reset</v-btn>
-          </v-card-text>
-        </v-form>
+          </v-form>
+          <v-text-field
+            label="Security question"
+            name="secQuestion"
+            v-model="securityQuestion"
+            readonly
+          >
+          </v-text-field>
+          <v-text-field
+            label="Security answer"
+            name="secQuestion"
+            required
+            v-model="securityAnswer"
+          >
+          </v-text-field>
+          <v-text-field
+            label="New Password"
+            v-model="newPassword"
+            type="password"
+            required
+            hint="Type your new password."
+          ></v-text-field>
+          <v-btn @click="resetPassword">Confirm reset</v-btn>
+        </v-card-text>
       </v-card>
     </v-dialog>
   </v-row>
@@ -48,14 +57,14 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      validEmail: false,
       displayDialog: '',
-      valid: '',
       error: '',
       securityQuestion: '',
       securityAnswer: '',
       newPassword: '',
       email: '',
-      answerEnable: false,
+      emailRules: [(v) => !!v || 'Email is required'],
     };
   },
   methods: {
@@ -67,7 +76,10 @@ export default {
         })
         .then(() => {
           this.$store.dispatch('sendActionResponse', 'Your password was updated successfully!');
-          this.$refs.form.reset();
+          this.securityQuestion = '';
+          this.newPassword = '';
+          this.email = '';
+          this.securityAnswer = '';
           this.displayDialog = false;
         })
         .catch((err) => {
@@ -75,15 +87,16 @@ export default {
         });
     },
     fetchSecurityQuestion() {
-      axios
-        .get('user/security_question', this.email)
-        .then((message) => {
-          this.securityQuestion = message.response.data.securityQuestion;
-          this.answerEnable = true;
-        })
-        .catch((err) => {
-          this.error = err.response.data.error || err;
-        });
+      if (this.$refs.parseQuestionForm.validate()) {
+        axios
+          .get('user/security_question', { email: this.email })
+          .then((message) => {
+            this.securityQuestion = message.data.security_question;
+          })
+          .catch((err) => {
+            this.error = err.response.data.error || err;
+          });
+      }
     },
   },
 };
