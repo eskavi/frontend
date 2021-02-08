@@ -75,5 +75,8 @@ export default {
       },
     },
   },
+  created() {
+    this.$store.commit('setToken', this.$store.getters.getUserToken);
+  },
 };
 </script>
