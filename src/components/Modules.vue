@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-container>
+    <v-container v-if="$store.getters.isAuthenticated">
       <v-row>
         <v-spacer></v-spacer>
-        <v-switch label="Only show my modules"></v-switch>
+        <v-switch label="Only show my modules" v-model="onlyShowMine"></v-switch>
       </v-row>
     </v-container>
     <v-container>
-      <v-row class="align-end" v-for="module in modules" :key="module.type">
+      <v-row class="align-end" v-for="module in parseModules" :key="module.type">
         <v-col cols="12">
           <span>Modules</span>
           <h2>{{ module.type }}</h2>
@@ -47,42 +47,62 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row v-if="!parseModules" justify="center">No modules found.</v-row>
     </v-container>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Modules',
 
   data: () => ({
-    modules: [
-      {
-        type: 'Persistence Manager',
-        entries: [
-          { name: 'PostGRES', scope: 'public' },
-          { name: 'MySQL', scope: 'shared' },
-          { name: 'PostGRES', scope: 'public' },
-          { name: 'MySQL', scope: 'shared' },
-          { name: 'PostGRES', scope: 'shared' },
-          { name: 'MySQL', scope: 'public' },
-        ],
-      },
-      {
-        type: 'Handler',
-        entries: [
-          { name: 'ICP', scope: 'private' },
-          { name: 'RC2', scope: 'private' },
-        ],
-      },
-      {
-        type: 'Endpoints',
-        entries: [
-          { name: 'Rest API', scope: 'public' },
-          { name: 'Whatever', scope: 'public' },
-        ],
-      },
-    ],
+    modules: [],
+    onlyShowMine: false,
   }),
+  methods: {
+    getModules() {
+      this.modules = [];
+      axios
+        .get('imp')
+        .then((response) => {
+          response.data.implementations.forEach((imp) => {
+            const pushData = {
+              name: imp.name,
+              scope: imp.impScope.scope,
+              id: imp.implementationId,
+              author: imp.author,
+            };
+            if (this.modules.find((entry) => entry.type === imp.impType)) {
+              this.modules.find((entry) => entry.type === imp.impType).entries.push(pushData);
+            } else {
+              this.modules.push({
+                type: imp.impType,
+                entries: [pushData],
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch('sendActionResponse', 'Error loading modules.');
+        });
+    },
+  },
+  computed: {
+    parseModules() {
+      if (this.onlyShowMine) {
+        return this.modules.forEach((type) => {
+          const res = type.entries.filter((imp) => imp.author === this.$store.state.user.email);
+          return res;
+        });
+      }
+      return this.modules;
+    },
+  },
+  mounted() {
+    this.getModules();
+  },
 };
 </script>
