@@ -172,7 +172,6 @@
 
 <script>
 import axios from 'axios';
-import traverse from 'traverse';
 
 export default {
   name: 'ModuleImpStepper',
@@ -184,6 +183,7 @@ export default {
       template: {},
       templates: [],
       templateDescription: [],
+      configRoot: {},
       attributes: {},
       error: '',
       stepper: 1,
@@ -220,9 +220,13 @@ export default {
       }
     },
     buildUpAttributes() {
-      traverse(this.template).forEach(() => {
-        if (this.key === 'impType' || this.key === 'implementationId') {
-          console.log(this);
+      this.attributes = Object.entries(this.template);
+      this.attributes.forEach((attribute) => {
+        console.log(`${attribute[0]} - ${attribute[1]}`);
+      });
+      this.attributes.forEach((attribute) => {
+        if (attribute[0] === 'rootConfig') {
+          this.configRoot = attribute[1];
         }
       });
     },
