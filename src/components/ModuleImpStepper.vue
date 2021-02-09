@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="6">
+      <v-col cols="8">
         <v-stepper v-model="stepper" alt-labels>
           <v-stepper-header>
             <v-stepper-step
@@ -114,9 +114,34 @@
 
             <v-stepper-content step="2">
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
-
-              <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-              <v-btn @click="buildUpAttributes">Test</v-btn>
+              <v-form
+                ref="attributes"
+                @submit.prevent="submitBasicDetails"
+                v-model="validAttributes"
+              >
+                <v-container>
+                  <v-row justify="space-between">
+                    <v-col
+                      v-for="attribute in this.attributesFundamental"
+                      v-bind:key="attribute.index"
+                      cols="12"
+                      md="5"
+                    >
+                      <v-text-field v-model="attribute[1]" :label="attribute[0]"> </v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-divider></v-divider>
+                  </v-row>
+                  <v-row v-for="attribute in this.attributesComplex" v-bind:key="attribute.index">
+                    <v-subheader> {{ attribute[0] }}</v-subheader>
+                    <v-col v-for="subAtt in attribute[1]" v-bind:key="subAtt.index">
+                      <v-text-field v-model="subAtt[1]" :label="attribute[0]"> </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
+              <v-btn @click="printAttributes">Test</v-btn>
               <v-btn color="primary" @click="stepper = 3">
                 Continue
               </v-btn>
@@ -178,6 +203,7 @@ export default {
   data() {
     return {
       validBasicDetails: false,
+      validAttributes: false,
       impType: '',
       impTypes: [],
       template: {},
@@ -185,6 +211,8 @@ export default {
       templateDescription: [],
       configRoot: {},
       attributes: {},
+      attributesFundamental: [],
+      attributesComplex: [],
       error: '',
       stepper: 1,
       name: '',
@@ -216,19 +244,37 @@ export default {
     submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
         this.stepper = 2;
-        console.log(this.template);
+        this.buildUpAttributes();
+      }
+    },
+    submitAttributes() {
+      if (this.$refs.attributes.validate()) {
+        this.stepper = 3;
       }
     },
     buildUpAttributes() {
       this.attributes = Object.entries(this.template);
-      this.attributes.forEach((attribute) => {
+      /* this.attributes.forEach((attribute) => {
         console.log(`${attribute[0]} - ${attribute[1]}`);
-      });
+      }); */
       this.attributes.forEach((attribute) => {
         if (attribute[0] === 'rootConfig') {
           this.configRoot = attribute[1];
         }
       });
+      this.attributesFundamental = this.attributes.filter(
+        (attribute) => !(typeof attribute[1] === 'object'),
+      );
+      this.attributesComplex = this.attributes.filter(
+        (attribute) => typeof attribute[1] === 'object' && attribute[0] !== 'rootConfig',
+      );
+      this.attributesComplex = this.attributesComplex.map((attribute) => {
+        const attArray = [attribute[0], Object.entries(attribute[1])];
+        return attArray;
+      });
+    },
+    printAttributes() {
+      console.log(this.attributesComplex);
     },
   },
   watch: {
