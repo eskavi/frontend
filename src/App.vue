@@ -76,6 +76,7 @@ export default {
     },
   },
   created() {
+    // TODO check if token still valid
     this.$store.commit('setToken', this.$store.getters.getUserToken);
   },
 };
