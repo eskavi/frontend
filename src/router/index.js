@@ -10,6 +10,13 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user.email && store.state.user.token) {
+        next('/configurator');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/modules',
