@@ -1,9 +1,11 @@
 <template>
-  <div class="configurator">
-    <v-container>
-      <ConfiguratorStepper />
-    </v-container>
-  </div>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="8">
+        <ConfiguratorStepper />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
