@@ -114,11 +114,7 @@
 
             <v-stepper-content step="2">
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
-              <v-form
-                ref="attributes"
-                @submit.prevent="submitBasicDetails"
-                v-model="validAttributes"
-              >
+              <v-form ref="attributes" @submit.prevent="submitAttributes" v-model="validAttributes">
                 <v-container>
                   <v-row justify="space-between">
                     <v-col
@@ -131,7 +127,7 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-divider></v-divider>
+                    <v-divider class="ma-4"></v-divider>
                   </v-row>
                   <v-row v-for="attribute in this.attributesComplex" v-bind:key="attribute.index">
                     <v-subheader> {{ attribute[0] }}</v-subheader>
@@ -141,7 +137,6 @@
                   </v-row>
                 </v-container>
               </v-form>
-              <v-btn @click="printAttributes">Test</v-btn>
               <v-btn color="primary" @click="stepper = 3">
                 Continue
               </v-btn>
@@ -153,9 +148,12 @@
 
             <v-stepper-content step="3">
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
-
-              <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
+              <v-container>
+                <ConfigurationAggregate
+                  v-bind:rootAggregate="this.configurationRoot"
+                  v-if="this.stepper === 3"
+                />
+              </v-container>
               <v-btn color="primary" @click="stepper = 4">
                 Continue
               </v-btn>
@@ -197,19 +195,22 @@
 
 <script>
 import axios from 'axios';
+import inputConfig from '../assets/modImpDataConfig.json';
+import ConfigurationAggregate from './ConfigurationAggregate.vue';
 
 export default {
   name: 'ModuleImpStepper',
   data() {
     return {
+      inputConfig: {},
       validBasicDetails: false,
       validAttributes: false,
       impType: '',
       impTypes: [],
       template: {},
       templates: [],
-      templateDescription: [],
-      configRoot: {},
+      impScope: {},
+      configurationRoot: {},
       attributes: {},
       attributesFundamental: [],
       attributesComplex: [],
@@ -222,6 +223,9 @@ export default {
       ],
       impTypeRules: [(v) => !!v || 'Type is required'],
     };
+  },
+  components: {
+    ConfigurationAggregate,
   },
   methods: {
     getImplementationTypes() {
@@ -248,6 +252,7 @@ export default {
       }
     },
     submitAttributes() {
+      console.log(this.configurationRoot);
       if (this.$refs.attributes.validate()) {
         this.stepper = 3;
       }
@@ -257,21 +262,29 @@ export default {
       /* this.attributes.forEach((attribute) => {
         console.log(`${attribute[0]} - ${attribute[1]}`);
       }); */
+      console.log(this.attributes);
       this.attributes.forEach((attribute) => {
-        if (attribute[0] === 'rootConfig') {
-          this.configRoot = attribute[1];
+        if (attribute[0] === 'configurationRoot') {
+          this.configurationRoot = attribute[1];
+        }
+        if (attribute[0] === 'scope') {
+          this.impScope = attribute[1];
         }
       });
+      this.attributes = this.attributes.filter(
+        (attribute) => !inputConfig.attributesOmitted.includes(attribute[0]),
+      );
       this.attributesFundamental = this.attributes.filter(
         (attribute) => !(typeof attribute[1] === 'object'),
       );
       this.attributesComplex = this.attributes.filter(
-        (attribute) => typeof attribute[1] === 'object' && attribute[0] !== 'rootConfig',
+        (attribute) => typeof attribute[1] === 'object',
       );
       this.attributesComplex = this.attributesComplex.map((attribute) => {
         const attArray = [attribute[0], Object.entries(attribute[1])];
         return attArray;
       });
+      console.log(this.configurationRoot);
     },
     printAttributes() {
       console.log(this.attributesComplex);
