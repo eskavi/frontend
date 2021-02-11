@@ -25,18 +25,22 @@
               <v-list-item-avatar>
                 <v-tooltip bottom nudge-bottom="-10">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-icon v-bind="attrs" v-on="on" v-if="entry.scope == 'public'">
+                    <v-icon v-bind="attrs" v-on="on" v-if="entry.scope.toLowerCase() == 'public'">
                       mdi-earth
                     </v-icon>
-                    <v-icon v-bind="attrs" v-on="on" v-else-if="entry.scope == 'shared'">
+                    <v-icon
+                      v-bind="attrs"
+                      v-on="on"
+                      v-else-if="entry.scope.toLowerCase() == 'shared'"
+                    >
                       mdi-account-supervisor-circle
                     </v-icon>
                     <v-icon v-bind="attrs" v-on="on" v-else>
                       mdi-earth-off
                     </v-icon>
                   </template>
-                  <span v-if="entry.scope == 'public'">Public</span>
-                  <span v-else-if="entry.scope == 'shared'">Shared</span>
+                  <span v-if="entry.scope.toLowerCase() == 'public'">Public</span>
+                  <span v-else-if="entry.scope.toLowerCase() == 'shared'">Shared</span>
                   <span v-else>Private</span>
                 </v-tooltip>
               </v-list-item-avatar>
@@ -71,7 +75,7 @@ export default {
           response.data.implementations.forEach((imp) => {
             const pushData = {
               name: imp.name,
-              scope: imp.impScope.scope,
+              scope: imp.scope.impScope,
               id: imp.implementationId,
               author: imp.author,
             };
