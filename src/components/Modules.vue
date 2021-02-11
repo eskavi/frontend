@@ -79,11 +79,11 @@ export default {
               id: imp.implementationId,
               author: imp.author,
             };
-            if (this.modules.find((entry) => entry.type === imp.impType)) {
-              this.modules.find((entry) => entry.type === imp.impType).entries.push(pushData);
+            if (this.modules.find((entry) => entry.type === imp.type)) {
+              this.modules.find((entry) => entry.type === imp.type).entries.push(pushData);
             } else {
               this.modules.push({
-                type: imp.impType,
+                type: imp.type,
                 entries: [pushData],
               });
             }
