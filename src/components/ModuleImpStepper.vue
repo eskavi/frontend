@@ -149,6 +149,7 @@
             <v-stepper-content step="3">
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
               <v-container v-for="aggregate in this.configurationRoot" v-bind:key="aggregate.index">
+                <title>Configuration for Module Implementation</title>
                 <ConfigurationAggregate v-bind:rootAggregate="aggregate" />
               </v-container>
               <v-btn color="primary" @click="stepper = 4">
