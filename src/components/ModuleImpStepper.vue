@@ -148,11 +148,8 @@
 
             <v-stepper-content step="3">
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
-              <v-container>
-                <ConfigurationAggregate
-                  v-bind:rootAggregate="this.configurationRoot"
-                  v-if="this.stepper === 3"
-                />
+              <v-container v-for="aggregate in this.configurationRoot" v-bind:key="aggregate.index">
+                <ConfigurationAggregate v-bind:rootAggregate="aggregate" />
               </v-container>
               <v-btn color="primary" @click="stepper = 4">
                 Continue
@@ -210,7 +207,7 @@ export default {
       template: {},
       templates: [],
       impScope: {},
-      configurationRoot: {},
+      configurationRoot: [],
       attributes: {},
       attributesFundamental: [],
       attributesComplex: [],
@@ -232,7 +229,7 @@ export default {
       axios
         .get('imp/types')
         .then((message) => {
-          this.impTypes = message.data.types;
+          this.impTypes = message.data.types.map((type) => type.name);
         })
         .catch((err) => {
           this.error = `Issue fetching data from API: ${err.response.data.error}`;
@@ -265,7 +262,7 @@ export default {
       console.log(this.attributes);
       this.attributes.forEach((attribute) => {
         if (attribute[0] === 'configurationRoot') {
-          this.configurationRoot = attribute[1];
+          this.configurationRoot.push(attribute[1]);
         }
         if (attribute[0] === 'scope') {
           this.impScope = attribute[1];
@@ -288,6 +285,11 @@ export default {
     },
     printAttributes() {
       console.log(this.attributesComplex);
+    },
+  },
+  computed: {
+    configRoot() {
+      return this.configurationRoot;
     },
   },
   watch: {
