@@ -1,11 +1,12 @@
 <template>
   <v-stepper v-model="page" vertical>
-    <v-stepper-step :complete="page > 1" step="1" @click="page = page > 1 ? 1 : page">
+    <v-stepper-step :complete="page > 1" step="1">
       Basic Details
     </v-stepper-step>
 
     <v-stepper-content step="1">
       <v-form ref="basicDetails" @submit.prevent="submitBasicDetails">
+        <v-alert type="error" v-if="error">{{ error }}</v-alert>
         <v-container>
           <v-row justify="space-between">
             <v-col cols="12" md="5">
@@ -25,9 +26,11 @@
                 :label="module.type"
                 deletable-chips
                 :items="module.items"
+                :item-text="(item) => `${item.name}#${item.id}`"
                 v-model="module.value"
                 multiple
                 chips
+                return-object
                 :rules="impRules"
               ></v-autocomplete>
             </v-col>
@@ -72,7 +75,7 @@
       </v-btn>
     </v-stepper-content>
 
-    <v-stepper-step step="4" @click="page = page > 4 ? 4 : page">
+    <v-stepper-step step="4">
       Generation
     </v-stepper-step>
     <v-stepper-content step="4">
@@ -95,26 +98,19 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ConfiguratorStepper',
   data() {
     return {
+      sessionId: '',
+      error: '',
       page: 1,
       pathRules: [(v) => !!v || 'Path is required'],
       path: '',
       impRules: [(v) => v.length > 0 || 'Choose a module'],
-      modules: [
-        {
-          type: 'Endpoint',
-          value: [],
-          items: ['IC2', 'Whatever'],
-        },
-        {
-          type: 'Handler',
-          value: [],
-          items: ['IC2', 'Cool'],
-        },
-      ],
+      modules: [],
       configurationPages: [
         {
           name: 'Configure Endpoint',
@@ -129,15 +125,101 @@ export default {
   methods: {
     submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
-        const step = this.page;
-        this.page = step + 1;
+        this.error = '';
+        // add selected moduleImps to current session
+        this.modules.forEach((selector) => {
+          selector.value.forEach((value) => {
+            axios
+              .post('aas/imp', {
+                sessionId: this.sessionId,
+                impId: value.id,
+              })
+              .then((response) => console.log(response.data.message))
+              .catch((err) => {
+                this.error = err.response.data.error || err;
+              });
+          });
+        });
+
+        // proceed only if all axios calls were successful
+        if (!this.error) {
+          const step = this.page;
+          this.page = step + 1;
+        }
       }
+    },
+    loadConfigurationPages() {
+      // TODO load configuration of imps from api and add them as pages in the stepper
+    },
+    loadAvailableImps() {
+      // first get all possible types to check for topLevel module imps
+      axios
+        .get('imp/types')
+        .then((types) => {
+          const topLevel = types.data.types
+            .filter((type) => type.topLevel)
+            .map((type) => type.name);
+          // now load modules
+          axios.get('imp').then((response) => {
+            response.data.implementations
+              .filter((imp) => topLevel.indexOf(imp.type) >= 0)
+              .forEach((imp) => {
+                const pushData = {
+                  name: imp.name,
+                  id: imp.implementationId,
+                  author: imp.author,
+                };
+                if (this.modules.find((entry) => entry.type === imp.type)) {
+                  this.modules.find((entry) => entry.type === imp.type).items.push(pushData);
+                } else {
+                  this.modules.push({
+                    type: imp.type,
+                    value: [],
+                    items: [pushData],
+                  });
+                }
+              });
+          });
+        })
+        .catch(() => {
+          this.$store.dispatch('sendActionResponse', 'Error loading modules. Try again.');
+        });
+    },
+    startSession() {
+      axios
+        .post('aas')
+        .then((response) => {
+          this.sessionId = response.data.sessionId;
+          this.$store.dispatch('sendActionResponse', `Session ${response.data.sessionId} started.`);
+        })
+        .catch(() => {
+          this.$store.dispatch('sendActionResponse', "Could'nt start session. Try again.");
+        });
+    },
+    closeSession() {
+      axios
+        .delete('aas', {
+          sessionId: this.sessionId,
+        })
+        .then((response) => {
+          this.$store.dispatch('sendActionResponse', response.data.message);
+        })
+        .catch(() => {
+          this.$store.dispatch('sendActionResponse', "Could'nt close session.");
+        });
     },
   },
   watch: {
     modules: {
       handler() {},
     },
+  },
+  mounted() {
+    this.startSession();
+    this.loadAvailableImps();
+  },
+  unmounted() {
+    this.closeSession();
   },
 };
 </script>
