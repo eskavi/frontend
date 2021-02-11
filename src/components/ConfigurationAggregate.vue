@@ -1,18 +1,26 @@
 <template>
   <v-container>
-    <v-row v-for="text in this.childFundamental" v-bind:key="text.index">
-      <v-card-title> {{ 'Hello World' }}</v-card-title>
-    </v-row>
-    <v-row v-for="aggregate in this.childAggregates" v-bind:key="aggregate.index">
-      <ConfigurationAggregate v-bind:rootAggregate="aggregate" />
+    <v-list-item class="ma-4" background-color="">
+      <v-row v-for="dataConfig in this.childFundamental" v-bind:key="dataConfig.index">
+        <v-card-title> {{ dataConfig.type }}</v-card-title>
+        <p>{{ dataConfig.keyExpression }}</p>
+      </v-row>
+    </v-list-item>
+    <v-row v-if="this.childAggregates && this.childAggregates.length">
+      <ConfigurationAggregate
+        v-for="aggregate in this.childAggregates"
+        v-bind:key="aggregate.index"
+        v-bind:rootAggregate="aggregate"
+      ></ConfigurationAggregate>
     </v-row>
   </v-container>
 </template>
 
 <script>
 export default {
+  name: 'ConfigurationAggregate',
   props: {
-    rootAggregate: {},
+    rootAggregate: Object,
   },
   data() {
     return {
@@ -37,10 +45,9 @@ export default {
       });
     },
   },
-  updated() {
+  mounted() {
+    console.log('Ping');
     this.setUpTree();
-    console.log(`Agg-Array ${this.childAggregates}`);
-    console.log(`Fundamental array ${this.childFundamental}`);
   },
 };
 </script>
