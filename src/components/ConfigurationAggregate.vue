@@ -5,13 +5,13 @@
       <v-card width="90%" class="mx-7 mb-2" color="rgb(0,0,0,0.05)">
         <v-card-subtitle>Text fields for ModuleImp </v-card-subtitle>
         <TextConfiguration
-          class="my-2"
+          class="ma-1"
           v-for="textField in this.displayChildren.textFieldChildren"
           :textField="textField"
           v-bind:key="textField.index"
         />
         <v-btn
-          class="ml-2 mb-2"
+          class="ma-2 mb-2"
           v-on:click="addElementToChildren(displayChildren.textFieldChildren, template.text)"
         >
           <v-icon> mdi-plus-box-outline </v-icon>
@@ -95,26 +95,50 @@ export default {
   },
   data() {
     return {
+      // TODO replace with api call, once backend is live
       template: {
         text: {
-          type: 'TextField',
+          jsonTypeInfo: 'TextField',
+          keyExpression: {
+            expressionStart: '',
+            expressionEnd: '',
+          },
+          dataType: 'TEXT',
           name: '',
-          value: '',
+          allowMultiple: false,
         },
         select: {
-          type: 'Select',
+          jsonTypeInfo: 'Select',
+          keyExpression: {
+            expressionStart: '',
+            expressionEnd: '',
+          },
+          content: {},
           name: '',
-          value: '',
+          allowMultiple: false,
         },
         file: {
-          type: 'FileField',
-          fileName: '',
-          value: '',
+          jsonTypeInfo: 'FileField',
+          keyExpression: {
+            expressionStart: '',
+            expressionEnd: '',
+          },
+          name: '',
+          allowMultiple: false,
         },
         switch: {
-          type: 'Switch',
-          name: '',
+          jsonTypeInfo: 'Switch',
+          keyExpression: {
+            expressionStart: '',
+            expressionEnd: '',
+          },
           value: '',
+          content: {
+            falseValue: '',
+            trueValue: '',
+          },
+          name: '',
+          allowMultiple: false,
         },
       },
       childAggregates: [],
@@ -130,7 +154,7 @@ export default {
   methods: {
     setUpTree() {
       this.rootAggregate.children.forEach((entry) => {
-        switch (entry.type) {
+        switch (entry.jsonTypeInfo) {
           case 'ConfigurationAggregate':
             this.childAggregates.push(entry);
             break;

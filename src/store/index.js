@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
-    dataTypes: [],
+    dataTypes: '',
     snackbarMsg: 'Hello world',
     user: {
       email: '',
@@ -73,25 +73,27 @@ export default new Vuex.Store({
         resolve();
       });
     },
-    fetchDataTypes({ commit }) {
+    fetchDataTypes() {
       return new Promise((resolve, reject) => {
-        console.log(this.dataTypes);
-        if (this.dataTypes == null || this.dataTypes.length < 1) {
-          axios
-            .get('imp/config/data_types')
-            .then((res) => {
-              commit('setDataTypes', res.data.data_types);
-              resolve(res);
-            })
-            .catch((err) => reject(err));
-        } else {
-          resolve({ data: { dataTypes: this.data_types } });
-        }
+        // TODO implement state check for less backend calls
+        axios
+          .get('imp/config/data_types')
+          .then((res) => {
+            resolve(res);
+            console.log(res);
+          })
+          .catch((err) => reject(err));
+        // else {
+        //  resolve({ data: { data_types: this.data_types } });
+        // }
       });
     },
   },
   modules: {},
   getters: {
+    getDataTypes(state) {
+      return state.dataTypes;
+    },
     getSnackbarMsg(state) {
       return state.snackbarMsg;
     },
