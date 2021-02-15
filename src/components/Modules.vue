@@ -51,7 +51,9 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row v-if="!parseModules" justify="center">No modules found.</v-row>
+      <v-row v-if="!parseModules || parseModules.length == 0" justify="center"
+        >No modules found.</v-row
+      >
     </v-container>
   </div>
 </template>
@@ -79,11 +81,11 @@ export default {
               id: imp.implementationId,
               author: imp.author,
             };
-            if (this.modules.find((entry) => entry.type === imp.impType)) {
-              this.modules.find((entry) => entry.type === imp.impType).entries.push(pushData);
+            if (this.modules.find((entry) => entry.type === imp.type)) {
+              this.modules.find((entry) => entry.type === imp.type).entries.push(pushData);
             } else {
               this.modules.push({
-                type: imp.impType,
+                type: imp.type,
                 entries: [pushData],
               });
             }
@@ -97,10 +99,16 @@ export default {
   computed: {
     parseModules() {
       if (this.onlyShowMine) {
-        return this.modules.forEach((type) => {
-          const res = type.entries.filter((imp) => imp.author === this.$store.state.user.email);
-          return res;
+        const res = [];
+        this.modules.forEach((type) => {
+          if (type.entries.find((imp) => imp.author === this.$store.state.user.email)) {
+            res.push({
+              type: type.type,
+              entries: type.entries.filter((imp) => imp.author === this.$store.state.user.email),
+            });
+          }
         });
+        return res;
       }
       return this.modules;
     },
