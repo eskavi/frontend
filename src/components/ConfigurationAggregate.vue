@@ -1,16 +1,15 @@
 <template>
-  <v-card width="90%" height="95%" class="mx-4" color="rgb(0,0,0,0.05)">
+  <v-card width="90%" height="95%" class="ma-4 pb-4" color="rgb(0,0,0,0.05)">
     <v-card-title>{{ this.rootAggregate.name }}</v-card-title>
     <v-row justify="center">
       <v-card width="90%" class="mx-7 mb-2" color="rgb(0,0,0,0.05)">
         <v-card-subtitle>Text fields for ModuleImp </v-card-subtitle>
-        <v-text-field
+        <TextConfiguration
+          class="my-2"
           v-for="textField in this.displayChildren.textFieldChildren"
-          label="Name of Text Field"
-          v-model="textField.name"
+          :textField="textField"
           v-bind:key="textField.index"
-          class="mx-4"
-        ></v-text-field>
+        />
         <v-btn
           class="ml-2 mb-2"
           v-on:click="addElementToChildren(displayChildren.textFieldChildren, template.text)"
@@ -84,10 +83,15 @@
 </template>
 
 <script>
+import TextConfiguration from './TextConfiguration.vue';
+
 export default {
   name: 'ConfigurationAggregate',
   props: {
     rootAggregate: Object,
+  },
+  components: {
+    TextConfiguration,
   },
   data() {
     return {

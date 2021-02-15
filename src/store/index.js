@@ -73,21 +73,25 @@ export default new Vuex.Store({
         resolve();
       });
     },
+    fetchDataTypes({ commit }) {
+      return new Promise((resolve, reject) => {
+        console.log(this.dataTypes);
+        if (this.dataTypes == null || this.dataTypes.length < 1) {
+          axios
+            .get('imp/config/data_types')
+            .then((res) => {
+              commit('setDataTypes', res.data.data_types);
+              resolve(res);
+            })
+            .catch((err) => reject(err));
+        } else {
+          resolve({ data: { dataTypes: this.data_types } });
+        }
+      });
+    },
   },
   modules: {},
   getters: {
-    getDataTypes(state) {
-      if (this.dataTypes.length < 1) {
-        axios
-          .get('imp/config/data_types')
-          .then((res) => {
-            commit('setDataTypes', res.data.data_types);
-          })
-          .catch((err) => console.log("Issue fetching data from API"));
-          }
-      return this.dataTypes;
-      }
-    },
     getSnackbarMsg(state) {
       return state.snackbarMsg;
     },
