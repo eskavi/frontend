@@ -1,61 +1,79 @@
 <template>
-  <v-card class="mx-4" color="rgb(0,0,0,0.05)">
+  <v-card width="90%" height="95%" class="mx-4" color="rgb(0,0,0,0.05)">
     <v-card-title>{{ this.rootAggregate.name }}</v-card-title>
-    <v-row>
-      <v-card width="90%" class="mx-7 mb-2">
+    <v-row justify="center">
+      <v-card width="90%" class="mx-7 mb-2" color="rgb(0,0,0,0.05)">
         <v-card-subtitle>Text fields for ModuleImp </v-card-subtitle>
         <v-text-field
           v-for="textField in this.displayChildren.textFieldChildren"
-          title="Name of
-        Field"
+          label="Name of Text Field"
           v-model="textField.name"
           v-bind:key="textField.index"
           class="mx-4"
         ></v-text-field>
-        <v-btn class="ml-2 mb-2"> <v-icon> mdi-plus-box-outline </v-icon> </v-btn>
+        <v-btn
+          class="ml-2 mb-2"
+          v-on:click="addElementToChildren(displayChildren.textFieldChildren, template.text)"
+        >
+          <v-icon> mdi-plus-box-outline </v-icon>
+        </v-btn>
       </v-card>
     </v-row>
-    <v-row>
-      <v-card width="90%" class="mx-7 my-2">
+    <v-row justify="center">
+      <v-card width="90%" height="95%" class="mx-7 my-2" color="rgb(0,0,0,0.05)">
         <v-card-subtitle>Select fields for ModuleImp </v-card-subtitle>
         <v-text-field
           v-for="selectField in this.displayChildren.selectChildren"
-          title="Name of
-        Field"
+          label="Name of Select Field"
           v-model="selectField.name"
           v-bind:key="selectField.index"
           class="mx-4"
         ></v-text-field>
-        <v-btn class="ma-2"> <v-icon> mdi-plus-box-outline </v-icon> </v-btn>
+        <v-btn
+          class="ma-2"
+          @click="addElementToChildren(displayChildren.selectChildren, template.select)"
+        >
+          <v-icon> mdi-plus-box-outline </v-icon>
+        </v-btn>
       </v-card>
     </v-row>
-    <v-row>
-      <v-card width="90%" class="mx-7 my-2">
+    <v-row justify="center">
+      <v-card width="90%" height="95%" class="mx-7 my-2">
         <v-card-subtitle>File fields for ModuleImp </v-card-subtitle>
         <v-text-field
           v-for="fileField in this.displayChildren.fileChildren"
-          title="Name of Field"
+          label="Name of File Field"
           v-model="fileField.name"
           v-bind:key="fileField.index"
           class="mx-4"
         ></v-text-field>
-        <v-btn class="ma-2"> <v-icon> mdi-plus-box-outline </v-icon> </v-btn>
+        <v-btn
+          class="ma-2"
+          @click="addElementToChildren(displayChildren.fileChildren, template.file)"
+        >
+          <v-icon> mdi-plus-box-outline </v-icon>
+        </v-btn>
       </v-card>
     </v-row>
-    <v-row>
-      <v-card width="90%" class="mx-7 my-2">
+    <v-row justify="center">
+      <v-card width="90%" height="95%" class="mx-7 my-2">
         <v-card-subtitle>Switches for ModuleImp </v-card-subtitle>
         <v-text-field
           v-for="switchField in this.displayChildren.switchChildren"
-          title="Name of Switch"
+          label="Name of Switch"
           v-model="switchField.name"
           v-bind:key="switchField.index"
           class="mx-4"
         ></v-text-field>
-        <v-btn class="ma-2"> <v-icon> mdi-plus-box-outline </v-icon> </v-btn>
+        <v-btn
+          class="ma-2"
+          @click="addElementToChildren(displayChildren.switchChildren, template.switch)"
+        >
+          <v-icon> mdi-plus-box-outline </v-icon>
+        </v-btn>
       </v-card>
     </v-row>
-    <v-row v-if="this.childAggregates && this.childAggregates.length">
+    <v-row v-if="this.childAggregates && this.childAggregates.length" justify="center" height="95%">
       <ConfigurationAggregate
         v-for="aggregate in this.childAggregates"
         v-bind:key="aggregate.index"
@@ -70,10 +88,31 @@ export default {
   name: 'ConfigurationAggregate',
   props: {
     rootAggregate: Object,
-    level: Number,
   },
   data() {
     return {
+      template: {
+        text: {
+          type: 'TextField',
+          name: '',
+          value: '',
+        },
+        select: {
+          type: 'Select',
+          name: '',
+          value: '',
+        },
+        file: {
+          type: 'FileField',
+          fileName: '',
+          value: '',
+        },
+        switch: {
+          type: 'Switch',
+          name: '',
+          value: '',
+        },
+      },
       childAggregates: [],
       displayChildren: {
         selectChildren: [],
@@ -110,6 +149,9 @@ export default {
             console.log(`Error, unknown category: ${entry}.`);
         }
       });
+    },
+    addElementToChildren(childrenArray, templateObject) {
+      childrenArray.push(templateObject);
     },
   },
   computed: {},

@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
+    dataTypes: [],
     snackbarMsg: 'Hello world',
     user: {
       email: '',
@@ -17,6 +18,9 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   mutations: {
     // synchronous modifications
+    setDataTypes(state, payload) {
+      state.dataTypes = payload;
+    },
     setSnackbarMsg(state, payload) {
       state.snackbarMsg = payload;
     },
@@ -72,6 +76,18 @@ export default new Vuex.Store({
   },
   modules: {},
   getters: {
+    getDataTypes(state) {
+      if (this.dataTypes.length < 1) {
+        axios
+          .get('imp/config/data_types')
+          .then((res) => {
+            commit('setDataTypes', res.data.data_types);
+          })
+          .catch((err) => console.log("Issue fetching data from API"));
+          }
+      return this.dataTypes;
+      }
+    },
     getSnackbarMsg(state) {
       return state.snackbarMsg;
     },
