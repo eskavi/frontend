@@ -15,6 +15,24 @@
         :textField="child"
         v-bind:key="child.index"
       />
+      <SelectConfiguration
+        v-if="child.jsonTypeInfo == 'SELECT'"
+        class="ma-1"
+        :selectField="child"
+        v-bind:key="child.index"
+      />
+      <SwitchConfiguration
+        v-if="child.jsonTypeInfo == 'SWITCH'"
+        class="ma-1"
+        :selectField="child"
+        v-bind:key="child.index"
+      />
+      <FileField
+        v-if="child.jsonTypeInfo == 'FILE_FIELD'"
+        class="ma-1"
+        :selectField="child"
+        v-bind:key="child.index"
+      />
     </v-row>
     <v-row justify="center">
       <v-btn class="ma-4"> <v-icon left> mdi-plus </v-icon> Add</v-btn>
@@ -24,6 +42,9 @@
 
 <script>
 import TextConfiguration from './TextConfiguration.vue';
+import FileConfiguration from './FileConfiguration.vue';
+import SelectConfiguration from '/SelectConfiguration.vue';
+import SwitchConfiguration from '/SwtichConfiguration.vue';
 
 export default {
   name: 'ConfigurationAggregate',
