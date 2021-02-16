@@ -88,7 +88,7 @@
 
 <script>
 import axios from 'axios';
-import ConfigurationAggregate from './ConfigurationAggregate.vue';
+import ConfigurationAggregate from './moduleImpCreate/ConfigurationAggregate.vue';
 
 export default {
   name: 'ConfiguratorStepper',

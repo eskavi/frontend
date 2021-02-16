@@ -6,19 +6,9 @@
         class="mx-4"
         :items="this.dataTypes"
         label="Select DataType"
-        v-model="textField.dataType"
+        v-model="textConfig.dataType"
       >
       </v-autocomplete>
-      <v-text-field
-        label="Start of key expression"
-        v-model="textField.keyExpression.expresssionStart"
-        class="mx-4"
-      ></v-text-field>
-      <v-text-field
-        label="End of key expression"
-        v-model="textField.keyExpression.expresssionEnd"
-        class="mx-4"
-      ></v-text-field>
     </v-card>
   </v-row>
 </template>
@@ -30,11 +20,19 @@ export default {
   },
   data() {
     return {
+      textConfig: {
+        dataType: '',
+        value: '',
+        name: '',
+        allowMultiple: '',
+        type: '',
+      },
       dataTypes: [],
     };
   },
   methods: {
     onBuildUp() {
+      this.textConfig = this.textField;
       this.getDataTypes();
     },
     getDataTypes() {
