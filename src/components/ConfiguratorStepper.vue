@@ -1,5 +1,6 @@
 <template>
   <v-stepper v-model="page" vertical>
+    <!-- basic details page -->
     <v-stepper-step :complete="page > 1" step="1">
       Basic Details
     </v-stepper-step>
@@ -45,14 +46,15 @@
       </v-form>
     </v-stepper-content>
 
-    <div v-for="configurationPage in configurationPages" :key="configurationPage.name">
-      <v-stepper-step :complete="page > 2" step="2">
+    <!-- configuration pages -->
+    <div v-for="(configurationPage, index) in configurationPages" :key="configurationPage.name">
+      <v-stepper-step :complete="page > index + 2" :step="index + 2">
         {{ configurationPage.name }}
       </v-stepper-step>
 
-      <v-stepper-content step="2">
-        <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-        <v-btn color="primary" @click="page = 3">
+      <v-stepper-content :step="index + 2">
+        <ConfigurationAggregate v-bind:rootAggregate="configurationPage.configuration" />
+        <v-btn color="primary" @click="page = index + 3">
           Continue
         </v-btn>
         <v-btn text>
@@ -61,24 +63,11 @@
       </v-stepper-content>
     </div>
 
-    <v-stepper-step :complete="page > 3" step="3">
-      Select an ad format and name ad unit
-    </v-stepper-step>
-
-    <v-stepper-content step="3">
-      <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-      <v-btn color="primary" @click="page = 4">
-        Continue
-      </v-btn>
-      <v-btn text>
-        Cancel
-      </v-btn>
-    </v-stepper-content>
-
-    <v-stepper-step step="4">
+    <!-- file generation page -->
+    <v-stepper-step :step="configurationPages.length + 2">
       Generation
     </v-stepper-step>
-    <v-stepper-content step="4">
+    <v-stepper-content :step="configurationPages.length + 2">
       <v-row justify="center">
         <v-progress-circular :size="100" :width="15" :value="progress" color="primary" class="mt-5">
           {{ progress }}
@@ -99,9 +88,13 @@
 
 <script>
 import axios from 'axios';
+import ConfigurationAggregate from './ConfigurationAggregate.vue';
 
 export default {
   name: 'ConfiguratorStepper',
+  components: {
+    ConfigurationAggregate,
+  },
   data() {
     return {
       sessionId: '',
@@ -112,40 +105,65 @@ export default {
       impRules: [(v) => v.length > 0 || 'Choose a module'],
       modules: [],
       configurationPages: [
-        {
+        /* {
           name: 'Configure Endpoint',
+          configurationTemplate: {},
         },
         {
           name: 'Configure Handler',
-        },
+        }, */
       ],
       progress: 25,
     };
   },
   methods: {
-    submitBasicDetails() {
+    async submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
         this.error = '';
         // add selected moduleImps to current session
-        this.modules.forEach((selector) => {
-          selector.value.forEach((value) => {
-            axios
-              .post('aas/imp', {
-                sessionId: this.sessionId,
-                impId: value.id,
-              })
-              .then((response) => console.log(response.data.message))
-              .catch((err) => {
-                this.error = err.response.data.error || err;
-              });
+        const queryModules = new Promise((resolve, reject) => {
+          this.modules.forEach((selector, outerIndex) => {
+            selector.value.forEach((value, innerIndex) => {
+              axios
+                .post('aas/imp', {
+                  sessionId: this.sessionId,
+                  impId: value.id,
+                })
+                .then(() =>
+                  axios.get('aas/imp/configuration', {
+                    params: {
+                      sessionId: this.sessionId,
+                      impId: value.id,
+                    },
+                  }),
+                )
+                .then((configuration) => {
+                  this.configurationPages.push({
+                    name: `Configure ${value.name}.`,
+                    id: value.id,
+                    configuration: configuration.data,
+                  });
+                  if (
+                    outerIndex === this.modules.length - 1 &&
+                    innerIndex === selector.value.length - 1
+                  ) {
+                    resolve();
+                  }
+                })
+                .catch((err) => {
+                  reject(err);
+                });
+            });
           });
         });
-
         // proceed only if all axios calls were successful
-        if (!this.error) {
-          const step = this.page;
-          this.page = step + 1;
-        }
+        queryModules
+          .then(() => {
+            this.page += 1;
+          })
+          .catch((err) => {
+            this.error = err.response.data.error || err;
+          });
       }
     },
     loadConfigurationPages() {
