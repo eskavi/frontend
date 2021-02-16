@@ -24,13 +24,13 @@
       <SwitchConfiguration
         v-if="child.jsonTypeInfo == 'SWITCH'"
         class="ma-1"
-        :selectField="child"
+        :switchField="child"
         v-bind:key="child.index"
       />
-      <FileField
+      <FileConfiguration
         v-if="child.jsonTypeInfo == 'FILE_FIELD'"
         class="ma-1"
-        :selectField="child"
+        :fileField="child"
         v-bind:key="child.index"
       />
     </v-row>
@@ -43,8 +43,8 @@
 <script>
 import TextConfiguration from './TextConfiguration.vue';
 import FileConfiguration from './FileConfiguration.vue';
-import SelectConfiguration from '/SelectConfiguration.vue';
-import SwitchConfiguration from '/SwtichConfiguration.vue';
+import SelectConfiguration from './SelectConfiguration.vue';
+import SwitchConfiguration from './SwitchConfiguration.vue';
 
 export default {
   name: 'ConfigurationAggregate',
@@ -53,6 +53,9 @@ export default {
   },
   components: {
     TextConfiguration,
+    FileConfiguration,
+    SelectConfiguration,
+    SwitchConfiguration,
   },
   data() {
     return {
