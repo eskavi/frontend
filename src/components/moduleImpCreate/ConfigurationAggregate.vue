@@ -2,23 +2,22 @@
   <v-card width="90%" height="95%" class="ma-4 pb-4" color="rgb(0,0,0,0.05)">
     <v-row justify="center">
       <v-card-title>{{ this.rootAggregate.name }}</v-card-title>
-      <v-btn class="ma-4"> <v-icon> mdi-plus </v-icon></v-btn>
+    </v-row>
+    <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index" justify="center">
+      <ConfigurationAggregate
+        v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
+        v-bind:key="child.index"
+        v-bind:rootAggregate="child"
+      ></ConfigurationAggregate>
+      <TextConfiguration
+        v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
+        class="ma-1"
+        :textField="child"
+        v-bind:key="child.index"
+      />
     </v-row>
     <v-row justify="center">
-      <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index">
-        <ConfigurationAggregate
-          v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
-          width="90%"
-          v-bind:key="child.index"
-          v-bind:rootAggregate="child"
-        ></ConfigurationAggregate>
-        <TextConfiguration
-          v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
-          class="ma-1"
-          :textField="child"
-          v-bind:key="child.index"
-        />
-      </v-row>
+      <v-btn class="ma-4"> <v-icon left> mdi-plus </v-icon> Add</v-btn>
     </v-row>
   </v-card>
 </template>
