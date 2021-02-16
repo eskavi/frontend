@@ -53,7 +53,8 @@
       </v-stepper-step>
 
       <v-stepper-content :step="index + 2">
-        <ConfigurationAggregate v-bind:rootAggregate="configurationPage.configuration" />
+        <span>Please provide the following details to configure the selected module.</span>
+        <FillInConfigurationAggregate v-bind:rootAggregate="configurationPage.configuration" />
         <v-btn color="primary" @click="page = index + 3">
           Continue
         </v-btn>
@@ -88,12 +89,12 @@
 
 <script>
 import axios from 'axios';
-import ConfigurationAggregate from './ConfigurationAggregate.vue';
+import FillInConfigurationAggregate from './FillInConfigurationAggregate.vue';
 
 export default {
   name: 'ConfiguratorStepper',
   components: {
-    ConfigurationAggregate,
+    FillInConfigurationAggregate,
   },
   data() {
     return {
@@ -102,7 +103,9 @@ export default {
       page: 1,
       pathRules: [(v) => !!v || 'Path is required'],
       path: '',
-      impRules: [(v) => v.length > 0 || 'Choose a module'],
+      impRules: [
+        /* (v) => v.length > 0 || 'Choose a module' */
+      ],
       modules: [],
       configurationPages: [
         /* {
@@ -166,9 +169,6 @@ export default {
           });
       }
     },
-    loadConfigurationPages() {
-      // TODO load configuration of imps from api and add them as pages in the stepper
-    },
     loadAvailableImps() {
       // first get all possible types to check for topLevel module imps
       axios
@@ -177,25 +177,26 @@ export default {
           const topLevel = types.data.types
             .filter((type) => type.topLevel)
             .map((type) => type.name);
+          // create dropdown for each top level module imp type
+          topLevel.forEach((name) => {
+            this.modules.push({
+              type: name,
+              value: [],
+              items: [],
+            });
+          });
           // now load modules
           axios.get('imp').then((response) => {
             response.data.implementations
-              .filter((imp) => topLevel.indexOf(imp.type) >= 0)
+              .filter((imp) => topLevel.indexOf(imp.jsonTypeInfo) >= 0)
               .forEach((imp) => {
                 const pushData = {
                   name: imp.name,
                   id: imp.implementationId,
                   author: imp.author,
                 };
-                if (this.modules.find((entry) => entry.type === imp.type)) {
-                  this.modules.find((entry) => entry.type === imp.type).items.push(pushData);
-                } else {
-                  this.modules.push({
-                    type: imp.type,
-                    value: [],
-                    items: [pushData],
-                  });
-                }
+                // add item to dropdown
+                this.modules.find((entry) => entry.type === imp.jsonTypeInfo).items.push(pushData);
               });
           });
         })
