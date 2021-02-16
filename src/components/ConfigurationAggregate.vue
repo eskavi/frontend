@@ -1,5 +1,5 @@
 <template>
-  <v-card width="90%" height="95%" class="ma-4 pb-4" color="rgb(0,0,0,0.05)">
+  <v-card width="91%" height="95%" class="ma-4 pb-4" color="rgb(0,0,0,0.05)">
     <v-card-title>{{ this.rootAggregate.name }}</v-card-title>
     <v-row justify="center">
       <v-card width="90%" class="mx-7 mb-2" color="rgb(0,0,0,0.05)">
