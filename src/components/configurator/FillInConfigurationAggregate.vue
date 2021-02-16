@@ -1,22 +1,25 @@
 <template>
   <v-card width="90%" height="95%" class="ma-4 pb-4" color="rgb(0,0,0,0.05)">
     <v-row justify="center">
-      <v-card-title>{{ this.rootAggregate.name }}</v-card-title>
-      <v-btn class="ma-4"> <v-icon> mdi-plus </v-icon></v-btn>
+      <v-card-title>
+        {{ this.rootAggregate.name }}
+        <v-btn text icon v-if="this.rootAggregate.allowMultiple">
+          <v-icon> mdi-plus </v-icon>
+        </v-btn>
+      </v-card-title>
     </v-row>
-    <v-row justify="center">
-      <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index">
-        <v-col v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'">
-          <ConfigurationAggregate
-            width="90%"
-            v-bind:key="child.index"
-            v-bind:rootAggregate="child"
-          ></ConfigurationAggregate>
-        </v-col>
-        <v-col v-if="child.jsonTypeInfo == 'TextField'">
-          <TextConfiguration class="ma-1" :textField="child" v-bind:key="child.index" />
-        </v-col>
-      </v-row>
+    <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index" justify="center">
+      <TextConfiguration
+        v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
+        class="ma-1"
+        :textField="child"
+        v-bind:key="child.index"
+      />
+      <ConfigurationAggregate
+        v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
+        v-bind:key="child.index"
+        v-bind:rootAggregate="child"
+      ></ConfigurationAggregate>
     </v-row>
   </v-card>
 </template>
@@ -33,54 +36,7 @@ export default {
     TextConfiguration,
   },
   data() {
-    return {
-      // TODO replace with api call, once backend is live
-      template: {
-        text: {
-          jsonTypeInfo: 'TextField',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          dataType: 'TEXT',
-          name: '',
-          allowMultiple: false,
-        },
-        select: {
-          jsonTypeInfo: 'Select',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          content: {},
-          name: '',
-          allowMultiple: false,
-        },
-        file: {
-          jsonTypeInfo: 'FileField',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          name: '',
-          allowMultiple: false,
-        },
-        switch: {
-          jsonTypeInfo: 'Switch',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          value: '',
-          content: {
-            falseValue: '',
-            trueValue: '',
-          },
-          name: '',
-          allowMultiple: false,
-        },
-      },
-    };
+    return {};
   },
   methods: {},
   computed: {},
