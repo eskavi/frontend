@@ -6,16 +6,18 @@
     </v-row>
     <v-row justify="center">
       <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index">
-        <v-col v-if="child.jsonTypeInfo == 'ConfigurationAggregate'">
-          <ConfigurationAggregate
-            width="90%"
-            v-bind:key="child.index"
-            v-bind:rootAggregate="child"
-          ></ConfigurationAggregate>
-        </v-col>
-        <v-col v-if="child.jsonTypeInfo == 'TextField'">
-          <TextConfiguration class="ma-1" :textField="child" v-bind:key="child.index" />
-        </v-col>
+        <ConfigurationAggregate
+          v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
+          width="90%"
+          v-bind:key="child.index"
+          v-bind:rootAggregate="child"
+        ></ConfigurationAggregate>
+        <TextConfiguration
+          v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
+          class="ma-1"
+          :textField="child"
+          v-bind:key="child.index"
+        />
       </v-row>
     </v-row>
   </v-card>
