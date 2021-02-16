@@ -81,11 +81,11 @@ export default {
               id: imp.implementationId,
               author: imp.author,
             };
-            if (this.modules.find((entry) => entry.type === imp.type)) {
-              this.modules.find((entry) => entry.type === imp.type).entries.push(pushData);
+            if (this.modules.find((entry) => entry.type === imp.jsonTypeInfo)) {
+              this.modules.find((entry) => entry.type === imp.jsonTypeInfo).entries.push(pushData);
             } else {
               this.modules.push({
-                type: imp.type,
+                type: imp.jsonTypeInfo,
                 entries: [pushData],
               });
             }
