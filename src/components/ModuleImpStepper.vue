@@ -194,7 +194,7 @@
 <script>
 import axios from 'axios';
 import inputConfig from '../assets/modImpDataConfig.json';
-import ConfigurationAggregate from './ConfigurationAggregate.vue';
+import ConfigurationAggregate from './moduleImpCreate/ConfigurationAggregate.vue';
 
 export default {
   name: 'ModuleImpStepper',
