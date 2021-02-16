@@ -1,7 +1,18 @@
 <template>
   <v-card width="90%" height="95%" class="ma-4 pb-4" color="rgb(0,0,0,0.05)">
     <v-row justify="center">
-      <v-card-title>{{ this.rootAggregate.name }}</v-card-title>
+      <v-col cols="12" md="8">
+        <v-text-field
+          dark
+          v-model="this.rootAggregate.name"
+          rounded
+          solo
+          class="mt-6"
+          font
+          background-color="primary"
+        >
+        </v-text-field>
+      </v-col>
     </v-row>
     <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index" justify="center">
       <ConfigurationAggregate
@@ -35,7 +46,25 @@
       />
     </v-row>
     <v-row justify="center">
-      <v-btn class="ma-4"> <v-icon left> mdi-plus </v-icon> Add</v-btn>
+      <v-col cols="12" md="8">
+        <v-autocomplete
+          no-data-text="Not a valid template"
+          label="Select template type to add..."
+          clearable
+          hint="Choose a Configuration type"
+          :item-text="(item) => item.jsonTypeInfo"
+          :items="templates"
+          v-model="addTemplate"
+          return-object
+          class="mx-4"
+        >
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-btn :disabled="this.addTemplate == null" class="ma-4" @click="addToChildren">
+          <v-icon left> mdi-plus </v-icon> Add</v-btn
+        >
+      </v-col>
     </v-row>
   </v-card>
 </template>
@@ -59,10 +88,22 @@ export default {
   },
   data() {
     return {
+      addTemplate: null,
       // TODO replace with api call, once backend is live
-      template: {
-        text: {
-          jsonTypeInfo: 'TextField',
+      templates: [
+        {
+          jsonTypeInfo: 'CONFIGURATION_AGGREGATE',
+          keyExpression: {
+            expressionStart: '',
+            expressionEnd: '',
+          },
+          enforceCompatibility: false,
+          name: '',
+          allowMultiple: false,
+          children: [],
+        },
+        {
+          jsonTypeInfo: 'TEXT_FIELD',
           keyExpression: {
             expressionStart: '',
             expressionEnd: '',
@@ -71,18 +112,18 @@ export default {
           name: '',
           allowMultiple: false,
         },
-        select: {
-          jsonTypeInfo: 'Select',
+        {
+          jsonTypeInfo: 'SELECT',
           keyExpression: {
             expressionStart: '',
             expressionEnd: '',
           },
-          content: {},
+          content: [],
           name: '',
           allowMultiple: false,
         },
-        file: {
-          jsonTypeInfo: 'FileField',
+        {
+          jsonTypeInfo: 'FILE_FIELD',
           keyExpression: {
             expressionStart: '',
             expressionEnd: '',
@@ -90,8 +131,8 @@ export default {
           name: '',
           allowMultiple: false,
         },
-        switch: {
-          jsonTypeInfo: 'Switch',
+        {
+          jsonTypeInfo: 'SWITCH',
           keyExpression: {
             expressionStart: '',
             expressionEnd: '',
@@ -104,10 +145,16 @@ export default {
           name: '',
           allowMultiple: false,
         },
-      },
+      ],
     };
   },
-  methods: {},
+  methods: {
+    addToChildren() {
+      this.rootAggregate.children.push(this.addTemplate);
+      this.addTemplate = null;
+      console.log(this.rootAggregate);
+    },
+  },
   computed: {},
   mounted() {},
 };
