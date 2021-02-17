@@ -1,11 +1,17 @@
 <template>
   <v-row justify="center">
-    <v-card width="90%" class="mx-2 pa-3">
+    <v-card width="92%" class="mx-2 pa-3">
       <v-avatar size="28" rounded
         ><v-btn class="error" @click="deleteThis"><v-icon> mdi-close</v-icon></v-btn></v-avatar
       >
       <v-row justify="center">
         <v-card-title class="ma-2">Select Field</v-card-title>
+      </v-row>
+      <v-row justify="center">
+        <v-switch
+          v-model="this.selectField.allowMultiple"
+          label="Allow duplication of Select Field?"
+        ></v-switch>
       </v-row>
       <v-row justify="center">
         <v-col cols="12" md="6">

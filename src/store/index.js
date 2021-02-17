@@ -58,7 +58,6 @@ export default new Vuex.Store({
         axios
           .post('user/login', user)
           .then((res) => {
-            console.log(res.data.jwt);
             commit('setToken', res.data.jwt);
             commit('setEmailAddress', user.email);
             resolve(res);
@@ -80,7 +79,6 @@ export default new Vuex.Store({
           .get('imp/config/data_types')
           .then((res) => {
             resolve(res);
-            console.log(res);
           })
           .catch((err) => reject(err));
         // else {
