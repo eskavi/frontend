@@ -18,29 +18,34 @@
       <ConfigurationAggregate
         v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
         v-bind:key="child.index"
+        v-bind:index="child.index"
         v-bind:rootAggregate="child"
       ></ConfigurationAggregate>
       <TextConfiguration
         v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
         class="ma-1"
         :textField="child"
+        :arrayPosition="child.index"
         v-bind:key="child.index"
       />
       <SelectConfiguration
         v-if="child.jsonTypeInfo == 'SELECT'"
         class="ma-1"
         :selectField="child"
+        v-bind:index="child.index"
         v-bind:key="child.index"
       />
       <SwitchConfiguration
         v-if="child.jsonTypeInfo == 'SWITCH'"
         class="ma-1"
+        v-bind:index="child.index"
         :switchField="child"
         v-bind:key="child.index"
       />
       <FileConfiguration
         v-if="child.jsonTypeInfo == 'FILE_FIELD'"
         class="ma-1"
+        v-bind:index="child.index"
         :fileField="child"
         v-bind:key="child.index"
       />
@@ -79,6 +84,7 @@ export default {
   name: 'ConfigurationAggregate',
   props: {
     rootAggregate: Object,
+    index: Number,
   },
   components: {
     TextConfiguration,
@@ -153,6 +159,9 @@ export default {
       this.rootAggregate.children.push(this.addTemplate);
       this.addTemplate = null;
       console.log(this.rootAggregate);
+    },
+    deleteFromChildren(childIndex) {
+      this.rootAggregate.children.splice(childIndex, 1);
     },
   },
   computed: {},

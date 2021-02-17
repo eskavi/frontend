@@ -3,6 +3,7 @@
     "configurationRoot",
     "implementationId",
     "author",
-    "scope"
+    "scope",
+    "jsonTypeInfo"
   ]
 }

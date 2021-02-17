@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-card width="90%" class="mx-2 pa-3">
       <v-row justify="center">
-        <v-card-title class="ma-2">Text Field</v-card-title>
+        <v-card-title class="ma-2">Text Field nr {{ this.index }}</v-card-title>
       </v-row>
       <v-row justify="center">
         <v-col cols="12" md="6">
@@ -37,6 +37,7 @@
 export default {
   props: {
     textField: Object,
+    arrayPosition: Number,
   },
   data() {
     return {
