@@ -3,42 +3,95 @@
     <v-row justify="center">
       <v-card-title>
         {{ this.rootAggregate.name }}
-        <v-btn text icon v-if="this.rootAggregate.allowMultiple">
-          <v-icon> mdi-plus </v-icon>
-        </v-btn>
       </v-card-title>
     </v-row>
     <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index" justify="center">
-      <TextConfiguration
+      <FillInTextConfiguration
         v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
         class="ma-1"
         :textField="child"
         v-bind:key="child.index"
       />
-      <ConfigurationAggregate
+      <FillInImplementationSelectConfiguration
+        v-if="child.jsonTypeInfo == 'IMPLEMENTATION_SELECT'"
+        class="ma-1"
+        :implementationSelectField="child"
+        v-bind:key="child.index"
+      />
+      <FillInSelectConfiguration
+        v-if="child.jsonTypeInfo == 'SELECT'"
+        class="ma-1"
+        :selectField="child"
+        v-bind:key="child.index"
+      />
+      <FillInFileConfiguration
+        v-if="child.jsonTypeInfo == 'FILE_FIELD'"
+        class="ma-1"
+        :fileField="child"
+        v-bind:key="child.index"
+      />
+      <FillInSwitchConfiguration
+        v-if="child.jsonTypeInfo == 'SWITCH'"
+        class="ma-1"
+        :switchField="child"
+        v-bind:key="child.index"
+      />
+      <FillInConfigurationAggregate
         v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
         v-bind:key="child.index"
         v-bind:rootAggregate="child"
-      ></ConfigurationAggregate>
+      />
+    </v-row>
+    <v-row justify="center">
+      <v-btn
+        v-if="this.rootAggregate.allowMultiple"
+        class="ma-2"
+        @click="addToChildren(rootAggregate)"
+      >
+        <v-icon left>mdi-plus</v-icon>Add {{ this.rootAggregate.name }}
+      </v-btn>
     </v-row>
   </v-card>
 </template>
 
 <script>
-import TextConfiguration from './FillInTextConfiguration.vue';
+import FillInTextConfiguration from './FillInTextConfiguration.vue';
+import FillInFileConfiguration from './FillInFileConfiguration.vue';
+import FillInSwitchConfiguration from './FillInSwitchConfiguration.vue';
+import FillInSelectConfiguration from './FillInSelectConfiguration.vue';
+import FillInImplementationSelectConfiguration from './FillInImplementationSelectConfiguration.vue';
 
 export default {
-  name: 'ConfigurationAggregate',
+  name: 'FillInConfigurationAggregate',
   props: {
     rootAggregate: Object,
   },
   components: {
-    TextConfiguration,
+    FillInTextConfiguration,
+    FillInFileConfiguration,
+    FillInSelectConfiguration,
+    FillInSwitchConfiguration,
+    FillInImplementationSelectConfiguration,
   },
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    addToChildren(o) {
+      console.log(o);
+      this.rootAggregate.children.push({
+        jsonTypeInfo: 'TEXT_FIELD',
+        keyExpression: {
+          expressionStart: '<dummy>',
+          expressionEnd: '<dummy>',
+        },
+        value: 'dummy',
+        dataType: 'TEXT',
+        name: 'dummy',
+        allowMultiple: false,
+      });
+    },
+  },
   computed: {},
   mounted() {},
 };
