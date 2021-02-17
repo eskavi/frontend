@@ -1,6 +1,9 @@
 <template>
   <v-row justify="center">
-    <v-card width="90%" class="mx-2 pa-3">
+    <v-card width="92%" class="mx-2 pa-3">
+      <v-avatar size="28" rounded
+        ><v-btn class="error" @click="deleteThis"><v-icon> mdi-close</v-icon></v-btn></v-avatar
+      >
       <v-row justify="center">
         <v-card-title class="ma-2">Text Field</v-card-title>
       </v-row>
@@ -41,6 +44,7 @@ export default {
   data() {
     return {
       dataTypes: [],
+      echo: 'echo',
     };
   },
   methods: {
@@ -51,6 +55,9 @@ export default {
       this.$store.dispatch('fetchDataTypes').then((res) => {
         this.dataTypes = res.data.data_types;
       });
+    },
+    deleteThis() {
+      this.$emit('deleteThis', this.textField);
     },
   },
   mounted() {

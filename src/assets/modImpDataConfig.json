@@ -3,6 +3,8 @@
     "configurationRoot",
     "implementationId",
     "author",
-    "scope"
-  ]
+    "scope",
+    "jsonTypeInfo"
+  ],
+  "genericTypes": ["MESSAGE_TYPE", "PROTOCOL_TYPE"]
 }

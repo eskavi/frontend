@@ -1,11 +1,14 @@
 <template>
-  <v-card width="90%" height="95%" class="ma-4 pb-4" color="rgb(0,0,0,0.05)">
+  <v-card width="92%" height="95%" class="ma-4 pa-3" color="rgb(0,0,0,0.05)">
+    <v-avatar size="28" rounded v-if="!this.isInit"
+      ><v-btn class="error" @click="deleteThis"><v-icon> mdi-close</v-icon></v-btn></v-avatar
+    >
     <v-row justify="center">
       <v-col cols="12" md="8">
         <v-text-field
           v-model="this.rootAggregate.name"
           solo
-          class="mt-6"
+          class="mt-2"
           label="Aggregate Name"
           background-color="white"
           hint="Aggregate Name"
@@ -14,34 +17,53 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index" justify="center">
+    <v-row
+      v-for="child in this.rootAggregate.children"
+      v-bind:key="child.index"
+      justify="center"
+      class=""
+    >
       <ConfigurationAggregate
+        class="my-2"
+        @deleteThis="deleteFromChildren"
         v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
         v-bind:key="child.index"
+        v-bind:isInit="false"
         v-bind:rootAggregate="child"
       ></ConfigurationAggregate>
       <TextConfiguration
+        class="my-2"
+        @deleteThis="deleteFromChildren"
         v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
-        class="ma-1"
         :textField="child"
         v-bind:key="child.index"
       />
       <SelectConfiguration
+        class="my-2"
+        @deleteThis="deleteFromChildren"
         v-if="child.jsonTypeInfo == 'SELECT'"
-        class="ma-1"
         :selectField="child"
         v-bind:key="child.index"
       />
       <SwitchConfiguration
+        class="my-2"
+        @deleteThis="deleteFromChildren"
         v-if="child.jsonTypeInfo == 'SWITCH'"
-        class="ma-1"
         :switchField="child"
         v-bind:key="child.index"
       />
       <FileConfiguration
+        class="my-2"
+        @deleteThis="deleteFromChildren"
         v-if="child.jsonTypeInfo == 'FILE_FIELD'"
-        class="ma-1"
         :fileField="child"
+        v-bind:key="child.index"
+      />
+      <ImpSelectConfiguration
+        class="my-2"
+        @deleteThis="deleteFromChildren"
+        v-if="child.jsonTypeInfo == 'IMPLEMENTATION_SELECT'"
+        :impSelectField="child"
         v-bind:key="child.index"
       />
     </v-row>
@@ -74,17 +96,20 @@ import TextConfiguration from './TextConfiguration.vue';
 import FileConfiguration from './FileConfiguration.vue';
 import SelectConfiguration from './SelectConfiguration.vue';
 import SwitchConfiguration from './SwitchConfiguration.vue';
+import ImpSelectConfiguration from './ImpSelectConfiguration.vue';
 
 export default {
   name: 'ConfigurationAggregate',
   props: {
     rootAggregate: Object,
+    isInit: Boolean,
   },
   components: {
     TextConfiguration,
     FileConfiguration,
     SelectConfiguration,
     SwitchConfiguration,
+    ImpSelectConfiguration,
   },
   data() {
     return {
@@ -145,6 +170,17 @@ export default {
           name: '',
           allowMultiple: false,
         },
+        {
+          jsonTypeInfo: 'IMPLEMENTATION_SELECT',
+          keyExpression: {
+            expressionStart: '',
+            expressionEnd: '',
+          },
+          generics: [],
+          type: 'SERIALIZER',
+          name: '',
+          allowMultiple: false,
+        },
       ],
     };
   },
@@ -153,6 +189,14 @@ export default {
       this.rootAggregate.children.push(this.addTemplate);
       this.addTemplate = null;
       console.log(this.rootAggregate);
+    },
+    deleteThis() {
+      this.$emit('deleteThis', this.rootAggregate);
+    },
+    deleteFromChildren(childObject) {
+      this.rootAggregate.children = this.rootAggregate.children.filter(
+        (curChild) => curChild !== childObject,
+      );
     },
   },
   computed: {},
