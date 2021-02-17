@@ -6,16 +6,15 @@
       </v-card-title>
     </v-row>
     <v-row v-for="child in this.rootAggregate.children" v-bind:key="child.index" justify="center">
+      <FillInConfigurationAggregate
+        v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
+        v-bind:key="child.index"
+        v-bind:rootAggregate="child"
+      />
       <FillInTextConfiguration
         v-if="child.jsonTypeInfo == 'TEXT_FIELD'"
         class="ma-1"
         :textField="child"
-        v-bind:key="child.index"
-      />
-      <FillInImplementationSelectConfiguration
-        v-if="child.jsonTypeInfo == 'IMPLEMENTATION_SELECT'"
-        class="ma-1"
-        :implementationSelectField="child"
         v-bind:key="child.index"
       />
       <FillInSelectConfiguration
@@ -36,10 +35,11 @@
         :switchField="child"
         v-bind:key="child.index"
       />
-      <FillInConfigurationAggregate
-        v-if="child.jsonTypeInfo == 'CONFIGURATION_AGGREGATE'"
+      <FillInImplementationSelectConfiguration
+        v-if="child.jsonTypeInfo == 'IMPLEMENTATION_SELECT'"
+        class="ma-1"
+        :implementationSelectField="child"
         v-bind:key="child.index"
-        v-bind:rootAggregate="child"
       />
     </v-row>
     <v-row justify="center">
