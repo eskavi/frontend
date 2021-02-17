@@ -10,7 +10,7 @@
       <v-row justify="center">
         <v-switch
           v-model="impSelectField.allowMultiple"
-          label="Allow duplication of implementation?"
+          label="Allow duplication of Implementation Field?"
         ></v-switch>
       </v-row>
       <v-row justify="center">
@@ -77,10 +77,9 @@ export default {
     onBuildUp() {
       this.setUpGenerics();
       this.setUpImpTypes();
-      console.log(this.generics);
     },
     deleteThis() {
-      this.$emit('deleteThis', this.selectField);
+      this.$emit('deleteThis', this.impSelectField);
     },
     setUpImpTypes() {
       axios

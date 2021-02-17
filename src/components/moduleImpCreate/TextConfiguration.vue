@@ -8,6 +8,12 @@
         <v-card-title class="ma-2">Text Field</v-card-title>
       </v-row>
       <v-row justify="center">
+        <v-switch
+          v-model="this.textField.allowMultiple"
+          label="Allow duplication of Text Field?"
+        ></v-switch>
+      </v-row>
+      <v-row justify="center">
         <v-col cols="12" md="6">
           <v-text-field label="Name of Text Field" v-model="textField.name"></v-text-field>
         </v-col>

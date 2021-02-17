@@ -17,6 +17,12 @@
         </v-text-field>
       </v-col>
     </v-row>
+    <v-row justify="center" v-if="!this.isInit">
+      <v-switch
+        v-model="this.rootAggregate.allowMultiple"
+        label="Allow duplication of Aggregate?"
+      ></v-switch>
+    </v-row>
     <v-row
       v-for="child in this.rootAggregate.children"
       v-bind:key="child.index"
@@ -188,7 +194,6 @@ export default {
     addToChildren() {
       this.rootAggregate.children.push(this.addTemplate);
       this.addTemplate = null;
-      console.log(this.rootAggregate);
     },
     deleteThis() {
       this.$emit('deleteThis', this.rootAggregate);
