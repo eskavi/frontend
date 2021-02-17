@@ -54,7 +54,10 @@
 
       <v-stepper-content :step="index + 2">
         <span>Please provide the following details to configure the selected module.</span>
-        <FillInConfigurationAggregate v-bind:rootAggregate="configurationPage.configuration" />
+        <FillInConfigurationAggregate
+          v-bind:rootAggregate="configurationPage.configuration"
+          v-bind:key="index"
+        />
         <v-btn color="primary" @click="page = index + 3">
           Continue
         </v-btn>
