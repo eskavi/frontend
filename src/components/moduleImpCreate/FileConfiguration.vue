@@ -1,6 +1,9 @@
 <template>
   <v-row justify="center">
     <v-card width="90%" class="mx-2 pa-3">
+      <v-avatar size="28" rounded
+        ><v-btn class="error" @click="deleteThis"><v-icon> mdi-close</v-icon></v-btn></v-avatar
+      >
       <v-row justify="center">
         <v-card-title class="ma-2">File Field</v-card-title>
       </v-row>
@@ -29,12 +32,16 @@
 export default {
   props: {
     fileField: Object,
+    index: Number,
   },
   data() {
     return {};
   },
   methods: {
     onBuildUp() {},
+    deleteThis() {
+      this.$emit('deleteThis', this.fileField);
+    },
   },
   mounted() {
     this.onBuildUp();

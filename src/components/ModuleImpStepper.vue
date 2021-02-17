@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="8">
+      <v-col cols="9">
         <v-stepper v-model="stepper" alt-labels>
           <v-stepper-header>
             <v-stepper-step
@@ -148,10 +148,13 @@
 
             <v-stepper-content step="3">
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
-              <v-container v-for="aggregate in this.configurationRoot" v-bind:key="aggregate.index">
+              <v-row v-if="this.configurationRoot" justify="center" class="mb-4">
                 <title>Configuration for Module Implementation</title>
-                <ConfigurationAggregate v-bind:rootAggregate="aggregate" />
-              </v-container>
+                <ConfigurationAggregate
+                  v-bind:rootAggregate="this.configurationRoot"
+                  :isInit="true"
+                />
+              </v-row>
               <v-btn color="primary" @click="stepper = 4">
                 Continue
               </v-btn>
@@ -208,7 +211,7 @@ export default {
       template: {},
       templates: [],
       impScope: {},
-      configurationRoot: [],
+      configurationRoot: null,
       attributes: {},
       attributesFundamental: [],
       attributesComplex: [],
@@ -263,7 +266,7 @@ export default {
       console.log(this.attributes);
       this.attributes.forEach((attribute) => {
         if (attribute[0] === 'configurationRoot') {
-          this.configurationRoot.push(attribute[1]);
+          this.configurationRoot = attribute[1];
         }
         if (attribute[0] === 'scope') {
           this.impScope = attribute[1];
