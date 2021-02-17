@@ -12,6 +12,7 @@
           <v-combobox
             v-model="selectField.content"
             label="Enter all selection possibilities here"
+            deletable-chips
             multiple
             chips
           >
