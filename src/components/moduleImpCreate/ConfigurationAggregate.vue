@@ -3,13 +3,13 @@
     <v-row justify="center">
       <v-col cols="12" md="8">
         <v-text-field
-          dark
           v-model="this.rootAggregate.name"
-          rounded
           solo
           class="mt-6"
-          font
-          background-color="primary"
+          label="Aggregate Name"
+          background-color="white"
+          hint="Aggregate Name"
+          rounded
         >
         </v-text-field>
       </v-col>
