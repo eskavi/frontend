@@ -74,6 +74,7 @@ export default {
       axios
         .get('imp')
         .then((response) => {
+          console.log(response);
           response.data.implementations.forEach((imp) => {
             const pushData = {
               name: imp.name,
@@ -115,6 +116,7 @@ export default {
   },
   mounted() {
     this.getModules();
+    console.log(this.modules);
   },
 };
 </script>

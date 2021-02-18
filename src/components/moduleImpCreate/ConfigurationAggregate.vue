@@ -23,6 +23,20 @@
         label="Allow duplication of Aggregate?"
       ></v-switch>
     </v-row>
+    <v-row justify="center">
+      <v-col cols="12" md="6">
+        <v-text-field
+          label="Start of key expression"
+          v-model="rootAggregate.keyExpression.expresssionStart"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field
+          label="End of key expression"
+          v-model="rootAggregate.keyExpression.expresssionEnd"
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <v-row
       v-for="child in this.rootAggregate.children"
       v-bind:key="child.index"
