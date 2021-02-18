@@ -230,6 +230,11 @@
                     {{ finalizePage.successMessage }}</v-alert
                   >
                 </v-row>
+                <v-row>
+                  <v-alert v-if="this.finalizePage.useresAdded" type="success">
+                    {{ finalizePage.addMessage }} {{ wipImp.name }}</v-alert
+                  >
+                </v-row>
                 <v-row justify="center" v-if="!this.finalizePage.createSuccess">
                   <v-card-title>Finalize Module Creation</v-card-title>
                 </v-row>
@@ -238,11 +243,29 @@
                 </v-row>
               </v-container>
 
-              <v-card>
-                <v-card-title> Add Users to the new Implementation: </v-card-title>
-              </v-card>
+              <v-container
+                v-if="this.finalizePage.createSuccess && this.wipImp.scope.impScope === 'shared'"
+              >
+                <v-row>
+                  <v-card-subtitle> Add Users to the new Implementation: </v-card-subtitle>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" md="10">
+                    <v-combobox
+                      v-model="finalizePage.addedUsers"
+                      label="Enter Email-Addresses of Users you'd like to give access permission."
+                      deletable-chips
+                      multiple
+                      chips
+                    ></v-combobox>
+                  </v-col>
+                </v-row>
+                <v-row justify="center">
+                  <v-btn color="primary" @click="addUsersToImp"> Publish to Users</v-btn>
+                </v-row>
+              </v-container>
 
-              <v-divider class="ma-4" />
+              <v-divider style="" class="ma-4" />
 
               <v-btn color="primary" :to="{ path: '/modules' }">
                 Go back to modules
@@ -283,9 +306,13 @@ export default {
         impScopes: [],
       },
       finalizePage: {
+        addedUsers: [],
         successMessage:
           'Your Implementation was created successfully. In order to modify it you can find it in your Module overview!',
+        addMessage: 'Users successfully added to ',
         createSuccess: false,
+        createdImpId: '',
+        usersAdded: false,
       },
       validBasicDetails: false,
       validAttributes: false,
@@ -370,10 +397,23 @@ export default {
         .post('imp', this.wipImp)
         .then((res) => {
           console.log(res);
+          this.finalizePage.createdImpId = res.data.impId;
           this.finalizePage.createSuccess = true;
         })
         .catch((err) => {
           this.error = err.respone.data.error;
+        });
+    },
+    addUsersToImp() {
+      console.log('Ping');
+      axios
+        .post('imp/user', this.finalizePage.addedUsers, this.finalizePage.createdImpId)
+        .then((res) => {
+          console.log(res);
+          this.finalizePage.usersAdded = true;
+        })
+        .catch((err) => {
+          this.error = err.response.data.error;
         });
     },
   },
