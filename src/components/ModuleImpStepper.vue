@@ -120,7 +120,7 @@
                 <v-row justify="space-between">
                   <v-col cols="12" md="5">
                     <v-text-field
-                      v-if="wipImp.name"
+                      v-if="wipImp.hasOwnProperty('name')"
                       v-model="wipImp.name"
                       label="Name of the Module Implementation"
                     >
@@ -128,7 +128,7 @@
                   </v-col>
                   <v-col cols="12" md="5">
                     <v-text-field
-                      v-if="wipImp.author"
+                      v-if="wipImp.hasOwnProperty('author')"
                       v-model="wipImp.author"
                       label="Name of the Module Developer"
                       disabled
@@ -140,7 +140,7 @@
                 <v-row>
                   <v-col cols="12" md="5">
                     <v-autocomplete
-                      v-if="wipImp.messageType"
+                      v-if="wipImp.hasOwnProperty('messageType')"
                       v-model="wipImp.messageType"
                       label="Pick the corresponding Message Type"
                       no-data-text="No valid template"
@@ -152,7 +152,7 @@
                   </v-col>
                   <v-col cols="12" md="5">
                     <v-autocomplete
-                      v-if="wipImp.protocolType"
+                      v-if="wipImpwipImp.hasOwnProperty('protocolType')"
                       v-model="wipImp.protocolType"
                       label="Pick the corresponding Protocol Type"
                       no-data-text="No valid template"

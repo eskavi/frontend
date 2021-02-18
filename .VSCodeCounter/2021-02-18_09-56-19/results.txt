@@ -1,0 +1,71 @@
+Date : 2021-02-18 09:56:19
+Directory : c:\Users\mmanu\Games\PSE\frontend\src
+Total : 35 files,  2484 codes, 56 comments, 125 blanks, all 2665 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Vue        |         28 |      2,236 |         29 |        108 |      2,373 |
+| JavaScript |          4 |        184 |         27 |         14 |        225 |
+| JSON       |          2 |         63 |          0 |          2 |         65 |
+| XML        |          1 |          1 |          0 |          1 |          2 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                      | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                         |         35 |      2,484 |         56 |        125 |      2,665 |
+| apiData                                                                                                   |          1 |         53 |          0 |          1 |         54 |
+| assets                                                                                                    |          2 |         11 |          0 |          2 |         13 |
+| components                                                                                                |         22 |      2,054 |         23 |         87 |      2,164 |
+| components\configurator                                                                                   |          6 |        313 |          3 |         15 |        331 |
+| components\moduleImpCreate                                                                                |          6 |        560 |          1 |         15 |        576 |
+| plugins                                                                                                   |          1 |         12 |          0 |          3 |         15 |
+| router                                                                                                    |          1 |         53 |         12 |          5 |         70 |
+| store                                                                                                     |          1 |        104 |          6 |          3 |        113 |
+| views                                                                                                     |          5 |        105 |          5 |         15 |        125 |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                  | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\mmanu\Games\PSE\frontend\src\App.vue                                                             | Vue        |         77 |          1 |          6 |         84 |
+| c:\Users\mmanu\Games\PSE\frontend\src\apiData\moduleImpTemplates.json                                     | JSON       |         53 |          0 |          1 |         54 |
+| c:\Users\mmanu\Games\PSE\frontend\src\assets\logo.svg                                                     | XML        |          1 |          0 |          1 |          2 |
+| c:\Users\mmanu\Games\PSE\frontend\src\assets\modImpDataConfig.json                                        | JSON       |         10 |          0 |          1 |         11 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\AccountSettings.vue                                      | Vue        |         37 |          0 |          4 |         41 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\Authentication.vue                                       | Vue        |         67 |          0 |          3 |         70 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\ChangePassword.vue                                       | Vue        |        119 |          2 |          4 |        125 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\ConfiguratorStepper.vue                                  | Vue        |        252 |         15 |          7 |        274 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\DeleteAccount.vue                                        | Vue        |         64 |          1 |          4 |         69 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\Logout.vue                                               | Vue        |         16 |          1 |          3 |         20 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\ModuleImpStepper.vue                                     | Vue        |        335 |          0 |         21 |        356 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\Modules.vue                                              | Vue        |        116 |          0 |          5 |        121 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\Registration.vue                                         | Vue        |         74 |          0 |          3 |         77 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\ResetPassword.vue                                        | Vue        |        101 |          0 |          3 |        104 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\configurator\FillInConfigurationAggregate.vue            | Vue        |         96 |          0 |          3 |         99 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\configurator\FillInFileConfiguration.vue                 | Vue        |         28 |          0 |          2 |         30 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\configurator\FillInImplementationSelectConfiguration.vue | Vue        |         68 |          3 |          4 |         75 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\configurator\FillInSelectConfiguration.vue               | Vue        |         53 |          0 |          2 |         55 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\configurator\FillInSwitchConfiguration.vue               | Vue        |         43 |          0 |          2 |         45 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\configurator\FillInTextConfiguration.vue                 | Vue        |         25 |          0 |          2 |         27 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\moduleImpCreate\ConfigurationAggregate.vue               | Vue        |        207 |          1 |          3 |        211 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\moduleImpCreate\FileConfiguration.vue                    | Vue        |         54 |          0 |          2 |         56 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\moduleImpCreate\ImpSelectConfiguration.vue               | Vue        |        107 |          0 |          4 |        111 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\moduleImpCreate\SelectConfiguration.vue                  | Vue        |         65 |          0 |          2 |         67 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\moduleImpCreate\SwitchConfiguration.vue                  | Vue        |         55 |          0 |          2 |         57 |
+| c:\Users\mmanu\Games\PSE\frontend\src\components\moduleImpCreate\TextConfiguration.vue                    | Vue        |         72 |          0 |          2 |         74 |
+| c:\Users\mmanu\Games\PSE\frontend\src\main.js                                                             | JavaScript |         15 |          9 |          3 |         27 |
+| c:\Users\mmanu\Games\PSE\frontend\src\plugins\vuetify.js                                                  | JavaScript |         12 |          0 |          3 |         15 |
+| c:\Users\mmanu\Games\PSE\frontend\src\router\index.js                                                     | JavaScript |         53 |         12 |          5 |         70 |
+| c:\Users\mmanu\Games\PSE\frontend\src\store\index.js                                                      | JavaScript |        104 |          6 |          3 |        113 |
+| c:\Users\mmanu\Games\PSE\frontend\src\views\Account.vue                                                   | Vue        |         14 |          1 |          3 |         18 |
+| c:\Users\mmanu\Games\PSE\frontend\src\views\Configurator.vue                                              | Vue        |         18 |          1 |          3 |         22 |
+| c:\Users\mmanu\Games\PSE\frontend\src\views\CreateModuleImp.vue                                           | Vue        |         16 |          1 |          3 |         20 |
+| c:\Users\mmanu\Games\PSE\frontend\src\views\Home.vue                                                      | Vue        |         31 |          1 |          3 |         35 |
+| c:\Users\mmanu\Games\PSE\frontend\src\views\ModulesOverview.vue                                           | Vue        |         26 |          1 |          3 |         30 |
+| Total                                                                                                     |            |      2,484 |         56 |        125 |      2,665 |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
