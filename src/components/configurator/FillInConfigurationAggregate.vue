@@ -64,15 +64,6 @@
         v-bind:key="child.index"
       />
     </v-row>
-    <v-row justify="center">
-      <v-btn
-        v-if="this.rootAggregate.allowMultiple"
-        class="ma-2"
-        @click="addToChildren(rootAggregate)"
-      >
-        <v-icon left>mdi-plus</v-icon>Add {{ this.rootAggregate.name }}
-      </v-btn>
-    </v-row>
   </v-card>
 </template>
 

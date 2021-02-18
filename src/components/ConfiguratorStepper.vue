@@ -158,6 +158,7 @@ export default {
                     id: value.id,
                     configuration: configuration.data.instanceConfiguration,
                   });
+                  console.log(configuration);
                   if (
                     outerIndex === this.modules.length - 1 &&
                     innerIndex === selector.value.length - 1
@@ -183,6 +184,11 @@ export default {
     },
     submitConfigurationPage(instance) {
       // make axios call to update config of module
+      console.log({
+        sessionId: this.sessionId,
+        impId: instance.id,
+        configuration: instance.configuration,
+      });
       axios
         .put('/aas/imp/configuration', {
           sessionId: this.sessionId,
@@ -244,7 +250,7 @@ export default {
     closeSession() {
       axios
         .delete('aas', {
-          data: {
+          params: {
             sessionId: this.sessionId,
           },
         })
@@ -256,13 +262,13 @@ export default {
       // start loading animation
       this.loadFile = true;
       axios
-        .get('aas/file', {
+        .get('aas/generate', {
           params: {
             sessionId: this.sessionId,
           },
         })
         .then((response) => {
-          const file = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
+          const file = new Blob([response.data]);
           this.fileURL = URL.createObjectURL(file);
           this.closeSession();
           this.loadFile = false;

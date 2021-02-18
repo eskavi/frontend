@@ -338,7 +338,6 @@ export default {
         });
     },
     getTemplates() {
-      console.log(this.basicPage.impType);
       // TODO catch error
       axios.get(`imp?impType=${this.basicPage.impType}`).then((imp) => {
         console.log(imp);

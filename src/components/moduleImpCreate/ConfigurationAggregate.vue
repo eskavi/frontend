@@ -27,13 +27,13 @@
       <v-col cols="12" md="6">
         <v-text-field
           label="Start of key expression"
-          v-model="rootAggregate.keyExpression.expresssionStart"
+          v-model="rootAggregate.keyExpression.expressionStart"
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
         <v-text-field
           label="End of key expression"
-          v-model="rootAggregate.keyExpression.expresssionEnd"
+          v-model="rootAggregate.keyExpression.expressionEnd"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -136,75 +136,7 @@ export default {
     return {
       addTemplate: null,
       // TODO replace with api call, once backend is live
-      templates: [
-        /*
-        {
-          jsonTypeInfo: 'CONFIGURATION_AGGREGATE',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          enforceCompatibility: false,
-          name: '',
-          allowMultiple: false,
-          children: [],
-        },
-        {
-          jsonTypeInfo: 'TEXT_FIELD',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          dataType: 'TEXT',
-          name: '',
-          allowMultiple: false,
-        },
-        {
-          jsonTypeInfo: 'SELECT',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          content: [],
-          name: '',
-          allowMultiple: false,
-        },
-        {
-          jsonTypeInfo: 'FILE_FIELD',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          name: '',
-          allowMultiple: false,
-        },
-        {
-          jsonTypeInfo: 'SWITCH',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          value: '',
-          content: {
-            falseValue: '',
-            trueValue: '',
-          },
-          name: '',
-          allowMultiple: false,
-        },
-        {
-          jsonTypeInfo: 'IMPLEMENTATION_SELECT',
-          keyExpression: {
-            expressionStart: '',
-            expressionEnd: '',
-          },
-          generics: [],
-          type: 'SERIALIZER',
-          name: '',
-          allowMultiple: false,
-        },
-      */
-      ],
+      templates: [],
     };
   },
   methods: {
@@ -225,6 +157,7 @@ export default {
   computed: {},
   mounted() {
     axios.get('imp/configTemplates').then((res) => {
+      console.log(res.data.templates);
       this.templates = res.data.templates;
     });
   },

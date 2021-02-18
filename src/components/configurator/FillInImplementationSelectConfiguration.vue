@@ -27,7 +27,10 @@
       </v-row>
       <v-row justify="center">
         <FillInConfigurationAggregate
-          v-if="implementationSelectField.instance.instanceConfiguration"
+          v-if="
+            implementationSelectField.instance &&
+              implementationSelectField.instance.instanceConfiguration
+          "
           v-bind:rootAggregate="implementationSelectField.instance.instanceConfiguration"
         />
       </v-row>
@@ -37,7 +40,6 @@
 
 <script>
 import axios from 'axios';
-// import FillInConfigurationAggregate from './FillInConfigurationAggregate.vue';
 
 export default {
   name: 'FillInImplementationSelectConfiguration',
@@ -56,11 +58,15 @@ export default {
   },
   methods: {
     onBuildUp() {
+      this.implementationSelectField.instance = {
+        moduleImp: '',
+        instanceConfiguration: null,
+      };
       // load available modules
       axios
         .get('/imp', {
           params: {
-            type: this.implementationSelectField.type,
+            impType: this.implementationSelectField.type,
           },
         })
         .then((res) => {
@@ -69,9 +75,8 @@ export default {
         });
     },
     loadConfiguration() {
-      console.log(this.implementationSelectField);
       // set id of selected module
-      this.implementationSelectField.instance.moduleImp = this.selected.implementationId;
+      this.implementationSelectField.instance.moduleImp = this.selected;
 
       // set configuration of selected module
       this.implementationSelectField.instance.instanceConfiguration = this.selected.configurationRoot;

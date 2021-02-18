@@ -20,13 +20,13 @@
         <v-col cols="12" md="6">
           <v-text-field
             label="Start of key expression"
-            v-model="switchField.keyExpression.expresssionStart"
+            v-model="switchField.keyExpression.expressionStart"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
             label="End of key expression"
-            v-model="switchField.keyExpression.expresssionEnd"
+            v-model="switchField.keyExpression.expressionEnd"
           ></v-text-field>
         </v-col>
       </v-row>

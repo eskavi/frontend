@@ -33,21 +33,22 @@
         <v-col cols="12" md="6">
           <v-text-field
             label="Start of key expression"
-            v-model="impSelectField.keyExpression.expresssionStart"
+            v-model="impSelectField.keyExpression.expressionStart"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
             label="End of key expression"
-            v-model="impSelectField.keyExpression.expresssionEnd"
+            v-model="impSelectField.keyExpression.expressionEnd"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="8">
           <v-autocomplete
-            v-model="impSelectField.content"
+            v-model="impSelectField.generics"
             label="Define all necessary generic types."
             :item-text="(item) => item.name"
             :items="generics"
+            return-object
             deletable-chips
             multiple
             chips
@@ -94,7 +95,7 @@ export default {
     setUpGenerics() {
       const genericImps = [];
       inputConfig.genericTypes.forEach((generic) => {
-        axios.get(`imp?type=${generic}`).then((res) => {
+        axios.get(`imp?impType=${generic}`).then((res) => {
           res.data.implementations.forEach((element) => {
             genericImps.push(element);
           });
