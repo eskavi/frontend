@@ -343,28 +343,15 @@ export default {
         console.log(imp);
         this.basicPage.templates = imp.data.implementations;
       });
+      axios.get('imp/default', this.basicPage.impType).then((res) => {
+        this.basicPage.templates.push(res.data.template);
+        this.wipImp = res.data.template;
+      });
     },
     submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
-        let success = true;
-        // eslint-disable-next-line no-prototype-builtins
-        if (!this.wipImp.hasOwnProperty('implementationId')) {
-          axios
-            .get('imp/default', this.basicPage.impType)
-            .then((res) => {
-              console.log(res);
-              this.wipImp = res.data.template;
-            })
-            .catch(() => {
-              this.error = "Error! Can't fetch template from server";
-              success = false;
-            });
-        }
-        if (success) {
-          console.log(this.wipImp);
-          this.stepper = 2;
-          this.buildUpAttributesPage();
-        }
+        this.stepper = 2;
+        this.buildUpAttributesPage();
       }
     },
     submitAttributes() {
