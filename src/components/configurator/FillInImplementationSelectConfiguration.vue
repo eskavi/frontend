@@ -1,6 +1,16 @@
 <template>
   <v-row justify="center">
     <v-card width="90%" class="mx-2 pa-3">
+      <v-avatar size="28" rounded v-if="this.implementationSelectField.allowMultiple">
+        <v-btn class="error" @click="$emit('deleteThis', implementationSelectField)"
+          ><v-icon> mdi-close</v-icon></v-btn
+        >
+      </v-avatar>
+      <v-avatar size="28" rounded v-if="this.implementationSelectField.allowMultiple" class="ml-1">
+        <v-btn class="success" @click="$emit('addThis', implementationSelectField)"
+          ><v-icon>mdi-plus</v-icon></v-btn
+        >
+      </v-avatar>
       <v-row justify="center">
         <v-col cols="12" md="6">
           <v-autocomplete
@@ -10,7 +20,7 @@
             no-data-text="Not a valid module"
             :label="implementationSelectField.name"
             return-object
-            :item-text="(item) => item.name"
+            :item-text="(item) => `${item.name}#${item.implementationId}`"
             @change="loadConfiguration"
           ></v-autocomplete>
         </v-col>
@@ -27,7 +37,7 @@
 
 <script>
 import axios from 'axios';
-import FillInConfigurationAggregate from './FillInConfigurationAggregate.vue';
+// import FillInConfigurationAggregate from './FillInConfigurationAggregate.vue';
 
 export default {
   name: 'FillInImplementationSelectConfiguration',
@@ -35,7 +45,7 @@ export default {
     implementationSelectField: Object,
   },
   components: {
-    FillInConfigurationAggregate,
+    FillInConfigurationAggregate: () => import('./FillInConfigurationAggregate.vue'),
   },
   data() {
     return {
@@ -46,7 +56,6 @@ export default {
   },
   methods: {
     onBuildUp() {
-      console.log(this.implementationSelectField);
       // load available modules
       axios
         .get('/imp', {

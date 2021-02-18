@@ -1,24 +1,20 @@
 <template>
   <v-row justify="center">
     <v-card width="90%" class="mx-2 pa-3">
+      <v-avatar size="28" rounded v-if="this.switchField.allowMultiple">
+        <v-btn class="error" @click="$emit('deleteThis', switchField)"
+          ><v-icon> mdi-close</v-icon></v-btn
+        >
+      </v-avatar>
+      <v-avatar size="28" rounded v-if="this.switchField.allowMultiple" class="ml-1">
+        <v-btn class="success" @click="$emit('addThis', switchField)"
+          ><v-icon>mdi-plus</v-icon></v-btn
+        >
+      </v-avatar>
       <v-row justify="center">
-        <v-card-title class="ma-2">Switch</v-card-title>
-      </v-row>
-      <v-row justify="center">
         <v-col cols="12" md="6">
-          <v-text-field label="Name of Switch" v-model="switchField.name"></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-text-field
-            label="Start of key expression"
-            v-model="switchField.keyExpression.expresssionStart"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-text-field
-            label="End of key expression"
-            v-model="switchField.keyExpression.expresssionEnd"
-          ></v-text-field>
+          <!-- TODO fix switch strucuture (map) -->
+          <v-switch :label="switchField.name" v-model="switchField.value"></v-switch>
         </v-col>
       </v-row>
     </v-card>
