@@ -22,9 +22,9 @@
           </v-row>
           <v-row justify="space-between" class="mt-10">
             <v-col cols="12" md="5" v-for="module in modules" :key="module.type">
-              <!-- :rules="[impRules.max(module.maxUse)]" -->
               <v-autocomplete
                 no-data-text="Not a valid module"
+                :rules="[impRules.max(module.maxUse)]"
                 :label="module.type"
                 deletable-chips
                 :items="module.items"

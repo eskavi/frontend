@@ -316,7 +316,7 @@ export default {
       },
       validBasicDetails: false,
       validAttributes: false,
-      wipImp: {},
+      wipImp: Object,
       configurationRoot: null,
       error: '',
       stepper: 1,
@@ -347,10 +347,12 @@ export default {
     submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
         let success = true;
-        if (this.wipImp === {} || this.wipImp === null) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (!this.wipImp.hasOwnProperty('implementationId')) {
           axios
             .get('imp/default', this.basicPage.impType)
             .then((res) => {
+              console.log(res);
               this.wipImp = res.data.template;
             })
             .catch(() => {
@@ -359,6 +361,7 @@ export default {
             });
         }
         if (success) {
+          console.log(this.wipImp);
           this.stepper = 2;
           this.buildUpAttributesPage();
         }
