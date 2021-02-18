@@ -129,6 +129,7 @@
                       v-if="wipImp.hasOwnProperty('name')"
                       v-model="wipImp.name"
                       label="Name of the Module Implementation"
+                      disabled
                     >
                     </v-text-field>
                   </v-col>
@@ -365,6 +366,7 @@ export default {
       this.getMessageTypes();
       this.getProtocolTypes();
       this.getImpScopes();
+      this.wipImp.name = this.basicPage.name;
     },
     getMessageTypes() {
       axios.get(`imp?impType=MESSAGE_TYPE`).then((res) => {
