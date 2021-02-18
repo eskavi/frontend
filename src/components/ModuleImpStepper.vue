@@ -319,8 +319,22 @@ export default {
     },
     submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
-        this.stepper = 2;
-        this.buildUpAttributesPage();
+        let success = true;
+        if (this.wipImp === {} || this.wipImp === null) {
+          axios
+            .get('imp/default', this.basicPage.impType)
+            .then((res) => {
+              this.wipImp = res.data.template;
+            })
+            .catch(() => {
+              this.error = "Error! Can't fetch template from server";
+              success = false;
+            });
+        }
+        if (success) {
+          this.stepper = 2;
+          this.buildUpAttributesPage();
+        }
       }
     },
     submitAttributes() {
