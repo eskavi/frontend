@@ -6,7 +6,7 @@
     <v-row justify="center">
       <v-col cols="12" md="8">
         <v-text-field
-          v-model="this.rootAggregate.name"
+          v-model="rootAggregate.name"
           solo
           class="mt-2"
           label="Aggregate Name"
@@ -19,7 +19,7 @@
     </v-row>
     <v-row justify="center" v-if="!this.isInit">
       <v-switch
-        v-model="this.rootAggregate.allowMultiple"
+        v-model="rootAggregate.allowMultiple"
         label="Allow duplication of Aggregate?"
       ></v-switch>
     </v-row>
@@ -206,7 +206,8 @@ export default {
   },
   methods: {
     addToChildren() {
-      this.rootAggregate.children.push(this.addTemplate);
+      const clone = JSON.parse(JSON.stringify(this.addTemplate));
+      this.rootAggregate.children.push(clone);
       this.addTemplate = null;
     },
     deleteThis() {

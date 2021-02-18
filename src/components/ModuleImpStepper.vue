@@ -343,7 +343,8 @@ export default {
         console.log(imp);
         this.basicPage.templates = imp.data.implementations;
       });
-      axios.get('imp/default', this.basicPage.impType).then((res) => {
+      console.log('Went through');
+      axios.get(`imp/default?impType=${this.basicPage.impType}`).then((res) => {
         this.basicPage.templates.push(res.data.template);
         this.wipImp = res.data.template;
       });
@@ -366,12 +367,14 @@ export default {
       this.getImpScopes();
     },
     getMessageTypes() {
-      axios.get(`imp?type=MESSAGE_TYPE`).then((res) => {
+      axios.get(`imp?impType=MESSAGE_TYPE`).then((res) => {
+        console.log(res);
         this.attributesPage.messageTypes = res.data.implementations;
       });
     },
     getProtocolTypes() {
-      axios.get(`imp?type=PROTOCOL_TYPE`).then((imp) => {
+      axios.get(`imp?impType=PROTOCOL_TYPE`).then((imp) => {
+        console.log(imp);
         this.attributesPage.protocolTypes = imp.data.implementations;
       });
     },
