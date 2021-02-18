@@ -9,7 +9,7 @@
       </v-row>
       <v-row justify="center">
         <v-switch
-          v-model="this.fileField.allowMultiple"
+          v-model="fileField.allowMultiple"
           label="Allow duplication of File Field?"
         ></v-switch>
       </v-row>

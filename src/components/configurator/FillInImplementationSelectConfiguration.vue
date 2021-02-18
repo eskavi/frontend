@@ -69,6 +69,7 @@ export default {
         });
     },
     loadConfiguration() {
+      console.log(this.implementationSelectField);
       // set id of selected module
       this.implementationSelectField.instance.moduleImp = this.selected.implementationId;
 

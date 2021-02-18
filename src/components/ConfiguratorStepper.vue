@@ -156,7 +156,7 @@ export default {
                   this.configurationPages.push({
                     name: `Configure ${value.name}.`,
                     id: value.id,
-                    configuration: configuration.data,
+                    configuration: configuration.data.instanceConfiguration,
                   });
                   if (
                     outerIndex === this.modules.length - 1 &&

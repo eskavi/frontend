@@ -9,7 +9,7 @@
       </v-row>
       <v-row justify="center">
         <v-switch
-          v-model="this.switchField.allowMultiple"
+          v-model="switchField.allowMultiple"
           label="Allow duplication of Switch?"
         ></v-switch>
       </v-row>

@@ -9,7 +9,7 @@
       </v-row>
       <v-row justify="center">
         <v-switch
-          v-model="this.selectField.allowMultiple"
+          v-model="selectField.allowMultiple"
           label="Allow duplication of Select Field?"
         ></v-switch>
       </v-row>

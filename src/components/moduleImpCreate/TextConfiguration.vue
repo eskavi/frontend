@@ -9,7 +9,7 @@
       </v-row>
       <v-row justify="center">
         <v-switch
-          v-model="this.textField.allowMultiple"
+          v-model="textField.allowMultiple"
           label="Allow duplication of Text Field?"
         ></v-switch>
       </v-row>
