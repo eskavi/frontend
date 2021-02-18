@@ -116,10 +116,16 @@
             <v-stepper-content step="2">
               <!-- TODO textField disappears when empty-->
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
-              <v-form ref="attributes" @submit.prevent="submitAttributes" v-model="validAttributes">
+              <v-form
+                ref="attributes"
+                v-if="this.wipImp"
+                @submit.prevent="submitAttributes"
+                v-model="validAttributes"
+              >
                 <v-row justify="space-between">
                   <v-col cols="12" md="5">
                     <v-text-field
+                      required
                       v-if="wipImp.hasOwnProperty('name')"
                       v-model="wipImp.name"
                       label="Name of the Module Implementation"
@@ -152,7 +158,7 @@
                   </v-col>
                   <v-col cols="12" md="5">
                     <v-autocomplete
-                      v-if="wipImpwipImp.hasOwnProperty('protocolType')"
+                      v-if="wipImp.hasOwnProperty('protocolType')"
                       v-model="wipImp.protocolType"
                       label="Pick the corresponding Protocol Type"
                       no-data-text="No valid template"
@@ -219,17 +225,24 @@
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
 
               <v-container class="ma-4">
-                <v-alert v-if="this.finalizePage.createSuccess" type="success">
-                  {{ finalizePage.successMessage }}</v-alert
-                >
-
+                <v-row>
+                  <v-alert v-if="this.finalizePage.createSuccess" type="success">
+                    {{ finalizePage.successMessage }}</v-alert
+                  >
+                </v-row>
                 <v-row justify="center" v-if="!this.finalizePage.createSuccess">
                   <v-card-title>Finalize Module Creation</v-card-title>
-                  <v-btn color="primary" @click="createModuleImp"
-                    >Create Implementation</v-btn
-                  ></v-row
-                >
+                </v-row>
+                <v-row justify="center" v-if="!this.finalizePage.createSuccess">
+                  <v-btn color="primary" @click="createModuleImp">Create Implementation</v-btn>
+                </v-row>
               </v-container>
+
+              <v-card>
+                <v-card-title> Add Users to the new Implementation: </v-card-title>
+              </v-card>
+
+              <v-divider class="ma-4" />
 
               <v-btn color="primary" :to="{ path: '/modules' }">
                 Go back to modules
