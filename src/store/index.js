@@ -43,11 +43,13 @@ export default new Vuex.Store({
     },
     async registerNewUser(commit, newUser) {
       return new Promise((resolve, reject) => {
+        console.log(newUser);
         axios
           .post('user/register', newUser)
           .then((res) => {
             this.commit('setToken', res.data.jwt);
-            commit('setEmailAddress', newUser.email);
+            this.commit('setEmailAddress', newUser.email);
+            console.log(res);
             resolve('Registered and logged in!');
           })
           .catch((err) => reject(err));
@@ -55,14 +57,19 @@ export default new Vuex.Store({
     },
     loginUser({ commit }, user) {
       return new Promise((resolve, reject) => {
+        console.log(user);
         axios
           .post('user/login', user)
           .then((res) => {
             commit('setToken', res.data.jwt);
             commit('setEmailAddress', user.email);
             resolve(res);
+            console.log(res);
           })
-          .catch((err) => reject(err));
+          .catch((err) => {
+            console.log(err);
+            reject(err);
+          });
       });
     },
     logoutUser({ commit }) {

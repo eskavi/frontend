@@ -114,6 +114,7 @@
             </v-stepper-content>
 
             <v-stepper-content step="2">
+              <!-- TODO textField disappears when empty-->
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
               <v-form ref="attributes" @submit.prevent="submitAttributes" v-model="validAttributes">
                 <v-row justify="space-between">
@@ -296,7 +297,10 @@ export default {
         });
     },
     getTemplates() {
-      axios.get(`imp?type=${this.impType}`).then((imp) => {
+      console.log(this.basicPage.impType);
+      // TODO catch error
+      axios.get(`imp?impType=${this.basicPage.impType}`).then((imp) => {
+        console.log(imp);
         this.basicPage.templates = imp.data.implementations;
       });
     },

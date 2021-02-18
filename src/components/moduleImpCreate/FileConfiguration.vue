@@ -20,13 +20,13 @@
         <v-col cols="12" md="6">
           <v-text-field
             label="Start of key expression"
-            v-model="textField.keyExpression.expresssionStart"
+            v-model="fileField.keyExpression.expresssionStart"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
             label="End of key expression"
-            v-model="textField.keyExpression.expresssionEnd"
+            v-model="fileField.keyExpression.expresssionEnd"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -38,7 +38,6 @@
 export default {
   props: {
     fileField: Object,
-    index: Number,
   },
   data() {
     return {};
