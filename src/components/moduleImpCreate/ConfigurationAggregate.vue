@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import TextConfiguration from './TextConfiguration.vue';
 import FileConfiguration from './FileConfiguration.vue';
 import SelectConfiguration from './SelectConfiguration.vue';
@@ -136,6 +137,7 @@ export default {
       addTemplate: null,
       // TODO replace with api call, once backend is live
       templates: [
+        /*
         {
           jsonTypeInfo: 'CONFIGURATION_AGGREGATE',
           keyExpression: {
@@ -201,6 +203,7 @@ export default {
           name: '',
           allowMultiple: false,
         },
+      */
       ],
     };
   },
@@ -220,6 +223,10 @@ export default {
     },
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    axios.get('imp/configTemplates').then((res) => {
+      this.templates = res.data.templates;
+    });
+  },
 };
 </script>
