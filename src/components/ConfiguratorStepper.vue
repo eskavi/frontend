@@ -59,7 +59,8 @@
           v-bind:rootAggregate="configurationPage.configuration"
           v-bind:key="index"
         />
-        <v-btn color="primary" @click="page = index + 3">
+        <v-alert type="error" v-if="error">{{ error }}</v-alert>
+        <v-btn color="primary" @click="submitConfigurationPage(configurationPage)">
           Continue
         </v-btn>
         <v-btn text>
@@ -73,17 +74,19 @@
       Generation
     </v-stepper-step>
     <v-stepper-content :step="configurationPages.length + 2">
+      <v-alert type="error" v-if="error">{{ error }}</v-alert>
       <v-row justify="center" class="mt-5">
-        <v-btn color="primary" :loading="loadFile" @click="downloadFile"
+        <v-btn
+          color="primary"
+          :loading="loadFile"
+          :disabled="this.fileURL == ''"
+          @click="downloadFile"
           ><v-icon left>mdi-download</v-icon> Download File</v-btn
         >
       </v-row>
-      <v-btn color="primary" @click="page = 1">
-        Continue
-      </v-btn>
-      <v-btn text>
-        Cancel
-      </v-btn>
+      <v-row justify="center" class="ma-10">
+        <v-btn text @click="reloadPage">Configure another AAS</v-btn>
+      </v-row>
     </v-stepper-content>
   </v-stepper>
 </template>
@@ -125,6 +128,7 @@ export default {
         }, */
       ],
       loadFile: false,
+      fileURL: '',
     };
   },
   methods: {
@@ -177,6 +181,22 @@ export default {
           });
       }
     },
+    submitConfigurationPage(instance) {
+      // make axios call to update config of module
+      axios
+        .put('/aas/imp/configuration', {
+          sessionId: this.sessionId,
+          impId: instance.id,
+          configuration: instance.configuration,
+        })
+        .then(() => {
+          this.page += 1;
+          this.error = '';
+        })
+        .catch((err) => {
+          this.error = err.response.data.error || err;
+        });
+    },
     loadAvailableImps() {
       // first get all possible types to check for topLevel module imps
       axios
@@ -194,7 +214,6 @@ export default {
           });
           // now load modules
           axios.get('imp').then((response) => {
-            console.log(response);
             response.data.implementations
               .filter((imp) => topLevel.map((type) => type.name).indexOf(imp.jsonTypeInfo) >= 0)
               .forEach((imp) => {
@@ -217,7 +236,6 @@ export default {
         .post('aas')
         .then((response) => {
           this.sessionId = response.data.sessionId;
-          this.$store.dispatch('sendActionResponse', `Session ${response.data.sessionId} started.`);
         })
         .catch(() => {
           this.$store.dispatch('sendActionResponse', "Could'nt start session. Try again.");
@@ -226,16 +244,15 @@ export default {
     closeSession() {
       axios
         .delete('aas', {
-          sessionId: this.sessionId,
-        })
-        .then((response) => {
-          this.$store.dispatch('sendActionResponse', response.data.message);
+          data: {
+            sessionId: this.sessionId,
+          },
         })
         .catch(() => {
           this.$store.dispatch('sendActionResponse', "Could'nt close session.");
         });
     },
-    downloadFile() {
+    generateFile() {
       // start loading animation
       this.loadFile = true;
       axios
@@ -246,20 +263,30 @@ export default {
         })
         .then((response) => {
           const file = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
-          const fileURL = URL.createObjectURL(file);
-          // create the link
-          const linkElement = document.createElement('a');
-          linkElement.setAttribute('href', fileURL);
-          linkElement.setAttribute('download', 'aas.java');
-          document.body.appendChild(linkElement);
-          linkElement.click();
+          this.fileURL = URL.createObjectURL(file);
+          this.closeSession();
           this.loadFile = false;
         });
     },
+    downloadFile() {
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', this.fileURL);
+      linkElement.setAttribute('download', 'aas.java');
+      document.body.appendChild(linkElement);
+      linkElement.click();
+      document.body.removeChild(linkElement);
+    },
+    reloadPage() {
+      window.location.reload();
+    },
   },
   watch: {
-    modules: {
-      handler() {},
+    page: {
+      handler(p) {
+        if (p === this.configurationPages.length + 2) {
+          this.generateFile();
+        }
+      },
     },
   },
   mounted() {
