@@ -22,6 +22,7 @@
           </v-row>
           <v-row justify="space-between" class="mt-10">
             <v-col cols="12" md="5" v-for="module in modules" :key="module.type">
+              <!-- :rules="[impRules.max(module.maxUse)]" -->
               <v-autocomplete
                 no-data-text="Not a valid module"
                 :label="module.type"
@@ -32,7 +33,7 @@
                 multiple
                 chips
                 return-object
-                :rules="impRules"
+                :counter="module.maxUse"
               ></v-autocomplete>
             </v-col>
           </v-row>
@@ -72,13 +73,10 @@
       Generation
     </v-stepper-step>
     <v-stepper-content :step="configurationPages.length + 2">
-      <v-row justify="center">
-        <v-progress-circular :size="100" :width="15" :value="progress" color="primary" class="mt-5">
-          {{ progress }}
-        </v-progress-circular>
-      </v-row>
-      <v-row justify="center">
-        <span class="mt-2">Generating file...</span>
+      <v-row justify="center" class="mt-5">
+        <v-btn color="primary" :loading="loadFile" @click="downloadFile"
+          ><v-icon left>mdi-download</v-icon> Download File</v-btn
+        >
       </v-row>
       <v-btn color="primary" @click="page = 1">
         Continue
@@ -106,9 +104,16 @@ export default {
       page: 1,
       pathRules: [(v) => !!v || 'Path is required'],
       path: '',
-      impRules: [
-        /* (v) => v.length > 0 || 'Choose a module' */
-      ],
+      impRules: {
+        max(maxUse) {
+          if (maxUse === 'infinite') {
+            return (v) => v.length > 0 || 'Choose a module';
+          }
+          return (v) =>
+            (v.length > 0 && v.length <= maxUse) ||
+            `Choose minimum 1 and  maximum ${maxUse} modules`;
+        },
+      },
       modules: [],
       configurationPages: [
         /* {
@@ -119,7 +124,7 @@ export default {
           name: 'Configure Handler',
         }, */
       ],
-      progress: 25,
+      loadFile: false,
     };
   },
   methods: {
@@ -177,21 +182,21 @@ export default {
       axios
         .get('imp/types')
         .then((types) => {
-          const topLevel = types.data.types
-            .filter((type) => type.topLevel)
-            .map((type) => type.name);
+          const topLevel = types.data.types.filter((type) => type.topLevel);
           // create dropdown for each top level module imp type
-          topLevel.forEach((name) => {
+          topLevel.forEach((type) => {
             this.modules.push({
-              type: name,
+              type: type.name,
+              maxUse: type.maxUse !== -1 ? type.maxUse : 'infinite',
               value: [],
               items: [],
             });
           });
           // now load modules
           axios.get('imp').then((response) => {
+            console.log(response);
             response.data.implementations
-              .filter((imp) => topLevel.indexOf(imp.jsonTypeInfo) >= 0)
+              .filter((imp) => topLevel.map((type) => type.name).indexOf(imp.jsonTypeInfo) >= 0)
               .forEach((imp) => {
                 const pushData = {
                   name: imp.name,
@@ -228,6 +233,27 @@ export default {
         })
         .catch(() => {
           this.$store.dispatch('sendActionResponse', "Could'nt close session.");
+        });
+    },
+    downloadFile() {
+      // start loading animation
+      this.loadFile = true;
+      axios
+        .get('aas/file', {
+          params: {
+            sessionId: this.sessionId,
+          },
+        })
+        .then((response) => {
+          const file = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
+          const fileURL = URL.createObjectURL(file);
+          // create the link
+          const linkElement = document.createElement('a');
+          linkElement.setAttribute('href', fileURL);
+          linkElement.setAttribute('download', 'aas.java');
+          document.body.appendChild(linkElement);
+          linkElement.click();
+          this.loadFile = false;
         });
     },
   },
