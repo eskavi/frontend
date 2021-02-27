@@ -15,6 +15,7 @@
           <v-chip>Administrator</v-chip>
         </div>
         <div class="mx-auto text-center ma-10">
+          <v-btn :to="{ path: '/admin_dashboard' }">Admin Dashboard</v-btn><br /><br />
           <ChangePassword /><br />
           <Logout /><br />
           <DeleteAccount class="ma-2" />
