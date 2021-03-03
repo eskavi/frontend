@@ -26,6 +26,7 @@
             </v-card-title>
 
             <v-card-text>
+              <v-alert type="error" v-if="error">{{ error }}</v-alert>
               <v-container>
                 <v-row>
                   <v-col cols="12">
@@ -63,6 +64,8 @@
             <v-card-title class="headline">
               Delete this account?
             </v-card-title>
+            <v-alert type="error" v-if="error">{{ error }}</v-alert>
+
             <v-card-text
               >By deleting this user account all personal data will be gone forever, including any
               module implementations the user might have created and/or shared in the
@@ -79,10 +82,15 @@
         </v-dialog>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)" :disabled="disableEdit">
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+          :disabled="disableEdit || $store.state.user.email == item.email"
+        >
           mdi-pencil
         </v-icon>
-        <v-icon small @click="deleteItem(item)">
+        <v-icon small @click="deleteItem(item)" :disabled="$store.state.user.email == item.email">
           mdi-delete
         </v-icon>
       </template>
@@ -132,10 +140,17 @@ export default {
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
-      this.users.splice(this.editedIndex, 1);
-      // TODO make axios delete call
-      this.closeDelete();
-      this.$store.dispatch('sendActionResponse', 'User deleted');
+      axios
+        .delete(`user/${this.editedItem.email}`)
+        .then(() => {
+          this.error = '';
+          this.users.splice(this.editedIndex, 1);
+          this.closeDelete();
+          this.$store.dispatch('sendActionResponse', 'User deleted');
+        })
+        .catch((err) => {
+          this.error = err.response.data.error || err;
+        });
     },
     closeDelete() {
       this.dialogDelete = false;
@@ -150,12 +165,23 @@ export default {
       this.dialogEdit = true;
     },
     saveEdit() {
-      this.users[this.editedIndex].email = this.editedItem.email;
-      this.users[this.editedIndex].userLevel = this.editedItem.userLevel;
-
-      // TODO make axios update call
-      this.closeEdit();
-      this.$store.dispatch('sendActionResponse', 'User updated');
+      axios
+        .put('/user/level', {
+          email: this.editedItem.email,
+          userLevel: this.editedItem.userLevel,
+        })
+        .then(() => {
+          // update table data
+          this.users[this.editedIndex].email = this.editedItem.email;
+          this.users[this.editedIndex].userLevel = this.editedItem.userLevel;
+          // close dialog
+          this.closeEdit();
+          this.$store.dispatch('sendActionResponse', 'User updated');
+          this.error = '';
+        })
+        .catch((err) => {
+          this.error = err.response.data.error || err;
+        });
     },
     closeEdit() {
       this.dialogEdit = false;
@@ -166,15 +192,24 @@ export default {
     },
 
     initialize() {
-      // TODO make axios call to fetch user data here
-      setTimeout(() => {
-        this.users = [
-          { email: 'nivadam@eskavi.de', userLevel: 'BASIC_USER' },
-          { email: 'manuel@eskavi.com', userLevel: 'ADMINISTRATOR' },
-        ];
-        this.loading = false;
-      }, 2000);
+      // fetch list of users
+      axios
+        .get('user/all')
+        .then((response) => {
+          this.users = response.data.map((value) => {
+            return {
+              email: value.emailAddress,
+              userLevel: value.userLevel,
+            };
+          });
+          this.loading = false;
+        })
+        .catch(() => {
+          this.$store.dispatch('sendActionResponse', "Could'nt fetch users. Reload and try again.");
+          this.loading = false;
+        });
 
+      // fetch list of possible access levels
       axios
         .get('/user/levels')
         .then((response) => {
