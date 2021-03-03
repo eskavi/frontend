@@ -157,7 +157,6 @@ export default {
   computed: {},
   mounted() {
     axios.get('imp/configTemplates').then((res) => {
-      console.log(res.data.templates);
       this.templates = res.data.templates;
     });
   },

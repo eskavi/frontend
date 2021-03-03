@@ -51,7 +51,7 @@ const routes = [
     },
   },
   {
-    path: '/editImp/:impId',
+    path: '/editImp',
     name: 'Edit Implementation',
     props: true,
     component: () => import('../views/Edit.vue'),
