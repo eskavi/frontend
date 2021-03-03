@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'App',
 
@@ -76,8 +78,34 @@ export default {
     },
   },
   created() {
-    // TODO check if token still valid
-    this.$store.commit('setToken', this.$store.getters.getUserToken);
+    if (this.$store.state.user.token) {
+      this.$store.commit('setToken', this.$store.getters.getUserToken);
+      axios
+        .post('user/refresh')
+        .then((response) => {
+          this.$store.commit('setToken', response.data.jwt);
+        })
+        .catch(() => {
+          // delete user currently stored in store
+          this.$store.commit('clearUser');
+          this.$store.dispatch('sendActionResponse', 'You have been logged out.');
+        });
+    }
+
+    // refresh token every hour
+    setInterval(() => {
+      axios
+        .post('user/refresh')
+        .then((response) => {
+          this.$store.commit('setToken', response.data.jwt);
+          this.$store.dispatch('updateUserLevel');
+        })
+        .catch(() => {
+          // delete user currently stored in store
+          this.$store.commit('clearUser');
+          this.$store.dispatch('sendActionResponse', 'You have been logged out.');
+        });
+    }, 3600000);
   },
 };
 </script>

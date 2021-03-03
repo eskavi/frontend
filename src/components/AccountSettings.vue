@@ -11,11 +11,11 @@
             }}</span>
           </v-avatar>
           <h3 class="ma-2">{{ $store.state.user.email }}</h3>
-          <v-chip>Opa</v-chip>
-          <v-chip>Administrator</v-chip>
         </div>
         <div class="mx-auto text-center ma-10">
-          <v-btn :to="{ path: '/admin_dashboard' }">Admin Dashboard</v-btn><br /><br />
+          <div id="admin_dashboard" v-if="$store.state.user.userLevel === 'ADMINISTRATOR'">
+            <v-btn :to="{ path: '/admin_dashboard' }">Admin Dashboard</v-btn><br /><br />
+          </div>
           <ChangePassword /><br />
           <Logout /><br />
           <DeleteAccount class="ma-2" />

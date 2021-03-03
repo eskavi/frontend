@@ -39,6 +39,11 @@ export default new Vuex.Store({
     setUserLevel(state, level) {
       state.user.userLevel = level;
     },
+    clearUser(state) {
+      state.user.email = '';
+      state.user.token = '';
+      state.user.userLevel = '';
+    },
   },
   // asynchrounous modifications
   actions: {
@@ -77,8 +82,7 @@ export default new Vuex.Store({
     },
     logoutUser({ commit }) {
       return new Promise((resolve) => {
-        commit('setToken', '');
-        commit('setEmailAddress', '');
+        commit('clearUser');
         resolve();
       });
     },

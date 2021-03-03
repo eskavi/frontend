@@ -63,6 +63,14 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "configurator" */ '../views/CreateModuleImp.vue'),
+    beforeEnter: (to, from, next) => {
+      if (!store.state.user.email || !store.state.user.token) {
+        store.dispatch('sendActionResponse', 'You need to be logged in to view this page.');
+        next('/');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/admin_dashboard',
@@ -71,6 +79,18 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "configurator" */ '../views/AdminDashboard.vue'),
+    beforeEnter: (to, from, next) => {
+      if (
+        store.state.user.userLevel !== 'ADMINISTRATOR' ||
+        !store.state.user.email ||
+        !store.state.user.token
+      ) {
+        store.dispatch('sendActionResponse', 'You need to be administrator to access this page.');
+        next('/');
+      } else {
+        next();
+      }
+    },
   },
 ];
 
