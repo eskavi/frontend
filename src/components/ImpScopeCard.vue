@@ -24,3 +24,14 @@
     </v-btn>
   </v-container>
 </template>
+
+<script>
+export default {
+  name: 'ImpScopeCard',
+  data() {
+    return {
+      userLevel: '',
+    };
+  },
+};
+</script>
