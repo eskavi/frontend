@@ -39,6 +39,11 @@ export default new Vuex.Store({
     setUserLevel(state, level) {
       state.user.userLevel = level;
     },
+    clearUser(state) {
+      state.user.email = '';
+      state.user.token = '';
+      state.user.userLevel = '';
+    },
   },
   // asynchrounous modifications
   actions: {
