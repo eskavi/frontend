@@ -114,69 +114,11 @@
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <!-- TODO textField disappears when empty-->
-              <v-alert type="error" v-if="error">{{ error }}</v-alert>
-              <v-form
-                ref="attributes"
-                v-if="this.wipImp"
-                @submit.prevent="submitAttributes"
-                v-model="validAttributes"
-              >
-                <v-row justify="space-between">
-                  <v-col cols="12" md="5">
-                    <v-text-field
-                      required
-                      v-if="wipImp.hasOwnProperty('name')"
-                      v-model="wipImp.name"
-                      label="Name of the Module Implementation"
-                      disabled
-                    >
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="5">
-                    <v-text-field
-                      v-if="wipImp.hasOwnProperty('author')"
-                      v-model="wipImp.author"
-                      label="Name of the Module Developer"
-                      disabled
-                    >
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-                <v-divider class="ma-4"></v-divider>
-                <v-row>
-                  <v-col cols="12" md="5">
-                    <v-autocomplete
-                      v-if="wipImp.hasOwnProperty('messageType')"
-                      v-model="wipImp.messageType"
-                      label="Pick the corresponding Message Type"
-                      no-data-text="No valid template"
-                      clearable
-                      :item-text="(item) => item.name"
-                      :items="this.attributesPage.messageTypes"
-                      return-object
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-col cols="12" md="5">
-                    <v-autocomplete
-                      v-if="wipImp.hasOwnProperty('protocolType')"
-                      v-model="wipImp.protocolType"
-                      label="Pick the corresponding Protocol Type"
-                      no-data-text="No valid template"
-                      clearable
-                      :item-text="(item) => item.name"
-                      :items="this.attributesPage.protocolTypes"
-                      return-object
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-form>
-              <v-btn color="primary" @click="stepper = 3">
-                Continue
-              </v-btn>
-              <v-btn text>
-                Cancel
-              </v-btn>
+              <ImpAttributesCard
+                @stepperForward="stepper = 3"
+                v-bind:wipImp="this.wipImp"
+                v-if="stepper > 1"
+              />
             </v-stepper-content>
 
             <v-stepper-content step="3">
@@ -200,7 +142,7 @@
             <v-stepper-content step="4">
               <v-alert type="error" v-if="error">{{ error }}</v-alert>
               <v-container>
-                <v-form ref="access" @submit.prevent="submitAccess" v-model="validAttributes">
+                <v-form ref="access" @submit.prevent="submitAccess">
                   <v-row v-if="wipImp.scope">
                     <v-autocomplete
                       v-if="wipImp.scope"
@@ -282,6 +224,7 @@
 <script>
 import axios from 'axios';
 import ConfigurationAggregate from './moduleImpCreate/ConfigurationAggregate.vue';
+import ImpAttributesCard from './ImpAttributesCard.vue';
 
 export default {
   name: 'ModuleImpStepper',
@@ -299,10 +242,6 @@ export default {
         ],
         impTypeRules: [(v) => !!v || 'Type is required'],
       },
-      attributesPage: {
-        messageTypes: [],
-        protocolTypes: [],
-      },
       accessPage: {
         impScopes: [],
       },
@@ -316,7 +255,6 @@ export default {
         usersAdded: false,
       },
       validBasicDetails: false,
-      validAttributes: false,
       wipImp: Object,
       configurationRoot: null,
       error: '',
@@ -325,6 +263,7 @@ export default {
   },
   components: {
     ConfigurationAggregate,
+    ImpAttributesCard,
   },
   methods: {
     getImplementationTypes() {
@@ -362,23 +301,10 @@ export default {
     },
     buildUpAttributesPage() {
       this.configurationRoot = this.wipImp.configurationRoot;
-      this.getMessageTypes();
-      this.getProtocolTypes();
       this.getImpScopes();
       this.wipImp.name = this.basicPage.name;
     },
-    getMessageTypes() {
-      axios.get(`imp?impType=MESSAGE_TYPE`).then((res) => {
-        console.log(res);
-        this.attributesPage.messageTypes = res.data.implementations;
-      });
-    },
-    getProtocolTypes() {
-      axios.get(`imp?impType=PROTOCOL_TYPE`).then((imp) => {
-        console.log(imp);
-        this.attributesPage.protocolTypes = imp.data.implementations;
-      });
-    },
+
     getImpScopes() {
       axios.get('imp/scopes').then((imp) => {
         this.accessPage.impScopes = imp.data.impScopes;
