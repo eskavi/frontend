@@ -187,7 +187,6 @@ export default {
                   id: value.id,
                   configuration: configuration.data.instanceConfiguration,
                 });
-                console.log(configuration);
                 if (
                   outerIndex === this.modules.length - 1 &&
                   innerIndex === selector.value.length - 1
