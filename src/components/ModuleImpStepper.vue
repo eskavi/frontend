@@ -140,28 +140,11 @@
             </v-stepper-content>
 
             <v-stepper-content step="4">
-              <v-alert type="error" v-if="error">{{ error }}</v-alert>
-              <v-container>
-                <v-form ref="access" @submit.prevent="submitAccess">
-                  <v-row v-if="wipImp.scope">
-                    <v-autocomplete
-                      v-if="wipImp.scope"
-                      v-model="wipImp.scope.impScope"
-                      label="Select the publication scope of your Implementation"
-                      :items="this.accessPage.impScopes"
-                    >
-                    </v-autocomplete>
-                  </v-row>
-                </v-form>
-              </v-container>
-
-              <v-btn color="primary" @click="stepper = 5">
-                Continue
-              </v-btn>
-
-              <v-btn text>
-                Cancel
-              </v-btn>
+              <ImpScopeCard
+                @stepperForward="stepper++"
+                v-bind:wipImp="this.wipImp"
+                v-if="stepper > 1"
+              />
             </v-stepper-content>
 
             <v-stepper-content step="5">
@@ -225,6 +208,7 @@
 import axios from 'axios';
 import ConfigurationAggregate from './moduleImpCreate/ConfigurationAggregate.vue';
 import ImpAttributesCard from './ImpAttributesCard.vue';
+import ImpScopeCard from './ImpScopeCard.vue';
 
 export default {
   name: 'ModuleImpStepper',
@@ -241,9 +225,6 @@ export default {
           (v) => v.length <= 20 || 'Name must be less than 10 characters',
         ],
         impTypeRules: [(v) => !!v || 'Type is required'],
-      },
-      accessPage: {
-        impScopes: [],
       },
       finalizePage: {
         addedUsers: [],
@@ -264,6 +245,7 @@ export default {
   components: {
     ConfigurationAggregate,
     ImpAttributesCard,
+    ImpScopeCard,
   },
   methods: {
     getImplementationTypes() {
@@ -294,21 +276,9 @@ export default {
         this.buildUpAttributesPage();
       }
     },
-    submitAttributes() {
-      if (this.$refs.attributes.validate()) {
-        this.stepper = 3;
-      }
-    },
     buildUpAttributesPage() {
       this.configurationRoot = this.wipImp.configurationRoot;
-      this.getImpScopes();
       this.wipImp.name = this.basicPage.name;
-    },
-
-    getImpScopes() {
-      axios.get('imp/scopes').then((imp) => {
-        this.accessPage.impScopes = imp.data.impScopes;
-      });
     },
     createModuleImp() {
       this.wipImp.configurationRoot = this.configurationRoot;

@@ -51,6 +51,12 @@ const routes = [
     },
   },
   {
+    path: '/editImp/:impId',
+    name: 'Edit Implementation',
+    props: true,
+    component: () => import('../views/Edit.vue'),
+  },
+  {
     path: '/impcreator',
     name: 'Create Moduleimplementation',
     // route level code-splitting

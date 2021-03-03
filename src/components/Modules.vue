@@ -46,7 +46,7 @@
               </v-list-item-avatar>
             </v-list-item>
             <v-card-actions>
-              <v-btn text color="primary">Edit</v-btn>
+              <v-btn text color="primary" @click="startEdit(entry)">Edit</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -95,6 +95,10 @@ export default {
         .catch(() => {
           this.$store.dispatch('sendActionResponse', 'Error loading modules.');
         });
+    },
+    startEdit(entry) {
+      console.log(entry);
+      this.$router.push({ path: '/editImp', query: { impId: entry.id } });
     },
   },
   computed: {

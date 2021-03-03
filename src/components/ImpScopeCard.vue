@@ -8,14 +8,14 @@
             v-if="wipImp.scope"
             v-model="wipImp.scope.impScope"
             label="Select the publication scope of your Implementation"
-            :items="this.accessPage.impScopes"
+            :items="this.impScopes"
           >
           </v-autocomplete>
         </v-row>
       </v-form>
     </v-container>
 
-    <v-btn color="primary" @click="stepper = 5">
+    <v-btn color="primary" @click="checkValid">
       Continue
     </v-btn>
 
@@ -26,12 +26,45 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ImpScopeCard',
+  props: {
+    wipImp: Object,
+  },
   data() {
     return {
-      userLevel: '',
+      impScopes: [],
+      error: '',
     };
+  },
+  methods: {
+    checkValid() {
+      console.log(this.wipImp.scope);
+      if (this.wipImp.scope.impScope === 'PUBLIC') {
+        if (!(this.userLevel === 'PUBLISHING_USER' || this.userLevel === 'ADMINSTRATOR')) {
+          this.error = 'You do not have sufficient permission to publish a module implementation.';
+        }
+      } else {
+        this.error = '';
+        this.$emit('stepperForward');
+      }
+    },
+    getImpScopes() {
+      axios.get('imp/scopes').then((imp) => {
+        this.impScopes = imp.data.impScopes;
+      });
+    },
+  },
+  computed: {
+    userLevel() {
+      return this.$store.state.user.userLevel;
+    },
+  },
+  mounted() {
+    console.log(this.userLevel);
+    this.getImpScopes();
   },
 };
 </script>

@@ -56,7 +56,7 @@
         </v-col>
       </v-row>
     </v-form>
-    <v-btn color="primary" @click="this.$emit('stepperForward')">
+    <v-btn color="primary" @click="stepForward">
       Continue
     </v-btn>
     <v-btn text>
@@ -93,6 +93,9 @@ export default {
       axios.get(`imp?impType=PROTOCOL_TYPE`).then((imp) => {
         this.pageInfo.protocolTypes = imp.data.implementations;
       });
+    },
+    stepForward() {
+      this.$emit('stepperForward');
     },
   },
   mounted() {
