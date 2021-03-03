@@ -12,7 +12,7 @@
           <v-row justify="space-between">
             <v-col cols="12" md="5">
               <v-combobox
-                v-model="registryUrls"
+                v-model="registryURLs"
                 :rules="registryRules"
                 label="Registry URLs"
                 hint="Enter URL. Press enter to add."
@@ -154,7 +154,7 @@ export default {
         });
 
         // proceed only if all axios calls were successful
-        Promise.all([queryRegistryURLs, this.queryModules])
+        Promise.all([queryRegistryURLs, this.queryModules()])
           .then(() => {
             this.page += 1;
           })
