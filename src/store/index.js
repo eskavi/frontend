@@ -13,6 +13,7 @@ export default new Vuex.Store({
     user: {
       email: '',
       token: '',
+      userLevel: '',
     },
   },
   plugins: [createPersistedState()],
@@ -35,39 +36,41 @@ export default new Vuex.Store({
     setEmailAddress(state, email) {
       state.user.email = email;
     },
+    setUserLevel(state, level) {
+      state.user.userLevel = level;
+    },
   },
   // asynchrounous modifications
   actions: {
     sendActionResponse(context, payload) {
       context.commit('setSnackbarMsg', payload);
     },
-    async registerNewUser(commit, newUser) {
+    async registerNewUser({ commit, dispatch }, newUser) {
       return new Promise((resolve, reject) => {
         console.log(newUser);
         axios
           .post('user/register', newUser)
           .then((res) => {
-            this.commit('setToken', res.data.jwt);
-            this.commit('setEmailAddress', newUser.email);
-            console.log(res);
+            commit('setToken', res.data.jwt);
+            commit('setEmailAddress', newUser.email);
+            dispatch('updateUserLevel');
+            console.log(this.state.user);
             resolve('Registered and logged in!');
           })
           .catch((err) => reject(err));
       });
     },
-    loginUser({ commit }, user) {
+    loginUser({ commit, dispatch }, user) {
       return new Promise((resolve, reject) => {
-        console.log(user);
         axios
           .post('user/login', user)
           .then((res) => {
             commit('setToken', res.data.jwt);
             commit('setEmailAddress', user.email);
+            dispatch('updateUserLevel');
             resolve(res);
-            console.log(res);
           })
           .catch((err) => {
-            console.log(err);
             reject(err);
           });
       });
@@ -91,6 +94,19 @@ export default new Vuex.Store({
         // else {
         //  resolve({ data: { data_types: this.data_types } });
         // }
+      });
+    },
+    updateUserLevel({ commit }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('user')
+          .then((response) => {
+            commit('setUserLevel', response.data.userLevel);
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
       });
     },
   },
