@@ -11,13 +11,15 @@
         <v-container>
           <v-row justify="space-between">
             <v-col cols="12" md="5">
-              <v-text-field
-                :rules="pathRules"
-                label="Path"
-                v-model="path"
-                required
-                hint="Specify path"
-              ></v-text-field>
+              <v-combobox
+                v-model="registryURLs"
+                :rules="registryRules"
+                label="Registry URLs"
+                hint="Enter URL. Press enter to add."
+                deletable-chips
+                multiple
+                chips
+              ></v-combobox>
             </v-col>
           </v-row>
           <v-row justify="space-between" class="mt-10">
@@ -105,8 +107,9 @@ export default {
       sessionId: '',
       error: '',
       page: 1,
-      pathRules: [(v) => !!v || 'Path is required'],
+      registryRules: [(v) => v.length > 0 || 'At least 1 registry URL is required'],
       path: '',
+      registryURLs: [],
       impRules: {
         max(maxUse) {
           if (maxUse === 'infinite') {
@@ -135,45 +138,23 @@ export default {
     async submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
         this.error = '';
-        // add selected moduleImps to current session
-        const queryModules = new Promise((resolve, reject) => {
-          this.modules.forEach((selector, outerIndex) => {
-            selector.value.forEach((value, innerIndex) => {
-              axios
-                .post('aas/imp', {
-                  sessionId: this.sessionId,
-                  impId: value.id,
-                })
-                .then(() =>
-                  axios.get('aas/imp/configuration', {
-                    params: {
-                      sessionId: this.sessionId,
-                      impId: value.id,
-                    },
-                  }),
-                )
-                .then((configuration) => {
-                  this.configurationPages.push({
-                    name: `Configure ${value.name}.`,
-                    id: value.id,
-                    configuration: configuration.data.instanceConfiguration,
-                  });
-                  console.log(configuration);
-                  if (
-                    outerIndex === this.modules.length - 1 &&
-                    innerIndex === selector.value.length - 1
-                  ) {
-                    resolve();
-                  }
-                })
-                .catch((err) => {
-                  reject(err);
-                });
+        const queryRegistryURLs = new Promise((resolve, reject) => {
+          // now add registry URLs
+          axios
+            .post('aas/registry', {
+              sessionId: this.sessionId,
+              url: this.registryURLs,
+            })
+            .then(() => {
+              resolve();
+            })
+            .catch((err) => {
+              reject(err);
             });
-          });
         });
+
         // proceed only if all axios calls were successful
-        queryModules
+        Promise.all([queryRegistryURLs, this.queryModules()])
           .then(() => {
             this.page += 1;
           })
@@ -181,6 +162,44 @@ export default {
             this.error = err.response.data.error || err;
           });
       }
+    },
+    queryModules() {
+      // try to add selected moduleimps to session
+      return new Promise((resolve, reject) => {
+        this.modules.forEach((selector, outerIndex) => {
+          selector.value.forEach((value, innerIndex) => {
+            axios
+              .post('aas/imp', {
+                sessionId: this.sessionId,
+                impId: value.id,
+              })
+              .then(() =>
+                axios.get('aas/imp/configuration', {
+                  params: {
+                    sessionId: this.sessionId,
+                    impId: value.id,
+                  },
+                }),
+              )
+              .then((configuration) => {
+                this.configurationPages.push({
+                  name: `Configure ${value.name}.`,
+                  id: value.id,
+                  configuration: configuration.data.instanceConfiguration,
+                });
+                if (
+                  outerIndex === this.modules.length - 1 &&
+                  innerIndex === selector.value.length - 1
+                ) {
+                  resolve();
+                }
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          });
+        });
+      });
     },
     submitConfigurationPage(instance) {
       // make axios call to update config of module
