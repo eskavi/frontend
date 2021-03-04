@@ -65,7 +65,7 @@
         <v-btn color="primary" @click="submitConfigurationPage(configurationPage)">
           Continue
         </v-btn>
-        <v-btn text>
+        <v-btn text @click="reloadPage">
           Cancel
         </v-btn>
       </v-stepper-content>
