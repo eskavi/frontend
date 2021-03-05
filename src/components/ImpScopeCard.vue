@@ -19,7 +19,7 @@
       Continue
     </v-btn>
 
-    <v-btn text>
+    <v-btn text @click="$emit('cancelMod')">
       Cancel
     </v-btn>
   </v-container>
@@ -63,7 +63,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.userLevel);
     this.getImpScopes();
   },
 };

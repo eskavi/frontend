@@ -59,7 +59,7 @@
     <v-btn color="primary" @click="stepForward">
       Continue
     </v-btn>
-    <v-btn text>
+    <v-btn text @click="$emit('cancelMod')">
       Cancel
     </v-btn>
   </v-container>

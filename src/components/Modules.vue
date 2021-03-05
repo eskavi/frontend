@@ -46,7 +46,13 @@
               </v-list-item-avatar>
             </v-list-item>
             <v-card-actions>
-              <v-btn text color="primary" @click="startEdit(entry)">Edit</v-btn>
+              <v-btn
+                :disabled="!(entry.author === $store.state.user.email)"
+                text
+                color="primary"
+                @click="startEdit(entry)"
+                >Edit</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-col>
