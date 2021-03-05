@@ -1,17 +1,29 @@
 <template>
-  <v-dialog max-width="40%">
-    <v-btn text color="primary"> Delete </v-btn>>
+  <v-dialog max-width="300">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn v-bind="attrs" v-on="on" text color="primary">
+        Delete
+      </v-btn>
+    </template>
     <v-card>
       <v-card-title> Delete Implementation </v-card-title>
-      <v-textarea>
-        You are about to delete this Implementation permanently. Are you certain?</v-textarea
+      <v-card-text>
+        You are about to delete this Implementation permanently. Are you certain?</v-card-text
       >
-      <v-btn class="error"> Yes, delete</v-btn>
-      <v-btn> Cancel </v-btn>
+      <v-card-actions>
+        <v-btn @click="$emit('deleteImp')" class="error"> Yes, delete</v-btn>
+        <v-btn @click="$emit('closePopup')"> Cancel </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      dialog: false,
+    };
+  },
+};
 </script>

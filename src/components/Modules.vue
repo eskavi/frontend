@@ -73,6 +73,7 @@ export default {
   name: 'Modules',
 
   data: () => ({
+    deleteDialog: false,
     modules: [],
     onlyShowMine: false,
   }),
