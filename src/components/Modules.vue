@@ -53,6 +53,7 @@
                 @click="startEdit(entry)"
                 >Edit</v-btn
               >
+              <DeleteImpPopup />
             </v-card-actions>
           </v-card>
         </v-col>
@@ -66,6 +67,7 @@
 
 <script>
 import axios from 'axios';
+import DeleteImpPopup from './DeleteImpPopup.vue';
 
 export default {
   name: 'Modules',
@@ -74,6 +76,9 @@ export default {
     modules: [],
     onlyShowMine: false,
   }),
+  components: {
+    DeleteImpPopup,
+  },
   methods: {
     getModules() {
       this.modules = [];
