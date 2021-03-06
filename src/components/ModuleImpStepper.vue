@@ -252,7 +252,7 @@ export default {
         .get(`imp?impType=${this.basicPage.impType}`)
         .then((imp) => {
           console.log(imp);
-          this.basicPage.templates = imp.data.implementations;
+          this.basicPage.templates.concat(imp.data.implementations);
         })
         .catch((err) => {
           console.log(err.data.error);
