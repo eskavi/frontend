@@ -64,7 +64,6 @@
             <v-card-title class="headline">
               Delete this account?
             </v-card-title>
-            <v-alert type="error" v-if="error">{{ error }}</v-alert>
 
             <v-card-text
               >By deleting this user account all personal data will be gone forever, including any
