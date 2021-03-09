@@ -16,7 +16,9 @@
       </v-col>
     </v-row>
     <v-row justify="center">
-      <v-btn color="primary" @click="addUsersToImp"> Publish to Users</v-btn>
+      <v-btn color="primary" :disabled="this.usersAdded.length < 1" @click="addUsersToImp">
+        Publish to Users</v-btn
+      >
     </v-row>
   </v-container>
 </template>

@@ -11,7 +11,7 @@
         You are about to delete this Implementation permanently. Are you certain?</v-card-text
       >
       <v-card-actions>
-        <v-btn @click="$emit('deleteImp')" class="error"> Yes, delete</v-btn>
+        <v-btn @click="deleteImp" class="error"> Yes, delete</v-btn>
         <v-btn @click="dialog = false"> Cancel </v-btn>
       </v-card-actions>
     </v-card>
@@ -20,16 +20,16 @@
 
 <script>
 export default {
+  props: {},
   data() {
     return {
       dialog: false,
     };
   },
   methods: {
-    closePopup() {
-      console.log(this.dialog);
+    deleteImp() {
       this.dialog = false;
-      console.log(this.dialog);
+      this.$emit('deleteImp');
     },
   },
 };

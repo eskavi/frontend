@@ -36,7 +36,7 @@
             v-model="wipImp.messageType"
             label="Pick the corresponding Message Type"
             no-data-text="No valid template"
-            clearable
+            required
             :item-text="(item) => item.name"
             :items="this.pageInfo.messageTypes"
             return-object
@@ -48,20 +48,21 @@
             v-model="wipImp.protocolType"
             label="Pick the corresponding Protocol Type"
             no-data-text="No valid template"
-            clearable
+            required
             :item-text="(item) => item.name"
             :items="this.pageInfo.protocolTypes"
             return-object
           ></v-autocomplete>
         </v-col>
       </v-row>
+
+      <v-btn color="primary" type="submit">
+        Continue
+      </v-btn>
+      <v-btn text @click="$emit('cancelMod')">
+        Cancel
+      </v-btn>
     </v-form>
-    <v-btn color="primary" @click="stepForward">
-      Continue
-    </v-btn>
-    <v-btn text @click="$emit('cancelMod')">
-      Cancel
-    </v-btn>
   </v-container>
 </template>
 
@@ -84,6 +85,12 @@ export default {
     };
   },
   methods: {
+    submitAttributes() {
+      if (this.$refs.attributes.validate()) {
+        this.error = '';
+        this.stepForward();
+      }
+    },
     getMessageTypes() {
       axios.get(`imp?impType=MESSAGE_TYPE`).then((res) => {
         this.pageInfo.messageTypes = res.data.implementations;
