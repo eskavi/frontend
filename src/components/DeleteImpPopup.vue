@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="300">
+  <v-dialog max-width="300" v-model="dialog">
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-bind="attrs" v-on="on" text color="primary">
         Delete
@@ -12,7 +12,7 @@
       >
       <v-card-actions>
         <v-btn @click="$emit('deleteImp')" class="error"> Yes, delete</v-btn>
-        <v-btn @click="$emit('closePopup')"> Cancel </v-btn>
+        <v-btn @click="dialog = false"> Cancel </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -24,6 +24,13 @@ export default {
     return {
       dialog: false,
     };
+  },
+  methods: {
+    closePopup() {
+      console.log(this.dialog);
+      this.dialog = false;
+      console.log(this.dialog);
+    },
   },
 };
 </script>
