@@ -83,6 +83,7 @@ export default new Vuex.Store({
     logoutUser({ commit }) {
       return new Promise((resolve) => {
         commit('clearUser');
+        commit('setToken', null);
         resolve();
       });
     },
