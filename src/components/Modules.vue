@@ -101,10 +101,6 @@ export default {
                 entries: [pushData],
               });
             }
-            this.modules.sort((subArray) => {
-              return subArray[0].type || null;
-            });
-            console.log(this.modules);
           });
         })
         .catch(() => {
