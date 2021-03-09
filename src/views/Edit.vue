@@ -155,6 +155,7 @@ export default {
         .put('/imp', this.wipImp)
         .then(() => {
           console.log('Updated!');
+          this.$store.dispatch('sendActionResponse', 'Implementation was updated successfully!');
           this.$router.push('modules');
         })
         .catch((err) => {

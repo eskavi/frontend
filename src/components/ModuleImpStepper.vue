@@ -91,7 +91,7 @@
                       <v-autocomplete
                         no-data-text="Not a valid template"
                         label="Template"
-                        clearable
+                        required
                         hint="Choose a template"
                         :item-text="(item) => item.name"
                         :items="this.basicPage.templates"

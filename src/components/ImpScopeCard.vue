@@ -46,9 +46,11 @@ export default {
         console.log(this.userLevel);
         if (!(this.userLevel === 'PUBLISHING_USER' || this.userLevel === 'ADMINISTRATOR')) {
           this.error = 'You do not have sufficient permission to publish a module implementation.';
+        } else {
+          this.error = '';
+          this.$emit('stepperForward');
         }
       } else {
-        this.error = '';
         this.$emit('stepperForward');
       }
     },

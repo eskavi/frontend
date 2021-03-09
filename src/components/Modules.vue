@@ -53,7 +53,7 @@
                 @click="startEdit(entry)"
                 >Edit</v-btn
               >
-              <DeleteImpPopup />
+              <DeleteImpPopup v-bind:module="entry" @deleteImp="deleteModule(entry)" />
             </v-card-actions>
           </v-card>
         </v-col>
@@ -73,7 +73,6 @@ export default {
   name: 'Modules',
 
   data: () => ({
-    deleteDialog: false,
     modules: [],
     onlyShowMine: false,
   }),
@@ -111,6 +110,10 @@ export default {
     startEdit(entry) {
       console.log(entry);
       this.$router.push({ path: '/editImp', query: { impId: entry.id } });
+    },
+    deleteModule(module) {
+      console.log({ impId: module.id });
+      axios.delete('imp', { impId: module.id }).then(this.getModules);
     },
   },
   computed: {
