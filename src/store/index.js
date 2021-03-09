@@ -52,14 +52,12 @@ export default new Vuex.Store({
     },
     async registerNewUser({ commit, dispatch }, newUser) {
       return new Promise((resolve, reject) => {
-        console.log(newUser);
         axios
           .post('user/register', newUser)
           .then((res) => {
             commit('setToken', res.data.jwt);
             commit('setEmailAddress', newUser.email);
             dispatch('updateUserLevel');
-            console.log(this.state.user);
             resolve('Registered and logged in!');
           })
           .catch((err) => reject(err));
