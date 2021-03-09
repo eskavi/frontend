@@ -173,6 +173,7 @@ export default {
                 sessionId: this.sessionId,
                 impId: value.id,
               })
+              // TODO: timing doesnt seem to be right here.
               .then(() =>
                 axios.get('aas/imp/configuration', {
                   params: {
@@ -187,6 +188,7 @@ export default {
                   id: value.id,
                   configuration: configuration.data.instanceConfiguration,
                 });
+                console.log(`ID: ${value.id} Data: ${configuration.data}`);
                 if (
                   outerIndex === this.modules.length - 1 &&
                   innerIndex === selector.value.length - 1
