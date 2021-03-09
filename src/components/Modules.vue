@@ -85,7 +85,6 @@ export default {
       axios
         .get('imp')
         .then((response) => {
-          console.log(response);
           response.data.implementations.forEach((imp) => {
             const pushData = {
               name: imp.name,
@@ -108,7 +107,6 @@ export default {
         });
     },
     startEdit(entry) {
-      console.log(entry);
       this.$router.push({ path: '/editImp', query: { impId: entry.id } });
     },
     deleteModule(module) {
@@ -135,7 +133,6 @@ export default {
   },
   mounted() {
     this.getModules();
-    console.log(this.modules);
   },
 };
 </script>

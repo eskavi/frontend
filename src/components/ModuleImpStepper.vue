@@ -251,15 +251,12 @@ export default {
       axios
         .get(`imp?impType=${this.basicPage.impType}`)
         .then((imp) => {
-          console.log(imp);
           this.basicPage.templates.concat(imp.data.implementations);
         })
         .catch((err) => {
           console.log(err.data.error);
         });
-      console.log('Went through');
       axios.get(`imp/default?impType=${this.basicPage.impType}`).then((res) => {
-        console.log(res);
         this.basicPage.templates.push(res.data.template);
         this.wipImp = res.data.template;
       });
@@ -275,13 +272,10 @@ export default {
       this.wipImp.name = this.basicPage.name;
     },
     createModuleImp() {
-      console.log(this.wipImp);
       this.wipImp.configurationRoot = this.configurationRoot;
-      console.log(this.wipImp);
       axios
         .post('imp', this.wipImp)
         .then((res) => {
-          console.log(res);
           this.finalizePage.createdImpId = res.data.impId;
           this.finalizePage.createSuccess = true;
         })

@@ -39,16 +39,24 @@
             v-model="selectField.keyExpression.expressionEnd"
           ></v-text-field>
         </v-col>
+        <v-col>
+          <SelectContent />
+        </v-col>
       </v-row>
     </v-card>
   </v-row>
 </template>
 
 <script>
+import SelectContent from './SelectContent.vue';
+
 export default {
   props: {
     selectField: Object,
     index: Number,
+  },
+  components: {
+    SelectContent,
   },
   data() {
     return {};
