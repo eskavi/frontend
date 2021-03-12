@@ -81,6 +81,7 @@ export default {
       if (this.$refs.resetPasswordForm.validate()) {
         axios
           .post('user/reset_password', {
+            email: this.email,
             answer: this.securityAnswer,
             newPassword: this.newPassword,
           })
