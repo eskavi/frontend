@@ -26,11 +26,12 @@ export default new Vuex.Store({
       state.snackbarMsg = payload;
     },
     setToken(state, token) {
-      state.user.token = token;
       if (token) {
+        state.user.token = token;
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       } else {
-        axios.defaults.headers.common.Authorization = null;
+        state.user.token = '';
+        delete axios.defaults.headers.common.Authorization;
       }
     },
     setEmailAddress(state, email) {
@@ -81,7 +82,7 @@ export default new Vuex.Store({
     logoutUser({ commit }) {
       return new Promise((resolve) => {
         commit('clearUser');
-        commit('setToken', null);
+        commit('setToken');
         resolve();
       });
     },
