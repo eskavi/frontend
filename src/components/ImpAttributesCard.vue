@@ -49,6 +49,7 @@
             label="Pick the corresponding Protocol Type"
             no-data-text="No valid template"
             required
+            rules:
             :item-text="(item) => item.name"
             :items="this.pageInfo.protocolTypes"
             return-object

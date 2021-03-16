@@ -111,7 +111,7 @@ export default {
     },
     deleteModule(module) {
       console.log({ impId: module.id });
-      axios.delete('imp', { impId: module.id }).then(this.getModules);
+      axios.delete('imp', {params:{ impId: module.id }}).then(this.getModules);
     },
   },
   computed: {

@@ -248,13 +248,17 @@ export default {
     },
     getTemplates() {
       // TODO catch error
+      this.basicPage.templates = [];      
       axios
         .get(`imp?impType=${this.basicPage.impType}`)
-        .then((imp) => {
-          this.basicPage.templates.concat(imp.data.implementations);
+        .then((imp) => {     
+          const temp = imp.data.implementations;
+          temp.forEach(entry => {
+            this.basicPage.templates.push(entry);
+          });
         })
         .catch((err) => {
-          console.log(err.data.error);
+          console.log(err);
         });
       axios.get(`imp/default?impType=${this.basicPage.impType}`).then((res) => {
         this.basicPage.templates.push(res.data.template);
