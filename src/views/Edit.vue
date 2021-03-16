@@ -77,6 +77,7 @@
               <v-row justify="center">
                 <ImpScopeCard
                   :disabled="accessDone"
+                  @change="updateImpScope"
                   @stepperForward="stepperIndex++"
                   @cancelMod="stepperIndex--"
                   v-bind:wipImp="wipImp"
