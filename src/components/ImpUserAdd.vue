@@ -16,7 +16,12 @@
       </v-col>
     </v-row>
     <v-row justify="center">
-      <v-btn color="primary" :disabled="this.usersAdded.length < 1" @click="addUsersToImp">
+      <v-btn
+        color="primary"
+        v-if="!isEmbedded"
+        :disabled="this.usersAdded.length < 1"
+        @click="addUsersToImp"
+      >
         Publish to Users</v-btn
       >
     </v-row>
@@ -29,6 +34,8 @@ import axios from 'axios';
 export default {
   props: {
     impId: {},
+    addUserTrigger: Number,
+    isEmbedded: Boolean,
   },
   data() {
     return {
@@ -39,19 +46,31 @@ export default {
   },
   methods: {
     addUsersToImp() {
+      console.log('Pong Ping');
       const payload = { userIds: this.usersAdded, impId: this.impId };
-      console.log(payload);
+      if (this.usersAdded.length < 1) {
+        console.log('No users to be added.');
+        return;
+      }
       axios
         .post('imp/user', payload)
         .then((res) => {
           console.log(res);
           this.alertType = 'success';
           this.alertMessage = 'Users added successfully to shared implementation!';
+          this.usersAdded = [];
         })
         .catch((err) => {
           this.alertType = 'error';
           this.alertMessage = err.response.data.error;
         });
+    },
+  },
+  watch: {
+    addUserTrigger: {
+      handler() {
+        this.addUsersToImp();
+      },
     },
   },
 };

@@ -3,6 +3,18 @@
     <v-row justify="center">
       <v-col md="12" cols="10">
         <v-card>
+          <v-alert v-if="this.alertMessage" :type="this.alertType">
+            <v-row
+              >{{ alertMessage }}
+              <v-spacer />
+              <v-btn small @click="$router.push('/modules')"> Home </v-btn>
+            </v-row></v-alert
+          >
+        </v-card>
+      </v-col>
+
+      <v-col md="12" cols="10">
+        <v-card>
           <v-row justify="center">
             <v-card-title
               >Editing Module Implementation: {{ this.wipImp.name }} ({{
@@ -13,7 +25,7 @@
         </v-card>
       </v-col>
       <v-col md="12" cols="10">
-        <v-stepper non-linear v-model="stepperIndex" alt-labels>
+        <v-stepper alt-labels non-linear v-model="stepperIndex">
           <v-stepper-header>
             <v-stepper-step editable step="1" @click="moveStepper(1)">
               Attributes
@@ -87,7 +99,16 @@
             </v-stepper-content>
             <v-stepper-content step="4" v-if="this.loaded">
               <v-row justify="center">
-                <ImpUserAdd v-bind:impId="this.moduleId" />
+                <v-alert v-if="!(this.wipImp.scope.impScope === 'SHARED')">
+                  Users can only be added to SHARED implementations.
+                </v-alert>
+                <ImpUserAdd
+                  ref="userAdd"
+                  v-if="this.wipImp.scope.impScope === 'SHARED'"
+                  v-bind:impId="this.moduleId"
+                  :addUserTrigger="this.addUserTrigger"
+                  :isEmbedded="true"
+                />
               </v-row>
             </v-stepper-content>
           </v-stepper-items>
@@ -130,22 +151,17 @@ export default {
       error: '',
       loaded: false,
       moduleId: Number,
+      addUserTrigger: 0,
       wipImp: {},
       stepperIndex: 1,
       accessDone: false,
+      alertType: '',
+      alertMessage: '',
     };
   },
   methods: {
-    updateImpScope() {
-      axios
-        .post('/imp/impScope', { impScope: this.wipImp.scope.impScope, impId: this.moduleId })
-        .then(console.log('Done'))
-        .catch(console.log('Not updated'));
-    },
+    updateImpScope() {},
     moveStepper(nextStep) {
-      if (this.stepperIndex === 3) {
-        this.updateImpScope();
-      }
       this.stepperIndex = nextStep;
     },
     leaveImpEditor() {
@@ -157,18 +173,31 @@ export default {
         this.loaded = true;
         console.log(this.wipImp);
       });
-      this.updateImpScope();
     },
     updateImp() {
+      this.alertMessage = '';
       axios
         .put('/imp', this.wipImp)
         .then(() => {
-          console.log('Updated!');
+          axios
+            .post('/imp/impScope', { impScope: this.wipImp.scope.impScope, impId: this.moduleId })
+            .then(() => {
+              if (this.wipImp.scope.impScope === 'SHARED') {
+                this.addUserTrigger += 1;
+              }
+              this.alertType = 'success';
+              this.alertMessage = 'Changes were submitted successfully!';
+            })
+            .catch((err) => {
+              this.alertType = 'error';
+              this.alertMessage = `An error occurred while updating imp scope: \n ${err.data.error}`;
+            });
+
           this.$store.dispatch('sendActionResponse', 'Implementation was updated successfully!');
-          this.$router.push('modules');
         })
         .catch((err) => {
-          this.error = err.data.error;
+          this.alertType = 'error';
+          this.alertMessage = `An error occurred while posting changes to module imp: \n ${err.data.error}`;
         });
     },
   },
