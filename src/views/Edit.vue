@@ -74,13 +74,9 @@
               </v-row>
             </v-stepper-content>
             <v-stepper-content step="3" v-if="this.loaded">
-              <v-alert class="warning">
-                Changes to scope are written to database immediately.</v-alert
-              >
               <v-row justify="center">
                 <ImpScopeCard
                   :disabled="accessDone"
-                  @change="updateImpScope"
                   @stepperForward="stepperIndex++"
                   @cancelMod="stepperIndex--"
                   v-bind:wipImp="wipImp"
@@ -97,7 +93,7 @@
         </v-stepper>
       </v-col>
       <v-col md="12" cols="10">
-        <v-card v-if="stepperIndex != 3">
+        <v-card>
           <v-row align="center" justify="space-around">
             <v-spacer />
             <v-btn class="error ma-4" @click="leaveImpEditor"> Cancel Edit </v-btn>
