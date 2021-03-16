@@ -172,15 +172,30 @@
               </v-container>
 
               <v-container
-                v-if="this.finalizePage.createSuccess && this.wipImp.scope.impScope === 'shared'"
+                v-if="this.finalizePage.createSuccess && this.wipImp.scope.impScope === 'TODO'"
               >
+                <ImpUserAdd />
               </v-container>
 
               <v-divider style="" class="ma-4" />
-
-              <v-btn color="primary" :to="{ path: '/modules' }">
-                Go back to modules
-              </v-btn>
+              <v-row class="ma-2">
+                <v-btn
+                  class="ma-2"
+                  color="primary"
+                  v-if="this.finalizePage.createSuccess"
+                  :to="{ path: '/modules' }"
+                >
+                  Go back to modules
+                </v-btn>
+                <v-btn
+                  text
+                  @click="leaveCreator"
+                  class="ma-2"
+                  v-if="!this.finalizePage.createSuccess"
+                >
+                  Cancel
+                </v-btn>
+              </v-row>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -194,6 +209,7 @@ import axios from 'axios';
 import ConfigurationAggregate from './moduleImpCreate/ConfigurationAggregate.vue';
 import ImpAttributesCard from './ImpAttributesCard.vue';
 import ImpScopeCard from './ImpScopeCard.vue';
+import ImpUserAdd from './ImpUserAdd.vue';
 
 export default {
   name: 'ModuleImpStepper',
@@ -231,6 +247,7 @@ export default {
     ConfigurationAggregate,
     ImpAttributesCard,
     ImpScopeCard,
+    ImpUserAdd,
   },
   methods: {
     leaveCreator() {
@@ -248,12 +265,12 @@ export default {
     },
     getTemplates() {
       // TODO catch error
-      this.basicPage.templates = [];      
+      this.basicPage.templates = [];
       axios
         .get(`imp?impType=${this.basicPage.impType}`)
-        .then((imp) => {     
+        .then((imp) => {
           const temp = imp.data.implementations;
-          temp.forEach(entry => {
+          temp.forEach((entry) => {
             this.basicPage.templates.push(entry);
           });
         })
