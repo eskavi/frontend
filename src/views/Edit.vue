@@ -13,34 +13,27 @@
         </v-card>
       </v-col>
       <v-col md="12" cols="10">
-        <v-stepper v-model="stepperIndex" alt-labels>
+        <v-stepper non-linear v-model="stepperIndex" alt-labels>
           <v-stepper-header>
-            <v-stepper-step
-              :complete="stepperIndex > 1"
-              step="1"
-              @click="stepperIndex = stepperIndex > 1 ? 1 : stepperIndex"
-            >
+            <v-stepper-step editable step="1" @click="moveStepper(1)">
               Attributes
             </v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step
-              :complete="stepperIndex > 2"
-              step="2"
-              @click="stepperIndex = stepperIndex > 2 ? 2 : stepperIndex"
-            >
+            <v-stepper-step editable step="2" @click="moveStepper(2)">
               Configuration
             </v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step
-              :complete="stepperIndex > 3"
-              step="3"
-              @click="stepperIndex = stepperIndex > 3 ? 3 : stepperIndex"
-            >
+            <v-stepper-step editable step="3" @click="moveStepper(3)">
               Access
+            </v-stepper-step>
+
+            <v-divider></v-divider>
+            <v-stepper-step editable step="4" @click="moveStepper(4)">
+              User Access
             </v-stepper-step>
           </v-stepper-header>
 
@@ -81,15 +74,21 @@
               </v-row>
             </v-stepper-content>
             <v-stepper-content step="3" v-if="this.loaded">
+              <v-alert class="warning">
+                Changes to scope are written to database immediately.</v-alert
+              >
               <v-row justify="center">
                 <ImpScopeCard
                   :disabled="accessDone"
-                  @stepperForward="accessDone = true"
+                  @change="updateImpScope"
+                  @stepperForward="stepperIndex++"
                   @cancelMod="stepperIndex--"
                   v-bind:wipImp="wipImp"
                 />
               </v-row>
               <v-divider class="ma-4"></v-divider>
+            </v-stepper-content>
+            <v-stepper-content step="4" v-if="this.loaded">
               <v-row justify="center">
                 <ImpUserAdd v-bind:impId="this.moduleId" />
               </v-row>
@@ -98,7 +97,7 @@
         </v-stepper>
       </v-col>
       <v-col md="12" cols="10">
-        <v-card>
+        <v-card v-if="stepperIndex != 3">
           <v-row align="center" justify="space-around">
             <v-spacer />
             <v-btn class="error ma-4" @click="leaveImpEditor"> Cancel Edit </v-btn>
@@ -140,6 +139,18 @@ export default {
     };
   },
   methods: {
+    updateImpScope() {
+      axios
+        .post('/imp/impScope', { impScope: this.wipImp.scope.impScope, impId: this.moduleId })
+        .then(console.log('Done'))
+        .catch(console.log('Not updated'));
+    },
+    moveStepper(nextStep) {
+      if (this.stepperIndex === 3) {
+        this.updateImpScope();
+      }
+      this.stepperIndex = nextStep;
+    },
     leaveImpEditor() {
       this.$router.push('/modules');
     },
@@ -149,6 +160,7 @@ export default {
         this.loaded = true;
         console.log(this.wipImp);
       });
+      this.updateImpScope();
     },
     updateImp() {
       axios
