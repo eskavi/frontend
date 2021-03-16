@@ -85,12 +85,10 @@ export default {
         this.$store
           .dispatch('registerNewUser', this.newUser)
           .then(() => {
-            console.log('Success');
             this.$store.dispatch('sendActionResponse', 'You are now registered and logged in.');
             this.$router.push('/configurator');
           })
           .catch(() => {
-            console.log('error');
             this.showError = true;
           });
       }

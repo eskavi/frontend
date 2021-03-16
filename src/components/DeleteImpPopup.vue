@@ -1,7 +1,8 @@
 <template>
   <v-dialog max-width="300" v-model="dialog">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" text color="primary">
+      <v-btn v-bind="attrs" v-on="on" text color="primary"
+        :disabled= isDisabled>
         Delete
       </v-btn>
     </template>
@@ -20,7 +21,9 @@
 
 <script>
 export default {
-  props: {},
+  props: {
+    isDisabled: Boolean
+  },
   data() {
     return {
       dialog: false,

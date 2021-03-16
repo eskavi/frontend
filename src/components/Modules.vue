@@ -53,7 +53,9 @@
                 @click="startEdit(entry)"
                 >Edit</v-btn
               >
-              <DeleteImpPopup v-bind:module="entry" @deleteImp="deleteModule(entry)" />
+              <DeleteImpPopup
+              v-bind:isDisabled="!(entry.author === $store.state.user.email)"
+              @deleteImp="deleteModule(entry)" />
             </v-card-actions>
           </v-card>
         </v-col>
@@ -111,7 +113,7 @@ export default {
     },
     deleteModule(module) {
       console.log({ impId: module.id });
-      axios.delete('imp', {params:{ impId: module.id }}).then(this.getModules);
+      axios.delete('imp', {params:{ id: module.id }}).then(this.getModules);
     },
   },
   computed: {
