@@ -55,7 +55,7 @@
         :complete="page > index + 2"
         :step="index + 2"
         :editable="page >= index + 2"
-        @click="page = page > index + 2 ? index + 2 : page"
+        @click="updatePage(index + 2)"
       >
         {{ configurationPage.name }}
       </v-stepper-step>
@@ -311,7 +311,6 @@ export default {
           this.error = '';
           const file = new Blob([response.data]);
           this.fileURL = URL.createObjectURL(file);
-          this.closeSession();
           this.loadFile = false;
         })
         .catch(() => {
@@ -330,6 +329,10 @@ export default {
     reloadPage() {
       this.closeSession();
       window.location.reload();
+    },
+    updatePage(index) {
+      this.error = '';
+      this.page = this.page > index ? index : this.page;
     },
   },
   watch: {
