@@ -59,9 +59,8 @@
                   <v-row justify="space-between">
                     <v-col cols="12" md="5">
                       <v-text-field
-                        :counter="20"
                         :rules="basicPage.nameRules"
-                        label="Name"
+                        label="Java Class Name"
                         v-model="basicPage.name"
                         required
                         hint="Name your implementation"
@@ -221,10 +220,7 @@ export default {
         impTypes: [],
         templates: [],
         name: '',
-        nameRules: [
-          (v) => !!v || 'Name is required',
-          (v) => v.length <= 20 || 'Name must be less than 10 characters',
-        ],
+        nameRules: [(v) => !!v || 'Name is required'],
         impTypeRules: [(v) => !!v || 'Type is required'],
       },
       finalizePage: {

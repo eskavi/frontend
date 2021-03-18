@@ -168,11 +168,20 @@ export default {
       this.$router.push('/modules');
     },
     setWipImp() {
-      axios.get('/imp', { params: { id: this.moduleId } }).then((res) => {
-        this.wipImp = res.data.implementations[0];
-        this.loaded = true;
-        console.log(this.wipImp);
-      });
+      axios
+        .get('/imp', { params: { id: this.moduleId } })
+        .then((res) => {
+          this.wipImp = res.data.implementations[0];
+          this.loaded = true;
+          console.log(this.wipImp);
+        })
+        .catch(() => {
+          this.$store.dispatch(
+            'sendActionResponse',
+            'Error, tried to edit invalid Implementation.',
+          );
+          this.$router.push('/modules');
+        });
     },
     updateImp() {
       this.alertMessage = '';
