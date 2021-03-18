@@ -51,7 +51,12 @@
 
     <!-- configuration pages -->
     <div v-for="(configurationPage, index) in configurationPages" :key="configurationPage.name">
-      <v-stepper-step :complete="page > index + 2" :step="index + 2">
+      <v-stepper-step
+        :complete="page > index + 2"
+        :step="index + 2"
+        :editable="page >= index + 2"
+        @click="page = page > index + 2 ? index + 2 : page"
+      >
         {{ configurationPage.name }}
       </v-stepper-step>
 
@@ -223,7 +228,6 @@ export default {
     },
     submitConfigurationPage(instance) {
       // make axios call to update config of module
-
       axios
         .put('/aas/imp/configuration', {
           sessionId: this.sessionId,
@@ -304,10 +308,15 @@ export default {
           },
         })
         .then((response) => {
+          this.error = '';
           const file = new Blob([response.data]);
           this.fileURL = URL.createObjectURL(file);
           this.closeSession();
           this.loadFile = false;
+        })
+        .catch(() => {
+          this.loadFile = false;
+          this.error = 'Error during generation. Please check you module configurations.';
         });
     },
     downloadFile() {
