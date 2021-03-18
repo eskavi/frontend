@@ -239,7 +239,7 @@ export default {
           this.error = '';
         })
         .catch((err) => {
-          this.error = err.response.data.error || err;
+          this.error = err.response.data.message || err;
         });
     },
 
