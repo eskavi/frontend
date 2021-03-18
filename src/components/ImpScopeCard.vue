@@ -9,6 +9,7 @@
             v-model="wipImp.scope.impScope"
             label="Select the publication scope of your Implementation"
             :items="this.impScopes"
+            @change="$emit('change')"
           >
           </v-autocomplete>
         </v-row>

@@ -3,6 +3,18 @@
     <v-row justify="center">
       <v-col md="12" cols="10">
         <v-card>
+          <v-alert v-if="this.alertMessage" :type="this.alertType">
+            <v-row
+              >{{ alertMessage }}
+              <v-spacer />
+              <v-btn small @click="$router.push('/modules')"> Home </v-btn>
+            </v-row></v-alert
+          >
+        </v-card>
+      </v-col>
+
+      <v-col md="12" cols="10">
+        <v-card>
           <v-row justify="center">
             <v-card-title
               >Editing Module Implementation: {{ this.wipImp.name }} ({{
@@ -13,34 +25,27 @@
         </v-card>
       </v-col>
       <v-col md="12" cols="10">
-        <v-stepper v-model="stepperIndex" alt-labels>
+        <v-stepper alt-labels non-linear v-model="stepperIndex">
           <v-stepper-header>
-            <v-stepper-step
-              :complete="stepperIndex > 1"
-              step="1"
-              @click="stepperIndex = stepperIndex > 1 ? 1 : stepperIndex"
-            >
+            <v-stepper-step editable step="1" @click="moveStepper(1)">
               Attributes
             </v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step
-              :complete="stepperIndex > 2"
-              step="2"
-              @click="stepperIndex = stepperIndex > 2 ? 2 : stepperIndex"
-            >
+            <v-stepper-step editable step="2" @click="moveStepper(2)">
               Configuration
             </v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step
-              :complete="stepperIndex > 3"
-              step="3"
-              @click="stepperIndex = stepperIndex > 3 ? 3 : stepperIndex"
-            >
+            <v-stepper-step editable step="3" @click="moveStepper(3)">
               Access
+            </v-stepper-step>
+
+            <v-divider></v-divider>
+            <v-stepper-step editable step="4" @click="moveStepper(4)">
+              User Access
             </v-stepper-step>
           </v-stepper-header>
 
@@ -84,14 +89,26 @@
               <v-row justify="center">
                 <ImpScopeCard
                   :disabled="accessDone"
-                  @stepperForward="accessDone = true"
+                  @change="updateImpScope"
+                  @stepperForward="stepperIndex++"
                   @cancelMod="stepperIndex--"
                   v-bind:wipImp="wipImp"
                 />
               </v-row>
               <v-divider class="ma-4"></v-divider>
+            </v-stepper-content>
+            <v-stepper-content step="4" v-if="this.loaded">
               <v-row justify="center">
-                <ImpUserAdd v-bind:impId="this.moduleId" />
+                <v-alert v-if="!(this.wipImp.scope.impScope === 'SHARED')">
+                  Users can only be added to SHARED implementations.
+                </v-alert>
+                <ImpUserAdd
+                  ref="userAdd"
+                  v-if="this.wipImp.scope.impScope === 'SHARED'"
+                  v-bind:impId="this.moduleId"
+                  :addUserTrigger="this.addUserTrigger"
+                  :isEmbedded="true"
+                />
               </v-row>
             </v-stepper-content>
           </v-stepper-items>
@@ -134,32 +151,62 @@ export default {
       error: '',
       loaded: false,
       moduleId: Number,
+      addUserTrigger: 0,
       wipImp: {},
       stepperIndex: 1,
       accessDone: false,
+      alertType: '',
+      alertMessage: '',
     };
   },
   methods: {
+    updateImpScope() {},
+    moveStepper(nextStep) {
+      this.stepperIndex = nextStep;
+    },
     leaveImpEditor() {
       this.$router.push('/modules');
     },
     setWipImp() {
-      axios.get('/imp', { params: { id: this.moduleId } }).then((res) => {
-        this.wipImp = res.data.implementations[0];
-        this.loaded = true;
-        console.log(this.wipImp);
-      });
+      axios
+        .get('/imp', { params: { id: this.moduleId } })
+        .then((res) => {
+          this.wipImp = res.data.implementations[0];
+          this.loaded = true;
+          console.log(this.wipImp);
+        })
+        .catch(() => {
+          this.$store.dispatch(
+            'sendActionResponse',
+            'Error, tried to edit invalid Implementation.',
+          );
+          this.$router.push('/modules');
+        });
     },
     updateImp() {
+      this.alertMessage = '';
       axios
         .put('/imp', this.wipImp)
         .then(() => {
-          console.log('Updated!');
+          axios
+            .post('/imp/impScope', { impScope: this.wipImp.scope.impScope, impId: this.moduleId })
+            .then(() => {
+              if (this.wipImp.scope.impScope === 'SHARED') {
+                this.addUserTrigger += 1;
+              }
+              this.alertType = 'success';
+              this.alertMessage = 'Changes were submitted successfully!';
+            })
+            .catch((err) => {
+              this.alertType = 'error';
+              this.alertMessage = `An error occurred while updating imp scope: \n ${err.data.error}`;
+            });
+
           this.$store.dispatch('sendActionResponse', 'Implementation was updated successfully!');
-          this.$router.push('modules');
         })
         .catch((err) => {
-          this.error = err.data.error;
+          this.alertType = 'error';
+          this.alertMessage = `An error occurred while posting changes to module imp: \n ${err.data.error}`;
         });
     },
   },

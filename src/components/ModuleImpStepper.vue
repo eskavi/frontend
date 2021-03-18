@@ -59,9 +59,8 @@
                   <v-row justify="space-between">
                     <v-col cols="12" md="5">
                       <v-text-field
-                        :counter="20"
                         :rules="basicPage.nameRules"
-                        label="Name"
+                        label="Java Class Name"
                         v-model="basicPage.name"
                         required
                         hint="Name your implementation"
@@ -172,15 +171,30 @@
               </v-container>
 
               <v-container
-                v-if="this.finalizePage.createSuccess && this.wipImp.scope.impScope === 'shared'"
+                v-if="this.finalizePage.createSuccess && this.wipImp.scope.impScope === 'TODO'"
               >
+                <ImpUserAdd />
               </v-container>
 
               <v-divider style="" class="ma-4" />
-
-              <v-btn color="primary" :to="{ path: '/modules' }">
-                Go back to modules
-              </v-btn>
+              <v-row class="ma-2">
+                <v-btn
+                  class="ma-2"
+                  color="primary"
+                  v-if="this.finalizePage.createSuccess"
+                  :to="{ path: '/modules' }"
+                >
+                  Go back to modules
+                </v-btn>
+                <v-btn
+                  text
+                  @click="leaveCreator"
+                  class="ma-2"
+                  v-if="!this.finalizePage.createSuccess"
+                >
+                  Cancel
+                </v-btn>
+              </v-row>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -194,6 +208,7 @@ import axios from 'axios';
 import ConfigurationAggregate from './moduleImpCreate/ConfigurationAggregate.vue';
 import ImpAttributesCard from './ImpAttributesCard.vue';
 import ImpScopeCard from './ImpScopeCard.vue';
+import ImpUserAdd from './ImpUserAdd.vue';
 
 export default {
   name: 'ModuleImpStepper',
@@ -205,10 +220,7 @@ export default {
         impTypes: [],
         templates: [],
         name: '',
-        nameRules: [
-          (v) => !!v || 'Name is required',
-          (v) => v.length <= 20 || 'Name must be less than 10 characters',
-        ],
+        nameRules: [(v) => !!v || 'Name is required'],
         impTypeRules: [(v) => !!v || 'Type is required'],
       },
       finalizePage: {
@@ -231,6 +243,7 @@ export default {
     ConfigurationAggregate,
     ImpAttributesCard,
     ImpScopeCard,
+    ImpUserAdd,
   },
   methods: {
     leaveCreator() {
@@ -248,12 +261,12 @@ export default {
     },
     getTemplates() {
       // TODO catch error
-      this.basicPage.templates = [];      
+      this.basicPage.templates = [];
       axios
         .get(`imp?impType=${this.basicPage.impType}`)
-        .then((imp) => {     
+        .then((imp) => {
           const temp = imp.data.implementations;
-          temp.forEach(entry => {
+          temp.forEach((entry) => {
             this.basicPage.templates.push(entry);
           });
         })

@@ -54,8 +54,9 @@
                 >Edit</v-btn
               >
               <DeleteImpPopup
-              v-bind:isDisabled="!(entry.author === $store.state.user.email)"
-              @deleteImp="deleteModule(entry)" />
+                v-bind:isDisabled="!(entry.author === $store.state.user.email)"
+                @deleteImp="deleteModule(entry)"
+              />
             </v-card-actions>
           </v-card>
         </v-col>
@@ -103,6 +104,7 @@ export default {
               });
             }
           });
+          this.modules.sort((entryA, entryB) => entryA.type.localeCompare(entryB.type));
         })
         .catch(() => {
           this.$store.dispatch('sendActionResponse', 'Error loading modules.');
@@ -113,7 +115,7 @@ export default {
     },
     deleteModule(module) {
       console.log({ impId: module.id });
-      axios.delete('imp', {params:{ id: module.id }}).then(this.getModules);
+      axios.delete('imp', { params: { id: module.id } }).then(this.getModules);
     },
   },
   computed: {
