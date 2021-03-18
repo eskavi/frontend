@@ -154,16 +154,17 @@ export default {
         });
 
         // proceed only if all axios calls were successful
-        Promise.all([queryRegistryURLs, this.queryModules()])
-          .then(() => {
-            this.page += 1;
-          })
-          .catch((err) => {
-            this.error = err.response.data.error || err;
-          });
+        try {
+          await queryRegistryURLs;
+          await this.addModulesToSession();
+          await this.getConfigurations();
+          this.page += 1;
+        } catch (err) {
+          this.error = err.response.data.error || err;
+        }
       }
     },
-    queryModules() {
+    addModulesToSession() {
       // try to add selected moduleimps to session
       return new Promise((resolve, reject) => {
         this.modules.forEach((selector, outerIndex) => {
@@ -173,22 +174,39 @@ export default {
                 sessionId: this.sessionId,
                 impId: value.id,
               })
-              // TODO: timing doesnt seem to be right here.
-              .then(() =>
-                axios.get('aas/imp/configuration', {
-                  params: {
-                    sessionId: this.sessionId,
-                    impId: value.id,
-                  },
-                }),
-              )
+              .then(() => {
+                if (
+                  outerIndex === this.modules.length - 1 &&
+                  innerIndex === selector.value.length - 1
+                ) {
+                  resolve();
+                }
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          });
+        });
+      });
+    },
+    getConfigurations() {
+      return new Promise((resolve, reject) => {
+        this.modules.forEach((selector, outerIndex) => {
+          selector.value.forEach((value, innerIndex) => {
+            axios
+              .get('aas/imp/configuration', {
+                params: {
+                  sessionId: this.sessionId,
+                  impId: value.id,
+                },
+              })
               .then((configuration) => {
                 this.configurationPages.push({
                   name: `Configure ${value.name}.`,
+                  valid: false, // true if form valid, false if not
                   id: value.id,
                   configuration: configuration.data.instanceConfiguration,
                 });
-                console.log(`ID: ${value.id} Data: ${configuration.data}`);
                 if (
                   outerIndex === this.modules.length - 1 &&
                   innerIndex === selector.value.length - 1
@@ -205,11 +223,7 @@ export default {
     },
     submitConfigurationPage(instance) {
       // make axios call to update config of module
-      console.log({
-        sessionId: this.sessionId,
-        impId: instance.id,
-        configuration: instance.configuration,
-      });
+
       axios
         .put('/aas/imp/configuration', {
           sessionId: this.sessionId,
@@ -224,6 +238,7 @@ export default {
           this.error = err.response.data.error || err;
         });
     },
+
     loadAvailableImps() {
       // first get all possible types to check for topLevel module imps
       axios
@@ -304,6 +319,7 @@ export default {
       document.body.removeChild(linkElement);
     },
     reloadPage() {
+      this.closeSession();
       window.location.reload();
     },
   },
