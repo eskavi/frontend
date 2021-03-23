@@ -64,11 +64,11 @@ export default {
       };
       // load available modules
       axios
-        .get('/imp', {
-          params: {
-            impType: this.implementationSelectField.type,
-          },
-        })
+        .get(
+          `/imp?${this.implementationSelectField.generics
+            .map((element) => `generics=${element.implementationId}`)
+            .join('&')}&impType=${this.implementationSelectField.type}`,
+        )
         .then((res) => {
           this.modules = res.data.implementations;
           this.loadModules = false;
