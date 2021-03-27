@@ -16,7 +16,9 @@
           <v-autocomplete
             :label="selectField.name"
             v-model="selectField.value"
-            :items="selectField.content"
+            :items="Object.entries(selectField.content)"
+            :item-text="(item) => item.key"
+            :item-value="(item) => item.value"
           ></v-autocomplete>
         </v-col>
       </v-row>
