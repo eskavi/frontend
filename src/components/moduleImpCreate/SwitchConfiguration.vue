@@ -17,6 +17,22 @@
         <v-col cols="12" md="6">
           <v-text-field label="Name of Switch" v-model="switchField.name"></v-text-field>
         </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-text-field
+            label="Value while true"
+            v-model="switchField.content.trueValue"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-text-field
+            label="Value while false"
+            v-model="switchField.content.falseValue"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" md="6">
           <v-text-field
             label="Start of key expression"

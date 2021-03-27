@@ -17,16 +17,15 @@
         <v-col cols="12" md="6">
           <v-text-field label="Name of Select Field" v-model="selectField.name"></v-text-field>
         </v-col>
-        <v-col cols="12" md="6">
-          <v-combobox
-            v-model="selectField.content"
-            label="Enter all selection possibilities here"
-            deletable-chips
-            multiple
-            chips
-          >
-          </v-combobox>
+      </v-row>
+      <v-divider class="my-4" />
+      <v-row justify="center">
+        <v-col cols="12" md="11">
+          <SelectContent :content="selectField.content" />
         </v-col>
+      </v-row>
+      <v-divider class="my-4" />
+      <v-row>
         <v-col cols="12" md="6">
           <v-text-field
             label="Start of key expression"
@@ -38,9 +37,6 @@
             label="End of key expression"
             v-model="selectField.keyExpression.expressionEnd"
           ></v-text-field>
-        </v-col>
-        <v-col>
-          <SelectContent />
         </v-col>
       </v-row>
     </v-card>
