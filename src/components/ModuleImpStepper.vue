@@ -297,7 +297,7 @@ export default {
           this.finalizePage.createSuccess = true;
         })
         .catch((err) => {
-          this.error = err.respone.data.error;
+          this.error = err.response.data.message || err;
         });
     },
   },
