@@ -14,7 +14,8 @@
       </v-col>
 
       <v-col md="12" cols="10">
-        <v-card>
+        <v-skeleton-loader max-height="100" type="card" v-if="!loaded" />
+        <v-card v-if="loaded">
           <v-row justify="center">
             <v-card-title
               >Editing Module Implementation: {{ this.wipImp.name }} ({{
@@ -25,7 +26,8 @@
         </v-card>
       </v-col>
       <v-col md="12" cols="10">
-        <v-stepper alt-labels non-linear v-model="stepperIndex">
+        <v-skeleton-loader max-height="150" type="card" v-if="!loaded" />
+        <v-stepper alt-labels non-linear v-model="stepperIndex" v-if="loaded">
           <v-stepper-header>
             <v-stepper-step editable step="1" @click="moveStepper(1)">
               Attributes
@@ -49,6 +51,7 @@
             </v-stepper-step>
           </v-stepper-header>
 
+          <v-skeleton-loader max-height="300" type="card" v-if="!loaded" />
           <v-stepper-items>
             <v-stepper-content step="1">
               <ImpAttributesCard
@@ -76,7 +79,7 @@
                   v-if="this.loaded"
                 />
               </v-row>
-              <v-row class="ma-2">
+              <v-row class="ma-2" v-if="loaded">
                 <v-btn color="primary" @click="stepperIndex++">
                   Continue
                 </v-btn>
