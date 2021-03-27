@@ -29,25 +29,26 @@
         </v-col>
       </v-row>
       <v-divider class="ma-4"></v-divider>
-      <v-row>
+      <v-row class="mb-4">
         <v-col cols="12" md="6" v-if="wipImp.hasOwnProperty('messageType')">
-          <v-autocomplete            
+          <v-autocomplete
             v-model="wipImp.messageType"
             label="Pick the corresponding Message Type"
             no-data-text="No valid template"
             required
+            :rules="genericsRules"
             :item-text="(item) => item.name"
             :items="this.pageInfo.messageTypes"
             return-object
           ></v-autocomplete>
         </v-col>
         <v-col cols="12" md="6" v-if="wipImp.hasOwnProperty('protocolType')">
-          <v-autocomplete            
+          <v-autocomplete
             v-model="wipImp.protocolType"
             label="Pick the corresponding Protocol Type"
             no-data-text="No valid template"
             required
-            rules:
+            :rules="genericsRules"
             :item-text="(item) => item.name"
             :items="this.pageInfo.protocolTypes"
             return-object
@@ -81,6 +82,7 @@ export default {
       },
       error: '',
       validAttributes: false,
+      genericsRules: [(v) => !!v || 'Select a Generic'],
     };
   },
   methods: {
