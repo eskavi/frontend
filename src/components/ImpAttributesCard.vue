@@ -30,9 +30,8 @@
       </v-row>
       <v-divider class="ma-4"></v-divider>
       <v-row>
-        <v-col cols="12" md="5">
-          <v-autocomplete
-            v-if="wipImp.hasOwnProperty('messageType')"
+        <v-col cols="12" md="6" v-if="wipImp.hasOwnProperty('messageType')">
+          <v-autocomplete            
             v-model="wipImp.messageType"
             label="Pick the corresponding Message Type"
             no-data-text="No valid template"
@@ -42,9 +41,8 @@
             return-object
           ></v-autocomplete>
         </v-col>
-        <v-col cols="12" md="5">
-          <v-autocomplete
-            v-if="wipImp.hasOwnProperty('protocolType')"
+        <v-col cols="12" md="6" v-if="wipImp.hasOwnProperty('protocolType')">
+          <v-autocomplete            
             v-model="wipImp.protocolType"
             label="Pick the corresponding Protocol Type"
             no-data-text="No valid template"

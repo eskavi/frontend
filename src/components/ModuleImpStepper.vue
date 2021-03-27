@@ -280,13 +280,19 @@ export default {
     },
     submitBasicDetails() {
       if (this.$refs.basicDetails.validate()) {
-        this.stepper = 2;
         this.buildUpAttributesPage();
+        this.stepper = 2;
       }
     },
     buildUpAttributesPage() {
       this.configurationRoot = this.wipImp.configurationRoot;
       this.wipImp.name = this.basicPage.name;
+      if (this.wipImp.protocolType) {
+        this.wipImp.protocolType = null;
+      }
+      if (this.wipImp.messageType) {
+        this.wipImp.messageType = null;
+      }
     },
     createModuleImp() {
       this.wipImp.configurationRoot = this.configurationRoot;
