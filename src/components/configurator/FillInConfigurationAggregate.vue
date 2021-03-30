@@ -21,6 +21,7 @@
         v-bind:key="child.index"
         @addThis="addToChildren"
         @deleteThis="deleteFromChildren"
+        :sessionId="sessionId"
         v-bind:rootAggregate="child"
       />
       <FillInTextConfiguration
@@ -63,6 +64,15 @@
         @deleteThis="deleteFromChildren"
         v-bind:key="child.index"
       />
+      <FillInInstanceSelectConfiguration
+        v-if="child.jsonTypeInfo == 'INSTANCE_SELECT'"
+        class="ma-1"
+        :instanceSelectField="child"
+        :sessionId="sessionId"
+        @addThis="addToChildren"
+        @deleteThis="deleteFromChildren"
+        v-bind:key="child.index"
+      />
     </v-row>
   </v-card>
 </template>
@@ -73,11 +83,13 @@ import FillInFileConfiguration from './FillInFileConfiguration.vue';
 import FillInSwitchConfiguration from './FillInSwitchConfiguration.vue';
 import FillInSelectConfiguration from './FillInSelectConfiguration.vue';
 import FillInImplementationSelectConfiguration from './FillInImplementationSelectConfiguration.vue';
+import FillInInstanceSelectConfiguration from './FillInInstanceSelectConfiguration.vue';
 
 export default {
   name: 'FillInConfigurationAggregate',
   props: {
     rootAggregate: Object,
+    sessionId: Number,
   },
   components: {
     FillInTextConfiguration,
@@ -85,6 +97,7 @@ export default {
     FillInSelectConfiguration,
     FillInSwitchConfiguration,
     FillInImplementationSelectConfiguration,
+    FillInInstanceSelectConfiguration,
   },
   data() {
     return {};
