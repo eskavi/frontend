@@ -294,7 +294,7 @@ export default {
       }
     },
     createModuleImp() {
-      console.log('Started');
+      console.log(this.wipImp);
       this.wipImp.configurationRoot = this.configurationRoot;
       axios
         .post('imp', this.wipImp)

@@ -80,7 +80,7 @@ export default {
       this.setUpImpTypes();
     },
     deleteThis() {
-      this.$emit('deleteThis', this.impSelectField);
+      this.$emit('deleteThis', this.instanceSelectField);
     },
     setUpImpTypes() {
       axios
