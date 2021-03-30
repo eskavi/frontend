@@ -64,6 +64,7 @@
         <span>Please provide the following details to configure the selected module.</span>
         <FillInConfigurationAggregate
           v-bind:rootAggregate="configurationPage.configuration"
+          v-bind:sessionId="sessionId"
           v-bind:key="index"
         />
         <v-alert type="error" v-if="error">{{ error }}</v-alert>
@@ -227,6 +228,7 @@ export default {
       });
     },
     submitConfigurationPage(instance) {
+      console.log(instance);
       // make axios call to update config of module
       axios
         .put('/aas/imp/configuration', {
