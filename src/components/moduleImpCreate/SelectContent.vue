@@ -43,7 +43,7 @@ export default {
     },
   },
   mounted() {
-    this.selectArray = Object.entries(this.testObject);
+    this.selectArray = Object.entries(this.content);
   },
   watch: {
     /**

@@ -86,6 +86,13 @@
         :impSelectField="child"
         v-bind:key="child.index"
       />
+      <InstanceSelectConfiguration
+        class="my-2"
+        @deleteThis="deleteFromChildren"
+        v-if="child.jsonTypeInfo == 'INSTANCE_SELECT'"
+        :instanceSelectField="child"
+        v-bind:key="child.index"
+      />
     </v-row>
     <v-row justify="center">
       <v-col cols="12" md="8">
@@ -118,6 +125,7 @@ import FileConfiguration from './FileConfiguration.vue';
 import SelectConfiguration from './SelectConfiguration.vue';
 import SwitchConfiguration from './SwitchConfiguration.vue';
 import ImpSelectConfiguration from './ImpSelectConfiguration.vue';
+import InstanceSelectConfiguration from './InstanceSelectConfiguration.vue';
 
 export default {
   name: 'ConfigurationAggregate',
@@ -131,6 +139,7 @@ export default {
     SelectConfiguration,
     SwitchConfiguration,
     ImpSelectConfiguration,
+    InstanceSelectConfiguration,
   },
   data() {
     return {
