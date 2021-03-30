@@ -14,7 +14,7 @@
       </v-col>
 
       <v-col md="12" cols="10">
-        <v-skeleton-loader max-height="100" type="card" v-if="!loaded" />
+        <v-skeleton-loader max-height="50" type="card" v-if="!loaded" />
         <v-card v-if="loaded">
           <v-row justify="center">
             <v-card-title
@@ -26,7 +26,7 @@
         </v-card>
       </v-col>
       <v-col md="12" cols="10">
-        <v-skeleton-loader max-height="150" type="card" v-if="!loaded" />
+        <v-skeleton-loader max-height="300" type="card" v-if="!loaded" />
         <v-stepper alt-labels non-linear v-model="stepperIndex" v-if="loaded">
           <v-stepper-header>
             <v-stepper-step editable step="1" @click="moveStepper(1)">
@@ -51,7 +51,6 @@
             </v-stepper-step>
           </v-stepper-header>
 
-          <v-skeleton-loader max-height="300" type="card" v-if="!loaded" />
           <v-stepper-items>
             <v-stepper-content step="1">
               <ImpAttributesCard
