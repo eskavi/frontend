@@ -149,11 +149,9 @@
             </v-stepper-content>
 
             <v-stepper-content step="5">
-              <v-alert type="error" v-if="error">{{ error }}</v-alert>
-
               <v-container class="ma-4">
                 <v-row>
-                  <v-alert v-if="this.finalizePage.createSuccess" type="success">
+                  <v-alert class="ma-2" v-if="this.finalizePage.createSuccess" type="success">
                     {{ finalizePage.successMessage }}</v-alert
                   >
                 </v-row>
@@ -171,9 +169,9 @@
               </v-container>
 
               <v-container
-                v-if="this.finalizePage.createSuccess && this.wipImp.scope.impScope === 'TODO'"
+                v-if="this.finalizePage.createSuccess && this.wipImp.scope.impScope === 'SHARED'"
               >
-                <ImpUserAdd />
+                <ImpUserAdd v-bind:impId="this.impId" v-bind:isEmbedded="false" />
               </v-container>
 
               <v-divider style="" class="ma-4" />
@@ -224,6 +222,7 @@ export default {
         impTypeRules: [(v) => !!v || 'Type is required'],
       },
       finalizePage: {
+        impId: {},
         addedUsers: [],
         successMessage:
           'Your Implementation was created successfully. In order to modify it you can find it in your Module overview!',
@@ -295,10 +294,13 @@ export default {
       }
     },
     createModuleImp() {
+      console.log('Started');
       this.wipImp.configurationRoot = this.configurationRoot;
       axios
         .post('imp', this.wipImp)
         .then((res) => {
+          this.impId = res.data.implementation.implementationId;
+          console.log(this.impId);
           this.finalizePage.createdImpId = res.data.impId;
           this.finalizePage.createSuccess = true;
         })

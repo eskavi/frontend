@@ -46,8 +46,8 @@ export default {
   },
   methods: {
     addUsersToImp() {
-      console.log('Pong Ping');
       const payload = { userIds: this.usersAdded, impId: this.impId };
+      console.log(payload);
       if (this.usersAdded.length < 1) {
         console.log('No users to be added.');
         return;
