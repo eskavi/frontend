@@ -119,7 +119,9 @@
       </v-col>
       <v-col md="12" cols="10">
         <v-card>
-          <v-row align="center" justify="space-around">
+          <v-skeleton-loader max-height="75" type="card" v-if="!loaded" />
+
+          <v-row align="center" justify="space-around" v-if="loaded">
             <v-spacer />
             <v-btn class="error ma-4" @click="leaveImpEditor"> Cancel Edit </v-btn>
             <v-spacer />
