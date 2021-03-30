@@ -13,8 +13,12 @@
       </v-avatar>
       <v-row justify="center">
         <v-col cols="12" md="6">
-          <!-- TODO fix switch strucuture (map) -->
-          <v-switch :label="switchField.name" v-model="switchField.value"></v-switch>
+          <v-switch
+            :label="switchField.name"
+            v-model="switchField.value"
+            :false-value="switchField.content.falseValue"
+            :true-value="switchField.content.trueValue"
+          ></v-switch>
         </v-col>
       </v-row>
     </v-card>

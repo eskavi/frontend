@@ -3,7 +3,12 @@
     <v-container v-if="$store.getters.isAuthenticated">
       <v-row>
         <v-spacer></v-spacer>
-        <v-switch label="Only show my modules" v-model="onlyShowMine"></v-switch>
+        <v-switch
+          label="Only show my modules"
+          v-model="onlyShowMine"
+          :disabled="loading"
+          :loading="loading"
+        ></v-switch>
       </v-row>
     </v-container>
     <v-container>
@@ -61,7 +66,17 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row v-if="!parseModules || parseModules.length == 0" justify="center"
+      <div v-if="loading">
+        <v-row class="align-end" v-for="f in getViewElements()" :key="f">
+          <v-col cols="12" class="mt-5">
+            <v-skeleton-loader type="heading"></v-skeleton-loader>
+          </v-col>
+          <v-col v-for="i in 4" cols="3" :key="i">
+            <v-skeleton-loader type="card" elevation="2" max-height="150"></v-skeleton-loader>
+          </v-col>
+        </v-row>
+      </div>
+      <v-row v-if="(!parseModules || parseModules.length == 0) && !loading" justify="center"
         >No modules found.</v-row
       >
     </v-container>
@@ -76,6 +91,7 @@ export default {
   name: 'Modules',
 
   data: () => ({
+    loading: true,
     modules: [],
     onlyShowMine: false,
   }),
@@ -84,6 +100,7 @@ export default {
   },
   methods: {
     getModules() {
+      console.log(window.innerHeight / 200);
       this.modules = [];
       axios
         .get('imp')
@@ -104,6 +121,7 @@ export default {
               });
             }
           });
+          this.loading = false;
           this.modules.sort((entryA, entryB) => entryA.type.localeCompare(entryB.type));
         })
         .catch(() => {
@@ -116,6 +134,9 @@ export default {
     deleteModule(module) {
       console.log({ impId: module.id });
       axios.delete('imp', { params: { id: module.id } }).then(this.getModules);
+    },
+    getViewElements() {
+      return Math.floor(window.innerHeight / 260);
     },
   },
   computed: {
