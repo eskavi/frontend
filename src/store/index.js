@@ -88,16 +88,12 @@ export default new Vuex.Store({
     },
     fetchDataTypes() {
       return new Promise((resolve, reject) => {
-        // TODO implement state check for less backend calls
         axios
           .get('imp/config/data_types')
           .then((res) => {
             resolve(res);
           })
           .catch((err) => reject(err));
-        // else {
-        //  resolve({ data: { data_types: this.data_types } });
-        // }
       });
     },
     updateUserLevel({ commit }) {

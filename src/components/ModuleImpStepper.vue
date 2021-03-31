@@ -259,7 +259,6 @@ export default {
         });
     },
     getTemplates() {
-      // TODO catch error
       this.basicPage.templates = [];
       axios
         .get(`imp?impType=${this.basicPage.impType}`)

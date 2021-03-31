@@ -144,7 +144,6 @@ export default {
   data() {
     return {
       addTemplate: null,
-      // TODO replace with api call, once backend is live
       templates: [],
     };
   },
