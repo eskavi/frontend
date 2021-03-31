@@ -47,15 +47,12 @@ export default {
   methods: {
     addUsersToImp() {
       const payload = { userIds: this.usersAdded, impId: this.impId };
-      console.log(payload);
       if (this.usersAdded.length < 1) {
-        console.log('No users to be added.');
         return;
       }
       axios
         .post('imp/user', payload)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           this.alertType = 'success';
           this.alertMessage = 'Users added successfully to shared implementation!';
           this.usersAdded = [];
