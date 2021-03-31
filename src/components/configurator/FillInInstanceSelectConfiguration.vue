@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     onBuildUp() {
-      console.log(`SessionId is ${this.sessionId}`);
       this.instanceSelectField.instance = {
         moduleImp: '',
         instanceConfiguration: null,

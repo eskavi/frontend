@@ -79,14 +79,11 @@ export default {
       this.selectArray.push(['', '']);
     },
     deleteEntry(entry) {
-      console.log('Ping');
       this.selectArray = this.selectArray.filter((element) => element[0] !== entry[0]);
       this.updateProp();
     },
     updateProp() {
       this.selectField.content = Object.fromEntries(this.selectArray);
-      console.log(this.selectArray);
-      console.log(this.selectField);
     },
   },
   mounted() {

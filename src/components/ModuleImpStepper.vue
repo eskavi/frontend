@@ -260,17 +260,12 @@ export default {
     },
     getTemplates() {
       this.basicPage.templates = [];
-      axios
-        .get(`imp?impType=${this.basicPage.impType}`)
-        .then((imp) => {
-          const temp = imp.data.implementations;
-          temp.forEach((entry) => {
-            this.basicPage.templates.push(entry);
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+      axios.get(`imp?impType=${this.basicPage.impType}`).then((imp) => {
+        const temp = imp.data.implementations;
+        temp.forEach((entry) => {
+          this.basicPage.templates.push(entry);
         });
+      });
       axios.get(`imp/default?impType=${this.basicPage.impType}`).then((res) => {
         this.basicPage.templates.push(res.data.template);
         this.wipImp = res.data.template;
@@ -293,13 +288,11 @@ export default {
       }
     },
     createModuleImp() {
-      console.log(this.wipImp);
       this.wipImp.configurationRoot = this.configurationRoot;
       axios
         .post('imp', this.wipImp)
         .then((res) => {
           this.impId = res.data.implementation.implementationId;
-          console.log(this.impId);
           this.finalizePage.createdImpId = res.data.impId;
           this.finalizePage.createSuccess = true;
         })

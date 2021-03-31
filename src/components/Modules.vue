@@ -100,7 +100,6 @@ export default {
   },
   methods: {
     getModules() {
-      console.log(window.innerHeight / 200);
       this.modules = [];
       axios
         .get('imp')
@@ -132,7 +131,6 @@ export default {
       this.$router.push({ path: '/editImp', query: { impId: entry.id } });
     },
     deleteModule(module) {
-      console.log({ impId: module.id });
       axios
         .delete('imp', { params: { id: module.id } })
         .then(this.getModules)

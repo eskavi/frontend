@@ -228,7 +228,6 @@ export default {
       });
     },
     submitConfigurationPage(instance) {
-      console.log(instance);
       // make axios call to update config of module
       axios
         .put('/aas/imp/configuration', {

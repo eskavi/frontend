@@ -42,9 +42,7 @@ export default {
   },
   methods: {
     checkValid() {
-      console.log(this.wipImp.scope);
       if (this.wipImp.scope.impScope === 'PUBLIC') {
-        console.log(this.userLevel);
         if (!(this.userLevel === 'PUBLISHING_USER' || this.userLevel === 'ADMINISTRATOR')) {
           this.error = 'You do not have sufficient permission to publish a module implementation.';
         } else {

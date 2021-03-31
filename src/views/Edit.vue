@@ -177,7 +177,6 @@ export default {
         .then((res) => {
           this.wipImp = res.data.implementations[0];
           this.loaded = true;
-          console.log(this.wipImp);
         })
         .catch(() => {
           this.$store.dispatch(
