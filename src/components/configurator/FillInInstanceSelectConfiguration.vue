@@ -53,16 +53,16 @@ export default {
         instanceConfiguration: null,
       };
       // load available modules
-      axios
-        .get(
-          `/aas/toplevelimps?${this.instanceSelectField.generics
-            .map((element) => `generics=${element.implementationId}`)
-            .join('&')}&impType=${this.instanceSelectField.type}`,
-        )
-        .then((res) => {
-          this.modules = res.data.implementations;
-          this.loadModules = false;
-        });
+      const call =
+        this.instanceSelectField.generics.length > 0
+          ? `/aas/toplevelimps?sessionId=${this.sessionId}&${this.instanceSelectField.generics
+              .map((element) => `generics=${element.implementationId}`)
+              .join('&')}&impType=${this.instanceSelectField.type}`
+          : `/aas/toplevelimps?sessionId=${this.sessionId}&impType=${this.instanceSelectField.type}`;
+      axios.get(call).then((res) => {
+        this.modules = res.data.implementations;
+        this.loadModules = false;
+      });
     },
     loadConfiguration() {
       // set id of selected module
