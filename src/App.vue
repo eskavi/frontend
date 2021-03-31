@@ -89,6 +89,7 @@ export default {
           // delete user currently stored in store
           this.$store.commit('clearUser');
           this.$store.commit('setToken');
+          this.$router.push('/');
 
           this.$store.dispatch('sendActionResponse', 'You have been logged out.');
         });
@@ -106,6 +107,7 @@ export default {
           // delete user currently stored in store
           this.$store.commit('clearUser');
           this.$store.commit('setToken');
+          this.$router.push('/');
 
           this.$store.dispatch('sendActionResponse', 'You have been logged out.');
         });
