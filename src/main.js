@@ -8,14 +8,7 @@ import vuetify from './plugins/vuetify';
 Vue.config.productionTip = false;
 // axios setup
 Vue.prototype.$http = axios;
-/* TODO, find out where to set the token properly
-const token = this.$store.getters.getUserToken;
-if (token) {
-  Vue.prototype.$http.defaults.headers.common.Authorization = token;
-} */
-// setting axios base URL
-// TO-DO insert our HTML/ link to config
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = process.env.API_URL || 'http://localhost:5000/api';
 
 // create vue instance
 new Vue({
