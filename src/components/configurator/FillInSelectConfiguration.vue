@@ -17,8 +17,8 @@
             :label="selectField.name"
             v-model="selectField.value"
             :items="Object.entries(selectField.content)"
-            :item-text="(item) => item.key"
-            :item-value="(item) => item.value"
+            :item-text="(item) => item[0]"
+            :item-value="(item) => item[1]"
           ></v-autocomplete>
         </v-col>
       </v-row>
@@ -34,12 +34,6 @@ export default {
   },
   data() {
     return {};
-  },
-  methods: {
-    onBuildUp() {},
-  },
-  mounted() {
-    this.onBuildUp();
   },
 };
 </script>
