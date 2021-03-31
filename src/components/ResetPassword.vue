@@ -153,8 +153,6 @@ export default {
     displayDialog: {
       handler(status) {
         if (!status) {
-          this.$refs.parseQuestionForm.reset();
-          this.$refs.resetPasswordForm.reset();
           this.error = '';
         }
       },
