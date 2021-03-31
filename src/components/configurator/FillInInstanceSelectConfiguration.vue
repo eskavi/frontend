@@ -66,7 +66,7 @@ export default {
     },
     loadConfiguration() {
       // set id of selected module
-      this.implementationSelectField.moduleImp = this.selected;
+      this.instanceSelectField.moduleImp = this.selected;
     },
   },
   mounted() {
