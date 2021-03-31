@@ -3,13 +3,16 @@
     <v-row justify="center">
       <v-col md="12" cols="10">
         <v-card>
-          <v-alert v-if="this.alertMessage" :type="this.alertType">
-            <v-row
-              >{{ alertMessage }}
-              <v-spacer />
-              <v-btn small @click="$router.push('/modules')"> Home </v-btn>
-            </v-row></v-alert
-          >
+          <v-alert v-if="this.alertMessage" :type="this.alertType" prominent>
+            <v-row align="center">
+              <v-col class="grow">
+                {{ alertMessage }}
+              </v-col>
+              <v-col class="shrink">
+                <v-btn @click="$router.push('/modules')" text> Home </v-btn>
+              </v-col>
+            </v-row>
+          </v-alert>
         </v-card>
       </v-col>
 
@@ -139,7 +142,6 @@ import ImpUserAdd from '../components/ImpUserAdd.vue';
 import ImpAttributesCard from '../components/ImpAttributesCard.vue';
 import ImpScopeCard from '../components/ImpScopeCard.vue';
 import ConfigurationAggregate from '../components/moduleImpCreate/ConfigurationAggregate.vue';
-// import ImpScopeCard from '../components/ImpScopeCard.vue';
 
 export default {
   name: 'Edit',
