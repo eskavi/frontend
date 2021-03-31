@@ -63,16 +63,16 @@ export default {
         instanceConfiguration: null,
       };
       // load available modules
-      axios
-        .get(
-          `/imp?${this.implementationSelectField.generics
-            .map((element) => `generics=${element.implementationId}`)
-            .join('&')}&impType=${this.implementationSelectField.type}`,
-        )
-        .then((res) => {
-          this.modules = res.data.implementations;
-          this.loadModules = false;
-        });
+      const call =
+        this.implementationSelectField.generics.length > 0
+          ? `/imp?${this.implementationSelectField.generics
+              .map((element) => `generics=${element.implementationId}`)
+              .join('&')}&impType=${this.implementationSelectField.type}`
+          : `/imp?impType=${this.implementationSelectField.type}`;
+      axios.get(call).then((res) => {
+        this.modules = res.data.implementations;
+        this.loadModules = false;
+      });
     },
     loadConfiguration() {
       // set id of selected module
