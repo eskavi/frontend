@@ -47,7 +47,7 @@
             required
             hint="Type your new password."
           ></v-text-field>
-          <v-btn @click="resetPassword">Confirm reset</v-btn>
+          <v-btn type="submit">Confirm reset</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -94,7 +94,7 @@ export default {
             this.displayDialog = false;
           })
           .catch((err) => {
-            this.error = err.response.data.error || err;
+            this.error = err.response.data.message || err;
           });
       }
     },
