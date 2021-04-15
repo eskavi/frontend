@@ -26,7 +26,7 @@
             <v-col cols="12" md="5" v-for="module in modules" :key="module.type">
               <v-autocomplete
                 no-data-text="Not a valid module"
-                :rules="[impRules.max(module.maxUse)]"
+                :rules="[impRules.max(module.maxUse, module.optional)]"
                 :label="module.type"
                 deletable-chips
                 :items="module.items"
@@ -113,13 +113,21 @@ export default {
       sessionId: '',
       error: '',
       page: 1,
-      registryRules: [(v) => v.length > 0 || 'At least 1 registry URL is required'],
+      registryRules: [
+        /* (v) => v.length > 0 || 'At least 1 registry URL is required' */
+      ],
       path: '',
       registryURLs: [],
       impRules: {
-        max(maxUse) {
+        max(maxUse, optional) {
           if (maxUse === 'infinite') {
+            if (optional) {
+              return true;
+            }
             return (v) => v.length > 0 || 'Choose a module';
+          }
+          if (optional) {
+            return (v) => v.length <= maxUse || `Choose minimum 0 and  maximum ${maxUse} modules`;
           }
           return (v) =>
             (v.length > 0 && v.length <= maxUse) ||
@@ -255,6 +263,7 @@ export default {
             this.modules.push({
               type: type.name,
               maxUse: type.maxUse !== -1 ? type.maxUse : 'infinite',
+              optional: type.optional,
               value: [],
               items: [],
             });
